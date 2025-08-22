@@ -5,43 +5,62 @@ function Header() {
   const { email, role } = useUser()
 
   return (
-    <header className="glass sticky top-0 z-50 px-4 py-3">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
+    <header className="sticky top-0 z-50 py-4 px-6 md:px-12 backdrop-filter backdrop-blur-md glass shadow-lg rounded-b-xl transition-all duration-300">
+      <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3 group">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">Q</span>
+          <div className="w-8 h-8 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
           </div>
-          <div>
-            <h1 className="text-lg font-bold gradient-text">QiAlly</h1>
-            <p className="text-xs text-gray-400">Client Portal</p>
-          </div>
+          <span className="text-xl font-bold gradient-text group-hover:scale-105 transition-transform duration-200">
+            QiAlly
+          </span>
         </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center space-x-4">
-          <Link to="/" className="glass-button px-3 py-2 rounded-lg text-sm font-medium">
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to="/" className="text-gray-300 hover:text-white transition-colors duration-200">
             Home
           </Link>
-          <Link to="/login" className="glass-button px-3 py-2 rounded-lg text-sm font-medium">
-            Login
-          </Link>
-          
-          {/* User info */}
           {email && (
-            <div className="flex items-center space-x-3">
-              <div className="glass-card px-2 py-1 rounded text-xs">
-                <span className="text-gray-400">Role:</span>
-                <span className="ml-1 font-medium gradient-text-blue capitalize">{role}</span>
-              </div>
-              <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">
-                  {email.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            </div>
+            <>
+              <Link to="/dashboard" className="text-gray-300 hover:text-white transition-colors duration-200">
+                Dashboard
+              </Link>
+              {role === 'admin' && (
+                <Link to="/admin" className="text-gray-300 hover:text-white transition-colors duration-200">
+                  Admin
+                </Link>
+              )}
+            </>
           )}
         </nav>
+
+        {/* User Info */}
+        <div className="flex items-center space-x-4">
+          {email ? (
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-full flex items-center justify-center">
+                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="text-sm">
+                <p className="text-white font-medium">{email}</p>
+                <p className="text-gray-400 text-xs capitalize">{role}</p>
+              </div>
+            </div>
+          ) : (
+            <Link 
+              to="/login" 
+              className="px-4 py-2 bg-gradient-to-r from-electric-blue-600 to-plasma-purple-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   )

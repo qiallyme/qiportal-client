@@ -70,15 +70,15 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Premium gradient background with bokeh effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen relative overflow-hidden bg-white">
+      {/* Subtle gradient background with bokeh effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
         {/* Animated bokeh lighting effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-96 h-96 bg-turquoise-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-96 h-96 bg-electric-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute -bottom-8 left-40 w-96 h-96 bg-plasma-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-turquoise-500/5 to-electric-blue-500/5 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-20 left-20 w-96 h-96 bg-turquoise-500/5 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-electric-blue-500/5 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute -bottom-8 left-40 w-96 h-96 bg-plasma-purple-500/5 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-turquoise-500/3 to-electric-blue-500/3 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
         </div>
       </div>
 
@@ -89,7 +89,7 @@ function Home() {
             <button
               key={section.id}
               onClick={() => handleSmoothScroll(section.ref)}
-              className="text-white text-sm md:text-base font-medium hover:text-turquoise-300 transition-colors duration-200"
+              className="text-gray-700 text-sm md:text-base font-medium hover:text-electric-blue-600 transition-colors duration-200"
             >
               {section.title}
             </button>
@@ -121,40 +121,40 @@ function Home() {
                 <h1 className="text-6xl font-bold gradient-text mb-4 tracking-tight">
                   QiAlly™
                 </h1>
-                <p className="text-2xl text-gray-300 font-light mb-6">Systems That Breathe</p>
-                <p className="text-lg text-gray-400 mb-8">The QiSuite™ Portal is live. The full site launches soon.</p>
+                <p className="text-2xl text-gray-700 font-light mb-6">Systems That Breathe</p>
+                <p className="text-lg text-gray-600 mb-8">The QiSuite™ Portal is live. The full site launches soon.</p>
               </div>
 
               {/* Feature highlights */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div className="glass-card p-6 border border-turquoise-500/20">
                   <div className="w-12 h-12 bg-turquoise-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-6 h-6 text-turquoise-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-turquoise-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Enterprise Security</h3>
-                  <p className="text-gray-400 text-sm">Bank-grade encryption and secure authentication</p>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Enterprise Security</h3>
+                  <p className="text-gray-600 text-sm">Bank-grade encryption and secure authentication</p>
                 </div>
                 
                 <div className="glass-card p-6 border border-electric-blue-500/20">
                   <div className="w-12 h-12 bg-electric-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-6 h-6 text-electric-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-electric-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Lightning Fast</h3>
-                  <p className="text-gray-400 text-sm">Optimized performance for seamless experience</p>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Lightning Fast</h3>
+                  <p className="text-gray-600 text-sm">Optimized performance for seamless experience</p>
                 </div>
                 
                 <div className="glass-card p-6 border border-plasma-purple-500/20">
                   <div className="w-12 h-12 bg-plasma-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-6 h-6 text-plasma-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-plasma-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Analytics Ready</h3>
-                  <p className="text-gray-400 text-sm">Comprehensive insights and reporting tools</p>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Analytics Ready</h3>
+                  <p className="text-gray-600 text-sm">Comprehensive insights and reporting tools</p>
                 </div>
               </div>
 
@@ -167,10 +167,10 @@ function Home() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-turquoise-500/10 to-electric-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative flex items-center justify-center">
-                      <svg className="w-6 h-6 mr-3 text-turquoise-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6 mr-3 text-turquoise-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
-                      <span className="text-lg font-semibold text-white">Access Portal</span>
+                      <span className="text-lg font-semibold text-gray-800">Access Portal</span>
                     </div>
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-turquoise-400/20 to-electric-blue-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </Link>
@@ -181,10 +181,10 @@ function Home() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-plasma-purple-500/10 to-electric-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative flex items-center justify-center">
-                      <svg className="w-6 h-6 mr-3 text-plasma-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6 mr-3 text-plasma-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span className="text-lg font-semibold text-white">Join the Waitlist</span>
+                      <span className="text-lg font-semibold text-gray-800">Join the Waitlist</span>
                     </div>
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-plasma-purple-400/20 to-electric-blue-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </a>
@@ -192,18 +192,18 @@ function Home() {
               </div>
 
               {/* Trust indicators */}
-              <div className="mt-12 pt-8 border-t border-white/10">
-                <div className="flex items-center justify-center space-x-8 text-sm text-gray-400">
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <div className="flex items-center justify-center space-x-8 text-sm text-gray-600">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-turquoise-400 rounded-full mr-2 animate-pulse"></div>
+                    <div className="w-2 h-2 bg-turquoise-500 rounded-full mr-2 animate-pulse"></div>
                     <span className="font-medium">99.9% Uptime</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-electric-blue-400 rounded-full mr-2 animate-pulse" style={{animationDelay: '1s'}}></div>
+                    <div className="w-2 h-2 bg-electric-blue-500 rounded-full mr-2 animate-pulse" style={{animationDelay: '1s'}}></div>
                     <span className="font-medium">SOC 2 Compliant</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-plasma-purple-400 rounded-full mr-2 animate-pulse" style={{animationDelay: '2s'}}></div>
+                    <div className="w-2 h-2 bg-plasma-purple-500 rounded-full mr-2 animate-pulse" style={{animationDelay: '2s'}}></div>
                     <span className="font-medium">24/7 Support</span>
                   </div>
                 </div>
@@ -217,13 +217,13 @@ function Home() {
           <div className="container mx-auto max-w-4xl">
             <div className="glass-card p-12 text-center">
               <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-6">QiAlly</h2>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
                 Transforming operations into thriving systems.
               </h3>
-              <p className="text-lg text-gray-300 font-light mb-4">
+              <p className="text-lg text-gray-600 font-light mb-4">
                 Empower. Innovate. Grow.
               </p>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-2xl mx-auto">
                 We specialize in operational excellence, helping businesses streamline processes, 
                 optimize workflows, and achieve sustainable growth through strategic consulting and 
                 technology integration.
@@ -240,11 +240,11 @@ function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Services List */}
                 <div className="glass-card p-6 border border-turquoise-500/20">
-                  <h4 className="text-xl font-semibold mb-4 text-turquoise-300">Services</h4>
-                  <ul className="space-y-3 text-gray-300">
+                  <h4 className="text-xl font-semibold mb-4 text-turquoise-600">Services</h4>
+                  <ul className="space-y-3 text-gray-700">
                     {whatWeOffer.services.map((service, index) => (
                       <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-turquoise-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-turquoise-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                         </svg>
                         <span>{service}</span>
@@ -255,11 +255,11 @@ function Home() {
 
                 {/* Industries List */}
                 <div className="glass-card p-6 border border-electric-blue-500/20">
-                  <h4 className="text-xl font-semibold mb-4 text-electric-blue-300">Industries</h4>
-                  <ul className="space-y-3 text-gray-300">
+                  <h4 className="text-xl font-semibold mb-4 text-electric-blue-600">Industries</h4>
+                  <ul className="space-y-3 text-gray-700">
                     {whatWeOffer.industries.map((industry, index) => (
                       <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-electric-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-electric-blue-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                         </svg>
                         <span>{industry}</span>
@@ -270,11 +270,11 @@ function Home() {
 
                 {/* Expertise List */}
                 <div className="glass-card p-6 border border-plasma-purple-500/20">
-                  <h4 className="text-xl font-semibold mb-4 text-plasma-purple-300">Expertise</h4>
-                  <ul className="space-y-3 text-gray-300">
+                  <h4 className="text-xl font-semibold mb-4 text-plasma-purple-600">Expertise</h4>
+                  <ul className="space-y-3 text-gray-700">
                     {whatWeOffer.expertise.map((exp, index) => (
                       <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-plasma-purple-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-plasma-purple-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                         </svg>
                         <span>{exp}</span>
@@ -295,8 +295,8 @@ function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {achievements.map((item, index) => (
                   <div key={index} className="flex flex-col items-center">
-                    <p className="text-5xl md:text-6xl font-extrabold text-white mb-2">{item.number}</p>
-                    <p className="text-lg text-gray-300 font-light">{item.text}</p>
+                    <p className="text-5xl md:text-6xl font-extrabold text-gray-800 mb-2">{item.number}</p>
+                    <p className="text-lg text-gray-600 font-light">{item.text}</p>
                   </div>
                 ))}
               </div>
@@ -311,14 +311,14 @@ function Home() {
               <h3 className="text-3xl font-bold text-center gradient-text mb-12">Case Studies</h3>
               <div className="space-y-4">
                 {caseStudies.map(study => (
-                  <div key={study.id} className="glass-card p-6 border border-white/10 transition-all duration-300 group hover:border-turquoise-500/30">
+                  <div key={study.id} className="glass-card p-6 border border-gray-200 transition-all duration-300 group hover:border-turquoise-500/30">
                     <button
                       onClick={() => setOpenCaseStudy(openCaseStudy === study.id ? null : study.id)}
                       className="w-full flex justify-between items-center text-left"
                     >
                       <div>
-                        <h4 className="text-lg font-semibold text-white group-hover:text-turquoise-300 transition-colors duration-200">{study.title}</h4>
-                        <p className="text-sm text-gray-400 mt-1">{study.summary}</p>
+                        <h4 className="text-lg font-semibold text-gray-800 group-hover:text-turquoise-600 transition-colors duration-200">{study.title}</h4>
+                        <p className="text-sm text-gray-600 mt-1">{study.summary}</p>
                       </div>
                       <span className={`text-2xl transform transition-transform duration-300 group-hover:rotate-90 ${openCaseStudy === study.id ? 'rotate-90' : 'rotate-0'}`}>
                         &gt;
@@ -336,11 +336,11 @@ function Home() {
           <div className="container mx-auto max-w-4xl">
             <div className="glass-card p-12">
               <h3 className="text-3xl font-bold text-center gradient-text mb-12">What Our Clients Say</h3>
-              <div className="glass-card p-8 border-l-4 border-turquoise-400">
-                <p className="text-xl italic text-gray-200 mb-6">
+              <div className="glass-card p-8 border-l-4 border-turquoise-500">
+                <p className="text-xl italic text-gray-700 mb-6">
                   &quot;{testimonial.quote}&quot;
                 </p>
-                <p className="text-lg font-semibold text-turquoise-300">- {testimonial.author}</p>
+                <p className="text-lg font-semibold text-turquoise-600">- {testimonial.author}</p>
               </div>
             </div>
           </div>
