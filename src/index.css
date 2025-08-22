@@ -2,13 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional extras (can remove if you want squeaky clean) */
+/* Modern Dark Theme with Glassmorphism */
 html, body {
-  @apply min-h-screen bg-gray-50 text-gray-900;
+  @apply min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-gray-100;
+  background-attachment: fixed;
 }
 
-a {
-  @apply text-blue-600 hover:underline;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-800/50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-purple-500/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-purple-400/70;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl;
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl rounded-2xl;
+}
+
+.glass-button {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300;
+}
+
+/* Gradient text utilities */
+.gradient-text {
+  @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+}
+
+.gradient-text-blue {
+  @apply bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent;
 }
 
 /* Animation delay utilities */
@@ -18,4 +54,28 @@ a {
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glow effects */
+.glow {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+}
+
+/* Link styling */
+a {
+  @apply text-purple-400 hover:text-purple-300 transition-colors duration-200;
 }
