@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 function Home() {
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4">
-      {/* Animated gradient background */}
+      {/* Softly blurred background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
@@ -20,7 +20,7 @@ function Home() {
             <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
               <span className="text-white font-bold text-3xl">Q</span>
             </div>
-            <h1 className="text-4xl font-bold gradient-text mb-3">QiPortals</h1>
+            <h1 className="text-4xl font-bold gradient-text mb-3">QiAlly</h1>
             <p className="text-gray-400 text-lg">Your Ally in Client Management</p>
           </div>
 
