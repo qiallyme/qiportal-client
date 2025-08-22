@@ -8,9 +8,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!email) {
-      navigate('/');
-    }
+    // Only redirect if we're sure there's no user (after a brief delay to allow context to load)
+    const timer = setTimeout(() => {
+      if (!email) {
+        navigate('/');
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [email, navigate]);
 
   return (
@@ -30,8 +35,30 @@ export default function Login() {
             </button>
           </div>
         ) : (
-          <div className="text-gray-600">
-            <p>Loading user information...</p>
+          <div className="space-y-6">
+            <div className="text-gray-600 mb-6">
+              <p>Please sign in to access the portal</p>
+            </div>
+            
+            <a
+              href="https://portal.qially.me/cdn-cgi/access/login"
+              className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              <svg 
+                className="w-5 h-5 mr-3" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" 
+                />
+              </svg>
+              Sign In with Cloudflare Access
+            </a>
           </div>
         )}
       </div>
