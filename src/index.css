@@ -4,7 +4,7 @@
 
 /* Modern Dark Theme with Glassmorphism */
 html, body {
-  @apply min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-gray-100;
+  @apply min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 text-gray-100;
   background-attachment: fixed;
 }
 
@@ -40,7 +40,7 @@ html, body {
 
 /* Gradient text utilities */
 .gradient-text {
-  @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-cyan-400 via-pink-400 to-blue-400 bg-clip-text text-transparent;
 }
 
 .gradient-text-blue {
@@ -78,4 +78,101 @@ html, body {
 /* Link styling */
 a {
   @apply text-purple-400 hover:text-purple-300 transition-colors duration-200;
+}
+
+/* Custom colors for QiSuite branding */
+.bg-turquoise-500\/10 {
+  background-color: rgba(20, 184, 166, 0.1);
+}
+
+.bg-magenta-500\/10 {
+  background-color: rgba(236, 72, 153, 0.1);
+}
+
+.bg-electric-blue-500\/10 {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.text-turquoise-400 {
+  color: #2dd4bf;
+}
+
+.text-magenta-400 {
+  color: #f472b6;
+}
+
+.text-electric-blue-400 {
+  color: #60a5fa;
+}
+
+.border-turquoise-500\/20 {
+  border-color: rgba(20, 184, 166, 0.2);
+}
+
+.border-magenta-500\/20 {
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+.border-electric-blue-500\/20 {
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.bg-turquoise-500\/20 {
+  background-color: rgba(20, 184, 166, 0.2);
+}
+
+.bg-magenta-500\/20 {
+  background-color: rgba(236, 72, 153, 0.2);
+}
+
+.bg-electric-blue-500\/20 {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.bg-turquoise-400 {
+  background-color: #2dd4bf;
+}
+
+.bg-magenta-400 {
+  background-color: #f472b6;
+}
+
+.bg-electric-blue-400 {
+  background-color: #60a5fa;
+}
+
+.bg-turquoise-400\/20 {
+  background-color: rgba(45, 212, 191, 0.2);
+}
+
+.bg-magenta-400\/20 {
+  background-color: rgba(244, 114, 182, 0.2);
+}
+
+.bg-electric-blue-400\/20 {
+  background-color: rgba(96, 165, 250, 0.2);
+}
+
+.bg-turquoise-500\/10 {
+  background-color: rgba(20, 184, 166, 0.1);
+}
+
+.bg-magenta-500\/10 {
+  background-color: rgba(236, 72, 153, 0.1);
+}
+
+.bg-electric-blue-500\/10 {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.bg-turquoise-400\/5 {
+  background-color: rgba(45, 212, 191, 0.05);
+}
+
+.bg-magenta-400\/5 {
+  background-color: rgba(244, 114, 182, 0.05);
+}
+
+.shadow-3xl {
+  box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
 }
