@@ -99,11 +99,11 @@ function Home() {
 
       {/* Main content container */}
       <main className="relative z-10">
-        {/* Hero Section with QiSuite Portal */}
+        {/* Hero Section with QiAlly Branding */}
         <section ref={portalRef} className="min-h-screen flex items-center justify-center p-4">
           <div className="w-full max-w-4xl">
             <div className="glass-card p-12 text-center">
-              {/* QiSuite Logo and Branding */}
+              {/* QiAlly Logo and Branding */}
               <div className="mb-12">
                 {/* Hummingbird Logo */}
                 <div className="w-32 h-32 mx-auto mb-8 relative">
@@ -117,12 +117,12 @@ function Home() {
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-turquoise-400/20 via-electric-blue-400/20 to-plasma-purple-400/20 blur-xl animate-pulse"></div>
                 </div>
                 
-                {/* Brand Title */}
+                {/* Brand Title and Tagline */}
                 <h1 className="text-6xl font-bold gradient-text mb-4 tracking-tight">
-                  QiSuite™
+                  QiAlly™
                 </h1>
-                <p className="text-xl text-gray-300 font-light mb-2">Enterprise Client Portal</p>
-                <p className="text-gray-400 text-lg">Secure • Fast • Reliable</p>
+                <p className="text-2xl text-gray-300 font-light mb-6">Systems That Breathe</p>
+                <p className="text-lg text-gray-400 mb-8">The QiSuite™ Portal is live. The full site launches soon.</p>
               </div>
 
               {/* Feature highlights */}
@@ -170,24 +170,24 @@ function Home() {
                       <svg className="w-6 h-6 mr-3 text-turquoise-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
-                      <span className="text-lg font-semibold text-white">Client Access</span>
+                      <span className="text-lg font-semibold text-white">Access Portal</span>
                     </div>
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-turquoise-400/20 to-electric-blue-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </Link>
 
-                  <Link 
-                    to="/admin" 
+                  <a 
+                    href="mailto:info@qially.me?subject=Join the Waitlist - QiAlly Full Site" 
                     className="group relative overflow-hidden glass-button px-8 py-4 rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-500 border border-plasma-purple-500/30"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-plasma-purple-500/10 to-electric-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="relative flex items-center justify-center">
                       <svg className="w-6 h-6 mr-3 text-plasma-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span className="text-lg font-semibold text-white">Admin Portal</span>
+                      <span className="text-lg font-semibold text-white">Join the Waitlist</span>
                     </div>
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-plasma-purple-400/20 to-electric-blue-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </Link>
+                  </a>
                 </div>
               </div>
 
