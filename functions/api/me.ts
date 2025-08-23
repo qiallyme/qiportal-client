@@ -1,6 +1,8 @@
-export const onRequestGet = async ({ request }: any) => {
-  const email = request.headers.get("Cf-Access-Authenticated-User-Email");
-  if (!email) return new Response("Unauthorized", { status: 401 });
-  return Response.json({ email });
+export const onRequestGet = async (ctx: any) => {
+  const user = ctx.data.cloudflareAccess?.user;
+  return Response.json({
+    email: user.email,
+    sub: user.sub,
+    aud: user.aud,
+  });
 };
-  
