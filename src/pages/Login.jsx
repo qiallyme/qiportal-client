@@ -27,7 +27,7 @@ export default function Login() {
           {/* Logo */}
           <div className="w-16 h-16 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 p-2">
             <img 
-              src="/logo.png" 
+              src="/logo.svg" 
               alt="QiAlly Logo" 
               className="w-full h-full object-contain"
             />

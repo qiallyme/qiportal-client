@@ -11,7 +11,7 @@ function Header() {
         <Link to="/" className="flex items-center space-x-3 group">
           <div className="w-8 h-8 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-lg flex items-center justify-center p-1">
             <img 
-              src="/logo.png" 
+              src="/logo.svg" 
               alt="QiAlly Logo" 
               className="w-full h-full object-contain"
             />
