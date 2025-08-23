@@ -8,7 +8,7 @@ export default function ProtectedRoute({ roleRequired, children }) {
 
   if (!isAuthenticated) {
     // Redirect to Cloudflare login if not authenticated
-    window.location.href = 'https://portal.qially.com/cdn-cgi/access/login';
+    window.location.href = 'https://qially.cloudflareaccess.com/cdn-cgi/access/login';
     return null;
   }
 

@@ -13,7 +13,7 @@ export default function Login() {
       setUser({ email });
       navigate('/'); // already signed in
     } else {
-      window.location.href = 'https://portal.qially.com/cdn-cgi/access/login';
+      window.location.href = 'https://qially.cloudflareaccess.com/cdn-cgi/access/login';
     }
   }, [setUser, navigate]);
 
@@ -32,7 +32,7 @@ export default function Login() {
               <p>Checking authentication...</p>
             </div>
             <button
-              onClick={() => (window.location.href = 'https://portal.qially.com/cdn-cgi/access/login')}
+              onClick={() => (window.location.href = 'https://qially.cloudflareaccess.com/cdn-cgi/access/login')}
               className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-xl2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
             >
               Sign In with Cloudflare Access

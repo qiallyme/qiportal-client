@@ -13,5 +13,5 @@ entry-point = "."
 command = "npm run build"
 
 [env.production]
-route = "https://portal.qially.me/*"
+route = "https://qially.cloudflareaccess.com/*"
 zone_id = "" # Optional, only needed if using Workers + DNS
