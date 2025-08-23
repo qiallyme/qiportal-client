@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 
 /**
- * Host-aware login handler.
- * Redirects to portal domain when accessed from apex domain.
+ * Host-aware login: always send users to the protected hostname.
  */
 export default function Login() {
   const goLogin = () => {
-    // This project is only deployed on portal.qially.com
-    // All login attempts should go to /client (Access will intercept if not logged in)
-    window.location.href = "/client";
+    if (location.hostname === "portal.qially.com") {
+      // Already on the protected host; Access will intercept /client if needed
+      location.href = "/client";
+    } else {
+      // Force the protected hostname so Access can do its job
+      location.href = "https://portal.qially.com/client";
+    }
   };
 
-  // Optional auto-redirect
   useEffect(() => { goLogin(); }, []);
 
   return (
@@ -21,9 +23,7 @@ export default function Login() {
           <img src="/logo.svg" alt="QiAlly" className="w-10 h-10" />
         </div>
         <h1 className="text-2xl font-semibold">Redirecting to login…</h1>
-        <p className="text-gray-500 text-sm">
-          If nothing happens, click the button below.
-        </p>
+        <p className="text-gray-500 text-sm">If nothing happens, click the button below.</p>
         <button
           onClick={goLogin}
           className="inline-flex items-center justify-center rounded-lg px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
