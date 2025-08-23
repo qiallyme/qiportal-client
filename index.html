@@ -24,5 +24,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Host-aware meta for SEO -->
+    <script>
+      const host = window.location.hostname;
+      const robots = document.getElementById("robots-meta");
+      const ogUrl = document.getElementById("og-url");
+      const ogImg = document.getElementById("og-image");
+
+      if (host === "qially.com" || host === "www.qially.com") {
+        robots?.setAttribute("content", "index, follow");
+        ogUrl?.setAttribute("content", "https://qially.com/");
+        ogImg?.setAttribute("content", "https://qially.com/logo.png");
+      } else {
+        robots?.setAttribute("content", "noindex, nofollow");
+        ogUrl?.setAttribute("content", "https://portal.qially.com/");
+        ogImg?.setAttribute("content", "https://portal.qially.com/logo.png");
+      }
+    </script>
   </body>
 </html>

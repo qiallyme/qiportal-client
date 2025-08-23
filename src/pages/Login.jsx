@@ -6,12 +6,9 @@ import { useEffect } from "react";
  */
 export default function Login() {
   const goLogin = () => {
-    if (window.location.hostname === "portal.qially.com") {
-      window.location.href = "/client"; // Access will intercept if not logged in
-    } else {
-      // Force the protected hostname
-      window.location.href = "https://portal.qially.com/client";
-    }
+    // This project is only deployed on portal.qially.com
+    // All login attempts should go to /client (Access will intercept if not logged in)
+    window.location.href = "/client";
   };
 
   // Optional auto-redirect
