@@ -80,6 +80,13 @@ a {
   @apply text-blue-600 hover:text-blue-700 transition-colors duration-200;
 }
 
+/* Fix appearance property compatibility */
+button, input, select, textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* Custom colors for QiSuite branding - replacing pink with electric blue and plasma purple */
 .bg-turquoise-500\/10 {
   background-color: rgba(20, 184, 166, 0.1);
