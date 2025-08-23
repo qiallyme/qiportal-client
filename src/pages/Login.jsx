@@ -25,10 +25,12 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="glass-card p-8 text-center">
           {/* Logo */}
-          <div className="w-16 h-16 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
+          <div className="w-16 h-16 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 p-2">
+            <img 
+              src="/logo.png" 
+              alt="QiAlly Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           
           {/* Title */}

@@ -105,13 +105,14 @@ function Home() {
             <div className="glass-card p-12 text-center">
               {/* QiAlly Logo and Branding */}
               <div className="mb-12">
-                {/* Hummingbird Logo */}
+                {/* Logo */}
                 <div className="w-32 h-32 mx-auto mb-8 relative">
-                  <div className="w-full h-full bg-gradient-to-br from-turquoise-400 via-electric-blue-400 to-plasma-purple-400 rounded-3xl flex items-center justify-center shadow-2xl glow">
-                    <svg className="w-20 h-20 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      {/* Hummingbird icon */}
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
+                  <div className="w-full h-full bg-gradient-to-br from-turquoise-400 via-electric-blue-400 to-plasma-purple-400 rounded-3xl flex items-center justify-center shadow-2xl glow p-4">
+                    <img 
+                      src="/logo.png" 
+                      alt="QiAlly Logo" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   {/* Glowing ring effect */}
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-turquoise-400/20 via-electric-blue-400/20 to-plasma-purple-400/20 blur-xl animate-pulse"></div>
