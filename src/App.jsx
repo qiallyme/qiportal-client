@@ -20,7 +20,7 @@ export default function App() {
           <a href="#what-we-offer">Services</a>
           <a href="#outcomes">Outcomes</a>
           <a href="#contact">Contact</a>
-          <Link className="btn btn-ghost" to="/login">Login</Link>
+          <a className="btn btn-ghost" href="https://portal.qially.com/client">Login</a>
         </nav>
       </header>
 

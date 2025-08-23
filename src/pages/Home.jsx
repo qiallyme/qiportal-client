@@ -67,12 +67,12 @@ function Home() {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <Link 
-                to="/login" 
+              <a 
+                href="https://portal.qially.com/client" 
                 className="btn btn-primary btn-lg px-8"
               >
                 Access Portal
-              </Link>
+              </a>
               <a 
                 href="mailto:info@qially.me" 
                 className="btn btn-ghost btn-lg px-8"
@@ -213,12 +213,12 @@ function Home() {
               Access your portal or get in touch to learn how we can help transform your operations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link 
-                to="/login" 
+              <a 
+                href="https://portal.qially.com/client" 
                 className="btn btn-primary btn-lg px-8"
               >
                 Access Portal
-              </Link>
+              </a>
               <a 
                 href="mailto:info@qially.me" 
                 className="btn btn-ghost btn-lg px-8"

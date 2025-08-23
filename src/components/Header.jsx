@@ -63,12 +63,12 @@ export default function Header() {
               </Link>
             </>
           ) : (
-            <Link
-              to="/login"
+            <a
+              href="https://portal.qially.com/client"
               className="inline-flex items-center rounded-lg px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90"
             >
               Sign In
-            </Link>
+            </a>
           )}
         </div>
       </div>
