@@ -1,5 +1,7 @@
+// src/pages/Logout.jsx
 export default function Logout() {
-  window.location.href =
-    "https://qially.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=https://portal.qially.com";
+  const team = "qially";
+  const ret = encodeURIComponent("https://portal.qially.com");
+  window.location.href = `https://${team}.cloudflareaccess.com/cdn-cgi/access/logout?returnTo=${ret}`;
   return null;
 }
