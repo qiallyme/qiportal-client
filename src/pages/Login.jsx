@@ -1,20 +1,11 @@
 import { useEffect } from "react";
 
-/**
- * Host-aware login: always send users to the protected hostname.
- */
 export default function Login() {
-  const goLogin = () => {
-    if (location.hostname === "portal.qially.com") {
-      // Already on the protected host; Access will intercept /client if needed
-      location.href = "/client";
-    } else {
-      // Force the protected hostname so Access can do its job
-      location.href = "https://portal.qially.com/client";
-    }
-  };
-
-  useEffect(() => { goLogin(); }, []);
+  useEffect(() => {
+    const portal = "https://portal.qially.com/client";
+    const isPortal = location.hostname === "portal.qially.com";
+    window.location.href = isPortal ? "/client" : portal;
+  }, []);
 
   return (
     <div className="min-h-screen grid place-items-center p-8">
@@ -23,13 +14,13 @@ export default function Login() {
           <img src="/logo.svg" alt="QiAlly" className="w-10 h-10" />
         </div>
         <h1 className="text-2xl font-semibold">Redirecting to login…</h1>
-        <p className="text-gray-500 text-sm">If nothing happens, click the button below.</p>
-        <button
-          onClick={goLogin}
-          className="inline-flex items-center justify-center rounded-lg px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+        <p className="text-gray-500 text-sm">If nothing happens, click below.</p>
+        <a
+          href="https://portal.qially.com/client"
+          className="w-full inline-flex justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-xl2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
         >
-          Continue
-        </button>
+          Go to Portal
+        </a>
       </div>
     </div>
   );

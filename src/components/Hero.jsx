@@ -20,7 +20,7 @@ export default function Hero() {
           </ul>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a className="btn btn-primary" href="#contact">Work with us</a>
-            <a className="btn btn-ghost" href="/login">Client login</a>
+            <a className="btn btn-ghost" href="https://portal.qially.com/client">Client login</a>
           </div>
         </div>
         <div className="glass p-4 md:p-6 rounded-xl2">
