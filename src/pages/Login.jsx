@@ -1,17 +1,21 @@
 import { useEffect } from "react";
 
 /**
- * Hands login off to Cloudflare Access.
- * Uses returnTo so users land on /client after auth.
+ * Host-aware login handler.
+ * Redirects to portal domain when accessed from apex domain.
  */
 export default function Login() {
-  const TEAM = import.meta.env.VITE_CF_TEAM || "qially";
-  const returnTo = encodeURIComponent(`${window.location.origin}/client`);
-  const ACCESS_LOGIN = `https://${TEAM}.cloudflareaccess.com/cdn-cgi/access/login?returnTo=${returnTo}`;
+  const goLogin = () => {
+    if (window.location.hostname === "portal.qially.com") {
+      window.location.href = "/client"; // Access will intercept if not logged in
+    } else {
+      // Force the protected hostname
+      window.location.href = "https://portal.qially.com/client";
+    }
+  };
 
-  useEffect(() => {
-    window.location.href = ACCESS_LOGIN;
-  }, []);
+  // Optional auto-redirect
+  useEffect(() => { goLogin(); }, []);
 
   return (
     <div className="min-h-screen grid place-items-center p-8">
@@ -24,12 +28,10 @@ export default function Login() {
           If nothing happens, click the button below.
         </p>
         <button
-          onClick={() => {
-            window.location.href = ACCESS_LOGIN;
-          }}
+          onClick={goLogin}
           className="inline-flex items-center justify-center rounded-lg px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
         >
-          Continue to Cloudflare Access
+          Continue
         </button>
       </div>
     </div>
