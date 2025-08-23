@@ -1,44 +1,36 @@
-import { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getUserEmailFromJWT } from '../utils/auth';
-import { UserContext } from '../context/UserContext';
+import { useEffect } from "react";
 
+/**
+ * Hands login off to Cloudflare Access.
+ * Uses returnTo so users land on /client after auth.
+ */
 export default function Login() {
-  const { setUser } = useContext(UserContext);
-  const navigate = useNavigate();
+  const TEAM = import.meta.env.VITE_CF_TEAM || "qially";
+  const returnTo = encodeURIComponent(`${window.location.origin}/client`);
+  const ACCESS_LOGIN = `https://${TEAM}.cloudflareaccess.com/cdn-cgi/access/login?returnTo=${returnTo}`;
 
   useEffect(() => {
-    const email = getUserEmailFromJWT();
-    if (email) {
-      setUser({ email });
-      navigate('/'); // already signed in
-    } else {
-      window.location.href = 'https://qially.cloudflareaccess.com/cdn-cgi/access/login';
-    }
-  }, [setUser, navigate]);
+    window.location.href = ACCESS_LOGIN;
+  }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="glass p-8 text-center rounded-xl2">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4 p-2">
-            <img src="/logo.svg" alt="QiAlly Logo" className="w-full h-full object-contain" />
-          </div>
-          <h1 className="text-2xl font-bold gradient-text mb-2">Welcome to QiAlly</h1>
-          <p className="text-subtext mb-6">Sign in to access your portal</p>
-          <div className="space-y-4">
-            <div className="text-subtext mb-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-              <p>Checking authentication...</p>
-            </div>
-            <button
-              onClick={() => (window.location.href = 'https://qially.cloudflareaccess.com/cdn-cgi/access/login')}
-              className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-xl2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-            >
-              Sign In with Cloudflare Access
-            </button>
-          </div>
+    <div className="min-h-screen grid place-items-center p-8">
+      <div className="max-w-sm w-full text-center space-y-4">
+        <div className="w-16 h-16 mx-auto rounded-xl grid place-items-center bg-gradient-to-br from-blue-500 to-purple-500">
+          <img src="/logo.svg" alt="QiAlly" className="w-10 h-10" />
         </div>
+        <h1 className="text-2xl font-semibold">Redirecting to login…</h1>
+        <p className="text-gray-500 text-sm">
+          If nothing happens, click the button below.
+        </p>
+        <button
+          onClick={() => {
+            window.location.href = ACCESS_LOGIN;
+          }}
+          className="inline-flex items-center justify-center rounded-lg px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+        >
+          Continue to Cloudflare Access
+        </button>
       </div>
     </div>
   );

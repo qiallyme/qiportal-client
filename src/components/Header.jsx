@@ -1,38 +1,34 @@
-import { Link } from 'react-router-dom'
-import { useUser } from '../context/UserContext'
+import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
-function Header() {
-  const { email, role } = useUser()
+/**
+ * Header component with navigation and user authentication status
+ * @returns {JSX.Element} Header component with navigation links and user info
+ */
+export default function Header() {
+  const { email, role } = useUser();
 
   return (
-    <header className="sticky top-0 z-50 py-4 px-6 md:px-12 backdrop-filter backdrop-blur-md glass shadow-lg rounded-b-xl transition-all duration-300">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3 group">
-          <div className="w-8 h-8 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-lg flex items-center justify-center p-1">
-            <img 
-              src="/logo.svg" 
-              alt="QiAlly Logo" 
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <span className="text-xl font-bold gradient-text group-hover:scale-105 transition-transform duration-200">
-            QiAlly
-          </span>
+    <header className="w-full border-b border-gray-200 bg-white/80 backdrop-blur">
+      <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
+        {/* Brand */}
+        <Link to="/" className="flex items-center gap-2">
+          <img src="/logo.svg" alt="QiAlly" className="h-7 w-7" />
+          <span className="font-semibold">QiAlly</span>
         </Link>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-gray-300 hover:text-white transition-colors duration-200">
+        {/* Nav */}
+        <nav className="flex items-center gap-6 text-sm">
+          <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">
             Home
           </Link>
           {email && (
             <>
-              <Link to="/dashboard" className="text-gray-300 hover:text-white transition-colors duration-200">
+              <Link to="/client" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Dashboard
               </Link>
-              {role === 'admin' && (
-                <Link to="/admin" className="text-gray-300 hover:text-white transition-colors duration-200">
+              {role === "admin" && (
+                <Link to="/admin" className="text-gray-600 hover:text-gray-900 transition-colors">
                   Admin
                 </Link>
               )}
@@ -40,24 +36,36 @@ function Header() {
           )}
         </nav>
 
-        {/* User Info */}
-        <div className="flex items-center space-x-4">
+        {/* User */}
+        <div className="flex items-center gap-3">
           {email ? (
-            <div className="flex items-center space-x-3">
-              <div className="w-6 h-6 bg-gradient-to-br from-electric-blue-500 to-plasma-purple-500 rounded-full flex items-center justify-center">
-                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
+            <>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 grid place-items-center">
+                  <svg className="w-3 h-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="text-xs">
+                  <p className="font-medium leading-tight">{email}</p>
+                  <p className="text-gray-500 capitalize leading-tight">{role}</p>
+                </div>
               </div>
-              <div className="text-sm">
-                <p className="text-white font-medium">{email}</p>
-                <p className="text-gray-400 text-xs capitalize">{role}</p>
-              </div>
-            </div>
+              <Link
+                to="/logout"
+                className="inline-flex items-center rounded-lg px-3 py-2 text-sm bg-gray-900 text-white hover:opacity-90"
+              >
+                Logout
+              </Link>
+            </>
           ) : (
-            <Link 
-              to="/login" 
-              className="px-4 py-2 bg-gradient-to-r from-electric-blue-600 to-plasma-purple-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            <Link
+              to="/login"
+              className="inline-flex items-center rounded-lg px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90"
             >
               Sign In
             </Link>
@@ -65,7 +73,5 @@ function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }
-
-export default Header

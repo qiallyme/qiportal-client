@@ -1,23 +1,12 @@
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 function Home() {
-  const [openCaseStudy, setOpenCaseStudy] = useState(null);
   const aboutRef = useRef(null);
   const whatWeOfferRef = useRef(null);
-  const clientsRef = useRef(null);
   const caseStudiesRef = useRef(null);
   const testimonialRef = useRef(null);
   const portalRef = useRef(null);
-
-  const sections = [
-    { id: 'about', title: 'About', ref: aboutRef },
-    { id: 'what-we-offer', title: 'What We Offer', ref: whatWeOfferRef },
-    { id: 'clients', title: 'Clients', ref: clientsRef },
-    { id: 'case-studies', title: 'Case Studies', ref: caseStudiesRef },
-    { id: 'testimonial', title: 'Testimonials', ref: testimonialRef },
-    { id: 'portal', title: 'Client Portal', ref: portalRef },
-  ];
 
   const whatWeOffer = {
     services: ['Management & Operations', 'Process Improvement', 'HR & Workforce Optimization', 'Financial Acumen', 'Technology & Systems Integration'],
@@ -39,12 +28,8 @@ function Home() {
   ];
 
   const testimonial = {
-    quote: "Cody is the best, they didn't just get the job done, they found and correct other isseus along the ways proactively. Huge savings and potential from the start.",
+    quote: "Cody is the best, Cody didn't just get the job done, they found and corrected other issues along the way proactively. Huge savings and potential from the start.",
     author: "Nick Pecoraro, Director at MSIL"
-  };
-
-  const handleSmoothScroll = (ref) => {
-    ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

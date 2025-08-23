@@ -1,39 +1,40 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getUserEmailFromJWT } from '../utils/auth';
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
-  const [role, setRole] = useState('guest');
+  const [role, setRole] = useState("guest");
 
-  const setUser = (userData) => {
-    if (userData.email) {
-      setEmail(userData.email);
-      
-      // Use this to define roles manually for now
-      const admins = ['admin@qially.me', 'crice4485@gmail.com'];
-      const clients = ['info@qially.me', 'client1@email.com'];
+  const applyRole = (userEmail) => {
+    const admins = ["admin@qially.me", "crice4485@gmail.com"];
+    const clients = ["info@qially.me", "client1@email.com"];
 
-      if (admins.includes(userData.email)) {
-        setRole('admin');
-      } else if (clients.includes(userData.email)) {
-        setRole('client');
-      } else {
-        setRole('guest');
+    if (admins.includes(userEmail)) return "admin";
+    if (clients.includes(userEmail)) return "client";
+    return "guest";
+  };
+
+  const hydrate = async () => {
+    try {
+      const res = await fetch("/api/me", { credentials: "include" });
+      if (!res.ok) return; // unauthenticated or error
+      const data = await res.json(); // expect { email, ... } from your Worker
+      if (data?.email) {
+        setEmail(data.email);
+        setRole(applyRole(data.email));
       }
+    } catch {
+      // fine, stay guest
     }
   };
 
   useEffect(() => {
-    const userEmail = getUserEmailFromJWT();
-    if (userEmail) {
-      setUser({ email: userEmail });
-    }
+    hydrate();
   }, []);
 
   return (
-    <UserContext.Provider value={{ email, role, setUser }}>
+    <UserContext.Provider value={{ email, role, setEmail, setRole }}>
       {children}
     </UserContext.Provider>
   );
