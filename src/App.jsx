@@ -2,7 +2,7 @@ import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Logout from './pages/Logout.jsx';
 import NotFound from './pages/NotFound.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import Client from './pages/Client.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -44,14 +44,7 @@ export default function App() {
           <Route path="/logout" element={<Logout />} />
 
           {/* Client dashboard (protected). The ProtectedRoute you have already handles roleRequired */}
-          <Route
-            path="/client"
-            element={
-              <ProtectedRoute roleRequired="client">
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/client" element={<Client />} />
 
           {/* Admin (protected) */}
           <Route
