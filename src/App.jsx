@@ -7,27 +7,26 @@ import AdminPanel from './pages/AdminPanel.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 export default function App() {
-  // Host-aware behavior:
-  // - On portal.qially.com the home page should just be the dashboard (/client).
-  // - Anywhere else (e.g. a preview), keep Home and use an absolute link to the portal.
-  const host =
-    typeof window !== 'undefined' ? window.location.hostname : '';
-  const isPortal =
-    host === 'portal.qially.com' || host.startsWith('portal.');
+  // Host-aware:
+  // - On portal.qially.com, "/" should resolve to the client dashboard (/client).
+  // - On any other host (preview/dev/public), show Home and use an absolute link for Login.
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  const isPortal = host === 'portal.qially.com' || host.startsWith('portal.');
 
-  const loginHref = isPortal
-    ? '/client'
-    : 'https://portal.qially.com/client';
+  // Header "Login" button target
+  const loginHref = isPortal ? '/client' : 'https://portal.qially.com/client';
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Simple header */}
+      {/* Header */}
       <header className="container py-4 flex items-center justify-between">
         <Link to={isPortal ? '/client' : '/'} className="flex items-center gap-2 font-semibold">
           <img src="/logo.svg" alt="QiAlly Logo" className="w-8 h-8" />
           QiAlly
         </Link>
+
         <nav className="hidden md:flex items-center gap-6 text-sm">
+          {/* These anchors are just placeholders on the portal host */}
           <a href="#what-we-offer">Services</a>
           <a href="#outcomes">Outcomes</a>
           <a href="#contact">Contact</a>
@@ -35,15 +34,16 @@ export default function App() {
         </nav>
       </header>
 
+      {/* Routes */}
       <main className="flex-1 overflow-auto">
         <Routes>
-          {/* On the portal host, shove / to /client. Else show Home. */}
+          {/* On the portal host, "/" → "/client"; elsewhere "/" → <Home /> */}
           <Route path="/" element={isPortal ? <Navigate to="/client" replace /> : <Home />} />
 
-
-
+          {/* Logout page can live on either host */}
           <Route path="/logout" element={<Logout />} />
 
+          {/* Client dashboard (protected). The ProtectedRoute you have already handles roleRequired */}
           <Route
             path="/client"
             element={
@@ -53,6 +53,7 @@ export default function App() {
             }
           />
 
+          {/* Admin (protected) */}
           <Route
             path="/admin"
             element={
@@ -62,7 +63,8 @@ export default function App() {
             }
           />
 
-          <Route path="*" element={<NotFound />} />
+          {/* Fallback: on portal, send unknown paths to /client; otherwise show NotFound */}
+          <Route path="*" element={isPortal ? <Navigate to="/client" replace /> : <NotFound />} />
         </Routes>
       </main>
 
