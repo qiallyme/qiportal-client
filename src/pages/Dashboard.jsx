@@ -9,15 +9,15 @@ const Dashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">Client Dashboard</h1>
-          <p className="text-gray-400">Welcome back, {email}</p>
+          <p className="text-subtext">Welcome back, {email}</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="glass-card p-6">
+          <div className="glass p-6 rounded-xl2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Active Projects</p>
+                <p className="text-subtext text-sm">Active Projects</p>
                 <p className="text-3xl font-bold text-white">3</p>
               </div>
               <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
@@ -28,10 +28,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="glass-card p-6">
+          <div className="glass p-6 rounded-xl2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Pending Tasks</p>
+                <p className="text-subtext text-sm">Pending Tasks</p>
                 <p className="text-3xl font-bold text-white">12</p>
               </div>
               <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
@@ -42,10 +42,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="glass-card p-6">
+          <div className="glass p-6 rounded-xl2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm">Completed</p>
+                <p className="text-subtext text-sm">Completed</p>
                 <p className="text-3xl font-bold text-white">28</p>
               </div>
               <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
@@ -58,7 +58,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="glass-card p-6">
+        <div className="glass p-6 rounded-xl2">
           <h2 className="text-xl font-semibold text-white mb-4">Recent Activity</h2>
           <div className="space-y-4">
             <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl">
@@ -69,9 +69,9 @@ const Dashboard = () => {
               </div>
               <div className="flex-1">
                 <p className="font-medium text-white">New project created</p>
-                <p className="text-sm text-gray-400">Website redesign project started</p>
+                <p className="text-sm text-subtext">Website redesign project started</p>
               </div>
-              <span className="text-sm text-gray-500">2 hours ago</span>
+              <span className="text-sm text-subtext">2 hours ago</span>
             </div>
 
             <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl">
@@ -82,9 +82,9 @@ const Dashboard = () => {
               </div>
               <div className="flex-1">
                 <p className="font-medium text-white">Task completed</p>
-                <p className="text-sm text-gray-400">Homepage mockup approved</p>
+                <p className="text-sm text-subtext">Homepage mockup approved</p>
               </div>
-              <span className="text-sm text-gray-500">1 day ago</span>
+              <span className="text-sm text-subtext">1 day ago</span>
             </div>
 
             <div className="flex items-center space-x-4 p-4 bg-white/5 rounded-xl">
@@ -95,9 +95,9 @@ const Dashboard = () => {
               </div>
               <div className="flex-1">
                 <p className="font-medium text-white">Feedback received</p>
-                <p className="text-sm text-gray-400">New comments on design proposal</p>
+                <p className="text-sm text-subtext">New comments on design proposal</p>
               </div>
-              <span className="text-sm text-gray-500">3 days ago</span>
+              <span className="text-sm text-subtext">3 days ago</span>
             </div>
           </div>
         </div>
