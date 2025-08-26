@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '../context/UserContext';
+import { supabase } from '../lib/supabase';
 
 export default function Settings() {
   const { email, role } = useUser();
   const [activeTab, setActiveTab] = useState('profile');
+  const [loading, setLoading] = useState(false);
+  const [saveStatus, setSaveStatus] = useState('');
+  
   const [notifications, setNotifications] = useState({
     email: true,
     sms: false,
@@ -13,12 +17,100 @@ export default function Settings() {
   });
 
   const [profile, setProfile] = useState({
-    firstName: email?.split('@')[0] || '',
-    lastName: '',
-    company: '',
-    phone: '',
-    timezone: 'America/New_York'
+    full_name: '',
+    preferred_locale: 'en',
+    timezone: 'America/New_York',
+    email_opt_in: true,
+    sms_opt_in: false
   });
+
+  // Load profile data from Supabase on component mount
+  useEffect(() => {
+    if (email) {
+      loadProfile();
+    }
+  }, [email]);
+
+  const loadProfile = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('email', email)
+        .single();
+
+      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Error loading profile:', error);
+        return;
+      }
+
+      if (data) {
+        setProfile({
+          full_name: data.full_name || email?.split('@')[0] || '',
+          preferred_locale: data.preferred_locale || 'en',
+          timezone: data.timezone || 'America/New_York',
+          email_opt_in: data.email_opt_in ?? true,
+          sms_opt_in: data.sms_opt_in ?? false
+        });
+      } else {
+        // Set default values if no profile exists
+        setProfile({
+          full_name: email?.split('@')[0] || '',
+          preferred_locale: 'en',
+          timezone: 'America/New_York',
+          email_opt_in: true,
+          sms_opt_in: false
+        });
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveProfile = async () => {
+    try {
+      setLoading(true);
+      setSaveStatus('');
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setSaveStatus('Error: User not authenticated');
+        return;
+      }
+
+      const profileData = {
+        id: user.id,
+        email: email,
+        full_name: profile.full_name,
+        preferred_locale: profile.preferred_locale,
+        timezone: profile.timezone,
+        email_opt_in: profile.email_opt_in,
+        sms_opt_in: profile.sms_opt_in
+      };
+
+      // Try to update existing profile, if not exists then insert
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .upsert(profileData, { onConflict: 'id' });
+
+      if (updateError) {
+        console.error('Error saving profile:', updateError);
+        setSaveStatus('Error saving profile. Please try again.');
+        return;
+      }
+
+      setSaveStatus('Profile saved successfully!');
+      setTimeout(() => setSaveStatus(''), 3000); // Clear success message after 3 seconds
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      setSaveStatus('Error saving profile. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const timezones = [
     { value: 'America/New_York', label: 'Eastern Time (ET)' },
@@ -28,11 +120,30 @@ export default function Settings() {
     { value: 'UTC', label: 'UTC' }
   ];
 
+  const locales = [
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Spanish' },
+    { value: 'fr', label: 'French' },
+    { value: 'de', label: 'German' }
+  ];
+
   const handleNotificationChange = (key) => {
-    setNotifications(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
+    if (key === 'email') {
+      setProfile(prev => ({
+        ...prev,
+        email_opt_in: !prev.email_opt_in
+      }));
+    } else if (key === 'sms') {
+      setProfile(prev => ({
+        ...prev,
+        sms_opt_in: !prev.sms_opt_in
+      }));
+    } else {
+      setNotifications(prev => ({
+        ...prev,
+        [key]: !prev[key]
+      }));
+    }
   };
 
   const handleProfileChange = (key, value) => {
@@ -48,22 +159,25 @@ export default function Settings() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input 
               type="text" 
-              value={profile.firstName}
-              onChange={(e) => handleProfileChange('firstName', e.target.value)}
+              value={profile.full_name}
+              onChange={(e) => handleProfileChange('full_name', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-            <input 
-              type="text" 
-              value={profile.lastName}
-              onChange={(e) => handleProfileChange('lastName', e.target.value)}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Locale</label>
+            <select 
+              value={profile.preferred_locale}
+              onChange={(e) => handleProfileChange('preferred_locale', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            >
+              {locales.map(locale => (
+                <option key={locale.value} value={locale.value}>{locale.label}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -72,24 +186,6 @@ export default function Settings() {
               value={email} 
               disabled
               className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input 
-              type="tel" 
-              value={profile.phone}
-              onChange={(e) => handleProfileChange('phone', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-            <input 
-              type="text" 
-              value={profile.company}
-              onChange={(e) => handleProfileChange('company', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
@@ -104,9 +200,50 @@ export default function Settings() {
               ))}
             </select>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email Notifications</label>
+            <button
+              onClick={() => handleNotificationChange('email')}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                profile.email_opt_in ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
+            >
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                profile.email_opt_in ? 'translate-x-6' : 'translate-x-1'
+              }`}></span>
+            </button>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">SMS Notifications</label>
+            <button
+              onClick={() => handleNotificationChange('sms')}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                profile.sms_opt_in ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
+            >
+              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                profile.sms_opt_in ? 'translate-x-6' : 'translate-x-1'
+              }`}></span>
+            </button>
+          </div>
         </div>
         <div className="mt-6">
-          <button className="btn btn-primary">Save Changes</button>
+          <button 
+            onClick={saveProfile}
+            disabled={loading}
+            className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
+          {saveStatus && (
+            <div className={`mt-3 p-3 rounded-md text-sm ${
+              saveStatus.includes('Error') 
+                ? 'bg-red-50 text-red-700 border border-red-200' 
+                : 'bg-green-50 text-green-700 border border-green-200'
+            }`}>
+              {saveStatus}
+            </div>
+          )}
         </div>
       </div>
 

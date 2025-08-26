@@ -1,168 +1,37 @@
 // src/pages/Login.jsx
-import { useState, useEffect } from 'react'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from '../lib/supabase'
+import { useState } from 'react'
 import { useUser } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [authError, setAuthError] = useState(null)
-  const [useFallback, setUseFallback] = useState(false)
-  const { signIn, signUp } = useUser()
-  const navigate = useNavigate()
-
-  // Fallback form state
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const { signIn, signUp, testMode } = useUser()
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    // Check if Supabase is properly configured
-    try {
-      const url = import.meta.env.VITE_SUPABASE_URL
-      const key = import.meta.env.VITE_SUPABASE_ANON_KEY
-      
-      if (!url || !key) {
-        setError('Missing Supabase environment variables. Please check your .env file.')
-      } else {
-        setError(null)
-      }
-    } catch (err) {
-      setError('Failed to load Supabase configuration: ' + err.message)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  const handleFallbackSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setAuthError('')
+    setError('')
 
     try {
       if (isSignUp) {
         const { data, error } = await signUp(email, password)
         if (error) throw error
-        setAuthError('Check your email for the confirmation link!')
+        setError('Check your email for the confirmation link!')
       } else {
         const { data, error } = await signIn(email, password)
         if (error) throw error
         navigate('/client')
       }
     } catch (error) {
-      setAuthError(error.message)
+      setError(error.message)
     } finally {
       setLoading(false)
     }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading authentication...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="max-w-md w-full p-6">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <h2 className="text-lg font-semibold text-red-800 mb-2">Configuration Error</h2>
-            <p className="text-red-700 mb-4">{error}</p>
-            <div className="text-sm text-red-600">
-              <p>Please ensure your .env file contains:</p>
-              <pre className="mt-2 bg-red-100 p-2 rounded text-xs">
-                VITE_SUPABASE_URL=your_supabase_project_url<br/>
-                VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-              </pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (useFallback) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
-        <div className="max-w-md w-full">
-          <div className="text-center mb-8">
-            <img src="/logo.svg" alt="QiAlly" className="h-12 w-12 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900">
-              {isSignUp ? 'Create your account' : 'Sign in to your account'}
-            </h2>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <form onSubmit={handleFallbackSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              {authError && (
-                <div className="rounded-md bg-red-50 p-4">
-                  <div className="text-sm text-red-700">{authError}</div>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {loading ? 'Loading...' : (isSignUp ? 'Create account' : 'Sign in')}
-              </button>
-            </form>
-
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                className="text-sm text-blue-600 hover:text-blue-500"
-                onClick={() => {
-                  setIsSignUp(!isSignUp)
-                  setAuthError('')
-                }}
-              >
-                {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -170,44 +39,114 @@ export default function Login() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <img src="/logo.svg" alt="QiAlly" className="h-12 w-12 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900">Sign in to QiAlly</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {isSignUp ? 'Create your account' : 'Sign in to your account'}
+          </h2>
+          <p className="text-gray-600 mt-2">
+            {isSignUp ? 'Get started with QiAlly' : 'Welcome back to QiAlly'}
+          </p>
+          {testMode && (
+            <div className="mt-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium inline-block">
+              🧪 Test Mode Active
+            </div>
+          )}
         </div>
         
         <div className="bg-white rounded-lg shadow-sm border p-6">
-          <Auth 
-            supabaseClient={supabase} 
-            appearance={{ 
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: '#3b82f6',
-                    brandAccent: '#1d4ed8',
-                  }
-                }
-              }
-            }}
-            providers={[]}
-            redirectTo={window.location.origin + '/client'}
-            showLinks={true}
-            view="sign_in"
-            onError={(error) => {
-              console.error('Auth UI Error:', error)
-              setAuthError(error.message)
-            }}
-          />
-          
-          {authError && (
-            <div className="mt-4 rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-700 mb-2">{authError}</div>
-              <button
-                onClick={() => setUseFallback(true)}
-                className="text-sm text-blue-600 hover:text-blue-500"
-              >
-                Use alternative login form
-              </button>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your email"
+              />
             </div>
-          )}
+            
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                autoComplete={isSignUp ? "new-password" : "current-password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your password"
+              />
+              {testMode && (
+                <p className="mt-1 text-xs text-gray-500">Any password works in test mode</p>
+              )}
+            </div>
+
+            {error && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="text-sm text-red-700">{error}</div>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {isSignUp ? 'Creating account...' : 'Signing in...'}
+                </div>
+              ) : (
+                isSignUp ? 'Create account' : 'Sign in'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              className="text-sm text-blue-600 hover:text-blue-500"
+              onClick={() => {
+                setIsSignUp(!isSignUp)
+                setError('')
+              }}
+            >
+              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+            </button>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="text-center">
+              <p className="text-xs text-gray-500 mb-3">🧪 Test Accounts (Any password):</p>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">👑 Admin:</span>
+                  <span className="font-mono text-gray-800">admin@qially.me</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">👑 Admin:</span>
+                  <span className="font-mono text-gray-800">crice4485@gmail.com</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">👤 Client:</span>
+                  <span className="font-mono text-gray-800">info@qially.me</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">👤 Client:</span>
+                  <span className="font-mono text-gray-800">client1@email.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
