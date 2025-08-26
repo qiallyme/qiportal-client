@@ -4,10 +4,16 @@ import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Client from './pages/Client.jsx';
+import Projects from './pages/Projects.jsx';
+import Messages from './pages/Messages.jsx';
+import Settings from './pages/Settings.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { useUser } from './context/UserContext';
 
 export default function App() {
+  const { email, role } = useUser();
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -18,10 +24,40 @@ export default function App() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#what-we-offer">Services</a>
-          <a href="#outcomes">Outcomes</a>
-          <a href="#contact">Contact</a>
-          <Link className="btn btn-ghost" to="/login">Login</Link>
+          {email ? (
+            <>
+              <Link to="/client" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Dashboard
+              </Link>
+              <Link to="/projects" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Projects
+              </Link>
+              <Link to="/messages" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Messages
+              </Link>
+              <Link to="/settings" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Settings
+              </Link>
+              {role === "admin" && (
+                <Link to="/admin" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  Admin
+                </Link>
+              )}
+            </>
+          ) : (
+            <>
+              <a href="#what-we-offer">Services</a>
+              <a href="#outcomes">Outcomes</a>
+              <a href="#contact">Contact</a>
+            </>
+          )}
+          {email ? (
+            <Link to="/logout" className="btn btn-ghost">
+              Logout
+            </Link>
+          ) : (
+            <Link className="btn btn-ghost" to="/login">Login</Link>
+          )}
         </nav>
       </header>
 
@@ -38,6 +74,33 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Client />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/projects" 
+            element={
+              <ProtectedRoute>
+                <Projects />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/messages" 
+            element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             } 
           />
