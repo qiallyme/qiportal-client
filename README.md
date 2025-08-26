@@ -5,11 +5,11 @@
 [![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react&logoColor=white)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1.2-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4.17-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Cloudflare](https://img.shields.io/badge/Auth-Cloudflare%20Access-f38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/cloudflare-one/identity/users/)
+[![Supabase](https://img.shields.io/badge/Auth-Supabase-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/auth)
 
 ## 🚀 Overview
 
-QiAlly Portal is a modern client portal and business operations platform that helps small teams transform their operational chaos into streamlined, breathing systems. Built with React and powered by Cloudflare's secure infrastructure, it provides role-based access to business intelligence, project management, and operational tools.
+QiAlly Portal is a modern client portal and business operations platform that helps small teams transform their operational chaos into streamlined, breathing systems. Built with React and powered by Supabase's secure infrastructure, it provides role-based access to business intelligence, project management, and operational tools.
 
 ### 🎯 Mission
 **"Systems That Breathe"** — We believe business systems should be living, adaptive, and effortless to use. The QiAlly Portal embodies this philosophy by providing intuitive interfaces that grow with your business.
@@ -24,7 +24,7 @@ QiAlly Portal is a modern client portal and business operations platform that he
 - **Contact Integration**: Direct email integration for inquiries
 
 ### 🔐 **Secure Authentication**
-- **Cloudflare Access Integration**: Enterprise-grade security without the complexity
+- **Supabase Auth Integration**: Built-in authentication with email/password
 - **JWT Token Management**: Secure session handling with automatic token validation
 - **Role-Based Access**: Granular permissions for different user types
 
@@ -57,8 +57,8 @@ QiAlly Portal is a modern client portal and business operations platform that he
 - **TailwindCSS 3.4.17** - Utility-first CSS framework
 
 ### **Authentication & Security**
-- **Cloudflare Access** - Zero Trust security model
-- **JWT Tokens** - Stateless authentication
+- **Supabase Auth** - Built-in authentication with email/password
+- **JWT Tokens** - Secure session management
 - **Protected Routes** - Role-based access control
 
 ### **Development Tools**
@@ -85,9 +85,9 @@ qiportal-client/
 │   ├── utils/              # Utility functions
 │   │   └── auth.js             # Authentication helpers
 │   └── lib/                # API and external integrations
-├── functions/              # Cloudflare Functions
-│   ├── api/                # API endpoints
-│   └── _middleware.ts      # Request middleware
+├── lib/                    # External integrations
+│   ├── supabase.js         # Supabase client configuration
+│   └── api.js              # API utilities
 ├── public/                 # Static assets
 └── scripts/                # Development utilities
 ```
@@ -97,7 +97,7 @@ qiportal-client/
 ### Prerequisites
 - **Node.js** (v18 or higher)
 - **npm** or **yarn**
-- **Cloudflare account** (for authentication)
+- **Supabase account** (for authentication and database)
 
 ### Installation
 
@@ -131,13 +131,22 @@ npm run lint     # Run ESLint
 
 ## 🌐 Deployment
 
-This application is optimized for deployment on **Cloudflare Pages** with seamless integration to Cloudflare Access for authentication.
+This application is optimized for deployment on **Cloudflare Pages** with seamless integration to Supabase for authentication and data storage.
+
+### Environment Setup
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Get your project URL and anon key from the project settings
+3. Create a `.env` file with:
+   ```
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
 ### Cloudflare Pages Deployment
 1. Connect your GitHub repository to Cloudflare Pages
 2. Set build command: `npm run build`
 3. Set output directory: `dist`
-4. Configure Cloudflare Access for authentication
+4. Add environment variables in Cloudflare Pages settings
 
 ## 🎨 Design System
 

@@ -6,7 +6,15 @@ import { useUser } from "../context/UserContext";
  * @returns {JSX.Element} Header component with navigation links and user info
  */
 export default function Header() {
-  const { email, role } = useUser();
+  const { email, role, signOut } = useUser();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <header className="w-full border-b border-gray-200 bg-white/80 backdrop-blur">
@@ -55,20 +63,20 @@ export default function Header() {
                   <p className="text-gray-500 capitalize leading-tight">{role}</p>
                 </div>
               </div>
-              <Link
-                to="/logout"
+              <button
+                onClick={handleLogout}
                 className="inline-flex items-center rounded-lg px-3 py-2 text-sm bg-gray-900 text-white hover:opacity-90"
               >
                 Logout
-              </Link>
+              </button>
             </>
           ) : (
-            <a
-              href="https://portal.qially.com/client"
+            <Link
+              to="/login"
               className="inline-flex items-center rounded-lg px-3 py-2 text-sm bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90"
             >
               Sign In
-            </a>
+            </Link>
           )}
         </div>
       </div>
