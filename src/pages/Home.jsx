@@ -47,7 +47,7 @@ function Home() {
           <div className="max-w-4xl mx-auto">
             {/* Logo */}
             <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl2 flex items-center justify-center mx-auto mb-8 p-4">
-              <img src="/logo.svg" alt="QiAlly Logo" className="w-full h-full object-contain" />
+                              <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly Logo" className="w-full h-full object-contain" />
             </div>
             
             {/* Main Headline */}

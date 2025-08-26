@@ -21,7 +21,7 @@ export default function Header() {
       <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
         {/* Brand */}
         <Link to="/" className="flex items-center gap-2">
-          <img src="/logo.svg" alt="QiAlly" className="h-7 w-7" />
+                        <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly" className="h-7 w-7" />
           <span className="font-semibold">QiAlly</span>
         </Link>
 

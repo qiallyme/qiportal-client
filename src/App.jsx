@@ -19,7 +19,7 @@ export default function App() {
       {/* Header */}
       <header className="container py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-semibold">
-          <img src="/logo.svg" alt="QiAlly Logo" className="w-8 h-8" />
+                        <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly Logo" className="w-8 h-8" />
           QiAlly
         </Link>
 

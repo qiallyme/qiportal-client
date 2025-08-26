@@ -38,7 +38,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <img src="/logo.svg" alt="QiAlly" className="h-12 w-12 mx-auto mb-4" />
+          <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly" className="h-12 w-12 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900">
             {isSignUp ? 'Create your account' : 'Sign in to your account'}
           </h2>
