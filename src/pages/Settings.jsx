@@ -47,7 +47,7 @@ export default function Settings() {
 
       if (data) {
         setProfile({
-          full_name: data.full_name || email?.split('@')[0] || '',
+          full_name: data.full_name || (email ? email.split('@')[0] : ''),
           preferred_locale: data.preferred_locale || 'en',
           timezone: data.timezone || 'America/New_York',
           email_opt_in: data.email_opt_in ?? true,
@@ -56,7 +56,7 @@ export default function Settings() {
       } else {
         // Set default values if no profile exists
         setProfile({
-          full_name: email?.split('@')[0] || '',
+          full_name: email ? email.split('@')[0] : '',
           preferred_locale: 'en',
           timezone: 'America/New_York',
           email_opt_in: true,

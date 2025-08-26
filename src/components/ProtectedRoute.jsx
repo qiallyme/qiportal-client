@@ -1,7 +1,7 @@
 // src/components/ProtectedRoute.jsx
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { supabase } from '../lib/supabase';
 
 export default function ProtectedRoute({ children, roleRequired }) {
   const { email, role, hydrated } = useUser();
@@ -37,8 +37,7 @@ export default function ProtectedRoute({ children, roleRequired }) {
 
   // Redirect to login if not authenticated
   if (!isAuthorized) {
-    window.location.href = '/login';
-    return null;
+    return <Navigate to="/login" replace />;
   }
 
   return children;

@@ -1,4 +1,4 @@
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Logout from './pages/Logout.jsx';
@@ -9,7 +9,9 @@ import Messages from './pages/Messages.jsx';
 import Settings from './pages/Settings.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import Header from './components/Header.jsx';
 import { useUser } from './context/UserContext';
+import MindMap from './pages/MindMap.jsx';
 
 export default function App() {
   const { email, role } = useUser();
@@ -17,49 +19,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="container py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-semibold">
-                        <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly Logo" className="w-8 h-8" />
-          QiAlly
-        </Link>
-
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          {email ? (
-            <>
-              <Link to="/client" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Dashboard
-              </Link>
-              <Link to="/projects" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Projects
-              </Link>
-              <Link to="/messages" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Messages
-              </Link>
-              <Link to="/settings" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Settings
-              </Link>
-              {role === "admin" && (
-                <Link to="/admin" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  Admin
-                </Link>
-              )}
-            </>
-          ) : (
-            <>
-              <a href="#what-we-offer">Services</a>
-              <a href="#outcomes">Outcomes</a>
-              <a href="#contact">Contact</a>
-            </>
-          )}
-          {email ? (
-            <Link to="/logout" className="btn btn-ghost">
-              Logout
-            </Link>
-          ) : (
-            <Link className="btn btn-ghost" to="/login">Login</Link>
-          )}
-        </nav>
-      </header>
+      <Header />
 
       {/* Routes */}
       <main className="flex-1 overflow-auto">
@@ -67,7 +27,14 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-
+          <Route 
+            path="/mindmap" 
+            element={
+              <ProtectedRoute>
+                <MindMap />
+              </ProtectedRoute>
+            } 
+          />
           {/* Protected routes */}
           <Route 
             path="/client" 

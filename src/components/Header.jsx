@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 /**
@@ -7,12 +7,15 @@ import { useUser } from "../context/UserContext";
  */
 export default function Header() {
   const { email, role, signOut } = useUser();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await signOut();
+      navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
+      navigate('/');
     }
   };
 
@@ -30,16 +33,31 @@ export default function Header() {
           <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">
             Home
           </Link>
-          {email && (
+          {email ? (
             <>
               <Link to="/client" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Dashboard
+              </Link>
+              <Link to="/projects" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Projects
+              </Link>
+              <Link to="/messages" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Messages
+              </Link>
+              <Link to="/settings" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Settings
               </Link>
               {role === "admin" && (
                 <Link to="/admin" className="text-gray-600 hover:text-gray-900 transition-colors">
                   Admin
                 </Link>
               )}
+            </>
+          ) : (
+            <>
+              <a href="#what-we-offer">Services</a>
+              <a href="#outcomes">Outcomes</a>
+              <a href="#contact">Contact</a>
             </>
           )}
         </nav>

@@ -131,7 +131,13 @@ export const UserProvider = ({ children }) => {
       return { error: null }
     }
 
+    // Real Supabase sign out
     const { error } = await supabase.auth.signOut()
+    
+    // Always update local state regardless of Supabase response
+    setEmail(null)
+    setRole('guest')
+    
     return { error }
   }
 
