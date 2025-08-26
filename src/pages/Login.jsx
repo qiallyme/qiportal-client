@@ -50,6 +50,12 @@ export default function Login() {
               🧪 Test Mode Active
             </div>
           )}
+          {/* Debug info - remove in production */}
+          <div className="mt-2 text-xs text-gray-500">
+            Supabase URL: {import.meta.env.VITE_SUPABASE_URL ? '✅ Set' : '❌ Missing'}
+            <br />
+            Supabase Key: {import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing'}
+          </div>
         </div>
         
         <div className="bg-white rounded-lg shadow-sm border p-6">
