@@ -110,7 +110,7 @@ export default function Login() {
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   {isSignUp ? 'Creating account...' : 'Signing in...'}
-                </div>
+        </div>
               ) : (
                 isSignUp ? 'Create account' : 'Sign in'
               )}
@@ -118,16 +118,16 @@ export default function Login() {
           </form>
 
           <div className="mt-6 text-center">
-            <button
+        <button
               type="button"
               className="text-sm text-blue-600 hover:text-blue-500"
-              onClick={() => {
+          onClick={() => {
                 setIsSignUp(!isSignUp)
                 setError('')
-              }}
-            >
+          }}
+        >
               {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-            </button>
+        </button>
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-200">

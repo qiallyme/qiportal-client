@@ -212,7 +212,7 @@ export default function Client() {
             />
           </div>
         </div>
-      </div>
+        </div>
 
       <div className="bg-white rounded-xl p-6 shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Preferences</h3>
@@ -256,7 +256,7 @@ export default function Client() {
             </div>
           </div>
         </div>
-      </div>
+          </div>
 
       {/* Navigation Tabs */}
       <div className="bg-white border-b">
@@ -284,7 +284,7 @@ export default function Client() {
             ))}
           </nav>
         </div>
-      </div>
+        </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
