@@ -8,6 +8,10 @@ import Projects from './pages/Projects.jsx';
 import Messages from './pages/Messages.jsx';
 import Settings from './pages/Settings.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
+import KB from './pages/KB.jsx';
+import Calls from './pages/Calls.jsx';
+import Billing from './pages/Billing.jsx';
+import Support from './pages/Support.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './components/Header.jsx';
 import { useUser } from './context/UserContext';
@@ -68,6 +72,42 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/kb" 
+            element={
+              <ProtectedRoute>
+                <KB />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/calls" 
+            element={
+              <ProtectedRoute>
+                <Calls />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/billing" 
+            element={
+              <ProtectedRoute>
+                <Billing />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/support" 
+            element={
+              <ProtectedRoute>
+                <Support />
               </ProtectedRoute>
             } 
           />

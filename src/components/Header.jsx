@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import NotificationCenter from "./NotificationCenter";
 
 /**
  * Header component with navigation and user authentication status
@@ -44,6 +45,18 @@ export default function Header() {
               <Link to="/messages" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Messages
               </Link>
+              <Link to="/kb" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Knowledge Base
+              </Link>
+              <Link to="/calls" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Calls
+              </Link>
+              <Link to="/billing" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Billing
+              </Link>
+              <Link to="/support" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Support
+              </Link>
               <Link to="/settings" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Settings
               </Link>
@@ -66,6 +79,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           {email ? (
             <>
+              <NotificationCenter />
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 grid place-items-center">
                   <svg className="w-3 h-3 text-white" viewBox="0 0 20 20" fill="currentColor">
