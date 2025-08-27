@@ -81,15 +81,15 @@ export default function NotificationCenter() {
       {/* Notification Bell */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+        className="relative p-3 glass-button hover:glow-blue transition-all duration-300"
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM10.5 3.75a6 6 0 00-6 6v3.75a6 6 0 01-6 6h.75a6 6 0 006 6h3.75a6 6 0 006-6v-3.75a6 6 0 00-6-6h-3.75z" />
         </svg>
         
         {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center glow-red">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -97,14 +97,14 @@ export default function NotificationCenter() {
 
       {/* Notification Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-          <div className="p-4 border-b border-gray-200">
+        <div className="absolute right-0 mt-3 w-80 glass-modal z-50">
+          <div className="p-4 border-b border-white/20">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+              <h3 className="text-lg font-semibold text-white">Notifications</h3>
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-blue-600 hover:text-blue-800"
+                  className="text-sm text-blue-300 hover:text-blue-200 transition-colors"
                 >
                   Mark all as read
                 </button>
@@ -114,16 +114,16 @@ export default function NotificationCenter() {
 
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="p-4 text-center text-gray-500">
+              <div className="p-4 text-center text-white/60">
                 No notifications
               </div>
             ) : (
-              <div className="divide-y divide-gray-200">
+              <div className="divide-y divide-white/10">
                 {notifications.map((notification) => (
                   <div
                     key={notification.id}
-                    className={`p-4 hover:bg-gray-50 transition-colors cursor-pointer ${
-                      !notification.read ? 'bg-blue-50' : ''
+                    className={`glass-notification cursor-pointer ${
+                      !notification.read ? 'bg-blue-500/10 border-blue-400/30' : ''
                     }`}
                     onClick={() => markAsRead(notification.id)}
                   >
@@ -133,17 +133,17 @@ export default function NotificationCenter() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-white">
                             {notification.title}
                           </p>
                           {!notification.read && (
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <div className="w-2 h-2 bg-blue-400 rounded-full glow-blue"></div>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-white/80 mt-1">
                           {notification.message}
                         </p>
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs text-white/60 mt-2">
                           {notification.time}
                         </p>
                       </div>
@@ -155,10 +155,10 @@ export default function NotificationCenter() {
           </div>
 
           {notifications.length > 0 && (
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-white/20">
               <button
                 onClick={() => setIsOpen(false)}
-                className="w-full text-sm text-blue-600 hover:text-blue-800"
+                className="w-full text-sm text-blue-300 hover:text-blue-200 transition-colors"
               >
                 View all notifications
               </button>
@@ -170,7 +170,7 @@ export default function NotificationCenter() {
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40"
+          className="glass-overlay fixed inset-0 z-40"
           onClick={() => setIsOpen(false)}
         />
       )}

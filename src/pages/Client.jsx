@@ -20,49 +20,49 @@ export default function Client() {
   const renderOverview = () => (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
-        <h2 className="text-2xl font-bold mb-2">Welcome back, {email?.split('@')[0]}!</h2>
-        <p className="opacity-90">Here's what's happening with your projects today.</p>
+      <div className="glass-card p-6 text-center glow-blue">
+        <h2 className="text-3xl font-bold text-white mb-2">Welcome back, {email?.split('@')[0]}! 👋</h2>
+        <p className="text-white/80 text-lg">Here's what's happening with your projects today.</p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm border">
+        <div className="glass-card p-6 glow-blue">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Active Projects</p>
-              <p className="text-2xl font-bold text-gray-900">3</p>
+              <p className="text-sm text-white/70">Active Projects</p>
+              <p className="text-3xl font-bold text-white">3</p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center glow-blue">
+              <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border">
+        <div className="glass-card p-6 glow-green">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Tasks Due This Week</p>
-              <p className="text-2xl font-bold text-gray-900">5</p>
+              <p className="text-sm text-white/70">Tasks Due This Week</p>
+              <p className="text-3xl font-bold text-white">5</p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center glow-green">
+              <svg className="w-6 h-6 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border">
+        <div className="glass-card p-6 glow-purple">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Messages</p>
-              <p className="text-2xl font-bold text-gray-900">2</p>
+              <p className="text-sm text-white/70">Messages</p>
+              <p className="text-3xl font-bold text-white">2</p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center glow-purple">
+              <svg className="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
@@ -71,19 +71,21 @@ export default function Client() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+      <div className="glass-card p-6">
+        <h3 className="text-xl font-semibold text-white mb-6">Recent Activity</h3>
         <div className="space-y-4">
           {recentActivity.map((activity) => (
-            <div key={activity.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900">{activity.message}</p>
-                <p className="text-xs text-gray-500">{activity.time}</p>
+            <div key={activity.id} className="glass-notification">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center glow-blue">
+                  <svg className="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-white">{activity.message}</p>
+                  <p className="text-xs text-white/60">{activity.time}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -241,56 +243,54 @@ export default function Client() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen animated-bg">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="glass-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Client Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {email}</p>
+              <h1 className="text-3xl font-bold text-white">Client Dashboard</h1>
+              <p className="text-white/80">Welcome back, {email}</p>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="btn btn-ghost">Help</button>
-              <button className="btn btn-primary">Contact Support</button>
+              <button className="glass-button glow-blue">Help</button>
+              <button className="glass-button-primary glow-green">Contact Support</button>
             </div>
           </div>
         </div>
-          </div>
+      </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white border-b">
+      <div className="glass-nav">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-8">
             {[
-              { id: 'overview', name: 'Overview', icon: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z' },
-              { id: 'projects', name: 'Projects', icon: 'M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-              { id: 'messages', name: 'Messages', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' }
+              { id: 'overview', name: 'Overview', icon: '📊' },
+              { id: 'projects', name: 'Projects', icon: '📁' },
+              { id: 'messages', name: 'Messages', icon: '💬' }
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`glass-tab ${activeTab === tab.id ? 'active' : ''}`}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
-                </svg>
-                <span>{tab.name}</span>
+                <span className="flex items-center space-x-2">
+                  <span>{tab.icon}</span>
+                  <span>{tab.name}</span>
+                </span>
               </button>
             ))}
           </nav>
         </div>
-        </div>
+      </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'overview' && renderOverview()}
-        {activeTab === 'projects' && renderProjects()}
-        {activeTab === 'messages' && renderMessages()}
+        <div className="glass-card p-8">
+          {activeTab === 'overview' && renderOverview()}
+          {activeTab === 'projects' && renderProjects()}
+          {activeTab === 'messages' && renderMessages()}
+        </div>
       </div>
     </div>
   );
