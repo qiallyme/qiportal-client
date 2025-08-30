@@ -2,19 +2,19 @@ import { supabase } from '../lib/supabase';
 
 /**
  * Get user email from Supabase session
- * @returns {string|null} User email or null if not authenticated
+ * @returns {Promise<string|null>} User email or null if not authenticated
  */
-export function getUserEmailFromSession() {
-  const session = supabase.auth.getSession();
+export async function getUserEmailFromSession() {
+  const { data: { session } } = await supabase.auth.getSession();
   return session?.user?.email || null;
 }
 
 /**
  * Check if user is authenticated
- * @returns {boolean} True if user is authenticated
+ * @returns {Promise<boolean>} True if user is authenticated
  */
-export function isAuthenticated() {
-  const session = supabase.auth.getSession();
+export async function isAuthenticated() {
+  const { data: { session } } = await supabase.auth.getSession();
   return !!session?.user;
 }
 
@@ -32,4 +32,34 @@ export function getUserRole(email) {
   if (admins.includes(email)) return "admin";
   if (clients.includes(email)) return "client";
   return "guest";
+}
+
+/**
+ * Force clear all authentication data
+ * This is a nuclear option to clear all auth state
+ */
+export function forceClearAuth() {
+  // Clear Supabase session
+  localStorage.removeItem('supabase.auth.token');
+  sessionStorage.removeItem('supabase.auth.token');
+  
+  // Clear any other potential auth storage
+  localStorage.removeItem('sb-vwqkhjnkummwtvfxgqml-auth-token');
+  sessionStorage.removeItem('sb-vwqkhjnkummwtvfxgqml-auth-token');
+  
+  // Clear all localStorage items that might contain auth data
+  Object.keys(localStorage).forEach(key => {
+    if (key.includes('supabase') || key.includes('auth')) {
+      localStorage.removeItem(key);
+    }
+  });
+  
+  // Clear all sessionStorage items that might contain auth data
+  Object.keys(sessionStorage).forEach(key => {
+    if (key.includes('supabase') || key.includes('auth')) {
+      sessionStorage.removeItem(key);
+    }
+  });
+  
+  console.log('Force cleared all authentication data');
 }

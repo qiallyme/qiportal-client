@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base - QiAlly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/fuse.js@7.1.0/dist/fuse.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold mb-2">Knowledge Base</h1>
+            <p class="text-gray-400">QiAlly</p>
+        </header>
+        
+        <div class="mb-6">
+            <input 
+                type="text" 
+                id="search" 
+                placeholder="Search documents..." 
+                class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
+            >
+        </div>
+        
+        <div id="documents" class="grid gap-4">
+            
+                <div class="document-item bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                    <a href="getting-started.html" class="block">
+                        <h3 class="text-lg font-semibold mb-2">Getting Started</h3>
+                        <p class="text-gray-400 text-sm mb-2">Learn how to get started with QiAlly platform</p>
+                        <div class="flex gap-2">
+                            <span class="bg-blue-600 px-2 py-1 rounded text-xs">#guide</span><span class="bg-blue-600 px-2 py-1 rounded text-xs">#onboarding</span><span class="bg-blue-600 px-2 py-1 rounded text-xs">#setup</span>
+                        </div>
+                    </a>
+                </div>
+            
+                <div class="document-item bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                    <a href="process-optimization.html" class="block">
+                        <h3 class="text-lg font-semibold mb-2">Process Optimization Guide</h3>
+                        <p class="text-gray-400 text-sm mb-2">Learn how to optimize your business processes for maximum efficiency</p>
+                        <div class="flex gap-2">
+                            <span class="bg-blue-600 px-2 py-1 rounded text-xs">#process</span><span class="bg-blue-600 px-2 py-1 rounded text-xs">#optimization</span><span class="bg-blue-600 px-2 py-1 rounded text-xs">#workflow</span><span class="bg-blue-600 px-2 py-1 rounded text-xs">#efficiency</span>
+                        </div>
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        const documents = [{"path":"getting-started","title":"Getting Started","tags":["guide","onboarding","setup"],"description":"Learn how to get started with QiAlly platform","date":"2024-01-15T00:00:00.000Z","content":"\r\n# Getting Started with QiAlly\r\n\r\nWelcome to QiAlly! This guide will help you get started with our platform and understand the key features available to you.\r\n\r\n## What is QiAlly?\r\n\r\nQiAlly is a comprehensive business intelligence and process optimization platform designed to help organizations:\r\n\r\n- **Analyze** their business processes\r\n- **Optimize** workflows and efficiency\r\n- **Monitor** key performance indicators\r\n- **Collaborate** with team members\r\n- **Access** knowledge and resources\r\n\r\n## Key Features\r\n\r\n### 1. Process Mapping\r\nCreate visual representations of your business processes using our intuitive mind mapping tools.\r\n\r\n### 2. Knowledge Base\r\nAccess comprehensive documentation, guides, and best practices specific to your organization.\r\n\r\n### 3. Project Management\r\nTrack projects, assign tasks, and monitor progress in real-time.\r\n\r\n### 4. Communication Hub\r\nCentralized messaging and collaboration tools for your team.\r\n\r\n### 5. Analytics Dashboard\r\nMonitor KPIs and performance metrics with customizable dashboards.\r\n\r\n## Getting Started Steps\r\n\r\n### Step 1: Complete Your Profile\r\n1. Navigate to **Settings** in the main menu\r\n2. Update your profile information\r\n3. Set your preferences and notification settings\r\n\r\n### Step 2: Explore Your Dashboard\r\n1. Review the main dashboard overview\r\n2. Familiarize yourself with the navigation menu\r\n3. Check out the quick access widgets\r\n\r\n### Step 3: Access Knowledge Base\r\n1. Click on **Knowledge Base** in the main menu\r\n2. Browse available documentation\r\n3. Use the search function to find specific topics\r\n\r\n### Step 4: Create Your First Process Map\r\n1. Navigate to **Mind Map** in the main menu\r\n2. Start with a simple process\r\n3. Add nodes and connections\r\n4. Save your work\r\n\r\n## Best Practices\r\n\r\n### Security\r\n- Always log out when using shared computers\r\n- Use strong, unique passwords\r\n- Enable two-factor authentication if available\r\n\r\n### Organization\r\n- Use consistent naming conventions\r\n- Tag your content appropriately\r\n- Keep documentation up to date\r\n\r\n### Collaboration\r\n- Share relevant information with team members\r\n- Use the messaging system for quick questions\r\n- Contribute to the knowledge base\r\n\r\n## Support\r\n\r\nIf you need help or have questions:\r\n\r\n1. **Check the Knowledge Base** - Most questions are answered here\r\n2. **Contact Support** - Use the support page for technical issues\r\n3. **Ask Your Team** - Use the messaging system for quick questions\r\n\r\n## Next Steps\r\n\r\nOnce you're comfortable with the basics:\r\n\r\n1. **Explore Advanced Features** - Dive deeper into analytics and reporting\r\n2. **Customize Your Workspace** - Set up dashboards and preferences\r\n3. **Invite Team Members** - Collaborate with your colleagues\r\n4. **Create Custom Processes** - Map your specific workflows\r\n\r\n---\r\n\r\n*Need help? Contact support at support@qially.me*\r\n","clientSlug":"zy"},{"path":"process-optimization","title":"Process Optimization Guide","tags":["process","optimization","workflow","efficiency"],"description":"Learn how to optimize your business processes for maximum efficiency","date":"2024-01-16T00:00:00.000Z","content":"\r\n# Process Optimization Guide\r\n\r\nThis comprehensive guide will help you understand and implement process optimization strategies to improve your organization's efficiency and productivity.\r\n\r\n## What is Process Optimization?\r\n\r\nProcess optimization is the systematic approach to improving business processes by:\r\n\r\n- **Identifying** inefficiencies and bottlenecks\r\n- **Analyzing** current workflows\r\n- **Implementing** improvements\r\n- **Monitoring** results\r\n- **Iterating** for continuous improvement\r\n\r\n## The Optimization Framework\r\n\r\n### 1. Assessment Phase\r\n\r\n#### Map Current Processes\r\n- Document existing workflows\r\n- Identify all stakeholders\r\n- Map decision points and handoffs\r\n- Measure current performance metrics\r\n\r\n#### Identify Pain Points\r\n- Look for bottlenecks and delays\r\n- Identify redundant steps\r\n- Find communication gaps\r\n- Spot quality issues\r\n\r\n### 2. Analysis Phase\r\n\r\n#### Root Cause Analysis\r\nUse the 5 Whys technique:\r\n1. Why is this process slow?\r\n2. Why does that happen?\r\n3. Why does that occur?\r\n4. Why is that the case?\r\n5. Why is that happening?\r\n\r\n#### Data Collection\r\n- Gather performance metrics\r\n- Survey stakeholders\r\n- Analyze time logs\r\n- Review error rates\r\n\r\n### 3. Design Phase\r\n\r\n#### Brainstorm Solutions\r\n- Eliminate unnecessary steps\r\n- Automate repetitive tasks\r\n- Standardize procedures\r\n- Improve communication channels\r\n\r\n#### Create New Process Maps\r\n- Design optimized workflows\r\n- Define clear responsibilities\r\n- Establish checkpoints\r\n- Plan for contingencies\r\n\r\n### 4. Implementation Phase\r\n\r\n#### Pilot Testing\r\n- Start with a small group\r\n- Test the new process\r\n- Gather feedback\r\n- Make adjustments\r\n\r\n#### Full Rollout\r\n- Train all stakeholders\r\n- Implement new procedures\r\n- Monitor closely\r\n- Provide support\r\n\r\n### 5. Monitoring Phase\r\n\r\n#### Track Performance\r\n- Measure key metrics\r\n- Compare before/after\r\n- Identify new issues\r\n- Celebrate improvements\r\n\r\n#### Continuous Improvement\r\n- Regular process reviews\r\n- Stakeholder feedback\r\n- Technology updates\r\n- Best practice adoption\r\n\r\n## Common Optimization Techniques\r\n\r\n### 1. Lean Methodology\r\n**Principle**: Eliminate waste and maximize value\r\n\r\n**Techniques**:\r\n- Value Stream Mapping\r\n- 5S Methodology (Sort, Set, Shine, Standardize, Sustain)\r\n- Just-in-Time (JIT) processes\r\n- Kaizen (continuous improvement)\r\n\r\n### 2. Six Sigma\r\n**Principle**: Reduce defects and variation\r\n\r\n**Techniques**:\r\n- DMAIC (Define, Measure, Analyze, Improve, Control)\r\n- Statistical process control\r\n- Root cause analysis\r\n- Process capability analysis\r\n\r\n### 3. Business Process Reengineering\r\n**Principle**: Radical redesign of processes\r\n\r\n**Techniques**:\r\n- Process mapping\r\n- Gap analysis\r\n- Benchmarking\r\n- Technology integration\r\n\r\n## Technology Tools for Optimization\r\n\r\n### Process Mapping Tools\r\n- **QiAlly Mind Map**: Visual process mapping\r\n- **Lucidchart**: Professional diagrams\r\n- **Draw.io**: Free diagramming tool\r\n\r\n### Automation Tools\r\n- **Zapier**: Workflow automation\r\n- **Microsoft Power Automate**: Business process automation\r\n- **IFTTT**: Simple automation rules\r\n\r\n### Analytics Tools\r\n- **Google Analytics**: Web process tracking\r\n- **Mixpanel**: User behavior analysis\r\n- **Hotjar**: User experience insights\r\n\r\n## Best Practices\r\n\r\n### 1. Start Small\r\n- Focus on one process at a time\r\n- Choose high-impact, low-risk improvements\r\n- Build momentum with quick wins\r\n\r\n### 2. Involve Stakeholders\r\n- Get input from all affected parties\r\n- Communicate changes clearly\r\n- Provide training and support\r\n\r\n### 3. Measure Everything\r\n- Define clear success metrics\r\n- Track progress regularly\r\n- Use data to make decisions\r\n\r\n### 4. Be Patient\r\n- Process improvement takes time\r\n- Expect resistance to change\r\n- Celebrate incremental progress\r\n\r\n### 5. Stay Flexible\r\n- Be willing to adjust plans\r\n- Learn from failures\r\n- Adapt to new circumstances\r\n\r\n## Common Pitfalls to Avoid\r\n\r\n### 1. Over-Engineering\r\n- Don't make processes more complex than necessary\r\n- Focus on simplicity and clarity\r\n- Avoid unnecessary bureaucracy\r\n\r\n### 2. Ignoring People\r\n- Technology alone won't solve problems\r\n- Consider human factors and emotions\r\n- Provide adequate training and support\r\n\r\n### 3. Skipping Measurement\r\n- Without metrics, you can't prove improvement\r\n- Establish baseline measurements\r\n- Track progress consistently\r\n\r\n### 4. Rushing Implementation\r\n- Take time to plan and test\r\n- Don't skip the pilot phase\r\n- Allow time for adoption\r\n\r\n## Success Metrics\r\n\r\n### Efficiency Metrics\r\n- **Cycle Time**: Time to complete a process\r\n- **Throughput**: Number of items processed per time period\r\n- **Utilization**: Percentage of available capacity used\r\n\r\n### Quality Metrics\r\n- **Error Rate**: Percentage of defects or errors\r\n- **Rework Rate**: Percentage of work that needs to be redone\r\n- **Customer Satisfaction**: Feedback from process users\r\n\r\n### Cost Metrics\r\n- **Cost per Transaction**: Total cost divided by number of transactions\r\n- **Labor Cost**: Time and effort required\r\n- **Resource Utilization**: Efficient use of materials and equipment\r\n\r\n## Case Study: Order Processing Optimization\r\n\r\n### Before Optimization\r\n- **Cycle Time**: 48 hours\r\n- **Error Rate**: 15%\r\n- **Customer Complaints**: 25 per month\r\n- **Staff Time**: 8 hours per order\r\n\r\n### Optimization Actions\r\n1. **Automated** order entry system\r\n2. **Standardized** approval process\r\n3. **Implemented** quality checkpoints\r\n4. **Trained** staff on new procedures\r\n\r\n### After Optimization\r\n- **Cycle Time**: 12 hours (75% improvement)\r\n- **Error Rate**: 3% (80% improvement)\r\n- **Customer Complaints**: 3 per month (88% improvement)\r\n- **Staff Time**: 2 hours per order (75% improvement)\r\n\r\n## Next Steps\r\n\r\n1. **Choose a Process**: Identify one process to optimize\r\n2. **Assemble Team**: Get stakeholders involved\r\n3. **Map Current State**: Document existing workflow\r\n4. **Identify Opportunities**: Look for improvement areas\r\n5. **Design Improvements**: Create new process maps\r\n6. **Implement Changes**: Execute the optimization plan\r\n7. **Monitor Results**: Track performance metrics\r\n8. **Iterate**: Continue improving\r\n\r\n---\r\n\r\n*For more information about process optimization tools and techniques, explore our other knowledge base articles or contact our optimization specialists.*\r\n","clientSlug":"zy"}];
+        const fuse = new Fuse(documents, {
+            keys: ['title', 'description', 'tags'],
+            threshold: 0.3
+        });
+        
+        const searchInput = document.getElementById('search');
+        const documentsContainer = document.getElementById('documents');
+        
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value;
+            const results = query ? fuse.search(query).map(r => r.item) : documents;
+            
+            documentsContainer.innerHTML = results.map(doc => `
+                <div class="document-item bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                    <a href="${doc.path}.html" class="block">
+                        <h3 class="text-lg font-semibold mb-2">${doc.title}</h3>
+                        <p class="text-gray-400 text-sm mb-2">${doc.description}</p>
+                        <div class="flex gap-2">
+                            ${doc.tags.map(tag => `<span class="bg-blue-600 px-2 py-1 rounded text-xs">#${tag}</span>`).join('')}
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

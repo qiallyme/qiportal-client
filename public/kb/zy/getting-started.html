@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Knowledge Base</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/dompurify@3.0.5/dist/purify.min.js"></script>
+    <style>
+        .prose { max-width: none; }
+        .prose h1 { font-size: 2.25rem; margin-top: 0; }
+        .prose h2 { font-size: 1.875rem; }
+        .prose h3 { font-size: 1.5rem; }
+        .prose code { background-color: rgba(255,255,255,0.1); padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+        .prose pre { background-color: rgba(0,0,0,0.3); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+        .prose pre code { background-color: transparent; padding: 0; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="mb-8">
+            <a href="index.html" class="text-blue-400 hover:text-blue-300">← Back to Index</a>
+        </nav>
+        
+        <article class="prose prose-invert prose-lg">
+            <h1>Getting Started</h1>
+            <div class="flex gap-2 mb-6">
+                <span class="bg-blue-600 px-2 py-1 rounded text-sm">#guide</span><span class="bg-blue-600 px-2 py-1 rounded text-sm">#onboarding</span><span class="bg-blue-600 px-2 py-1 rounded text-sm">#setup</span>
+            </div>
+            <div id="content"></div>
+        </article>
+    </div>
+    
+    <script>
+        const content = `
+# Getting Started with QiAlly
+
+Welcome to QiAlly! This guide will help you get started with our platform and understand the key features available to you.
+
+## What is QiAlly?
+
+QiAlly is a comprehensive business intelligence and process optimization platform designed to help organizations:
+
+- **Analyze** their business processes
+- **Optimize** workflows and efficiency
+- **Monitor** key performance indicators
+- **Collaborate** with team members
+- **Access** knowledge and resources
+
+## Key Features
+
+### 1. Process Mapping
+Create visual representations of your business processes using our intuitive mind mapping tools.
+
+### 2. Knowledge Base
+Access comprehensive documentation, guides, and best practices specific to your organization.
+
+### 3. Project Management
+Track projects, assign tasks, and monitor progress in real-time.
+
+### 4. Communication Hub
+Centralized messaging and collaboration tools for your team.
+
+### 5. Analytics Dashboard
+Monitor KPIs and performance metrics with customizable dashboards.
+
+## Getting Started Steps
+
+### Step 1: Complete Your Profile
+1. Navigate to **Settings** in the main menu
+2. Update your profile information
+3. Set your preferences and notification settings
+
+### Step 2: Explore Your Dashboard
+1. Review the main dashboard overview
+2. Familiarize yourself with the navigation menu
+3. Check out the quick access widgets
+
+### Step 3: Access Knowledge Base
+1. Click on **Knowledge Base** in the main menu
+2. Browse available documentation
+3. Use the search function to find specific topics
+
+### Step 4: Create Your First Process Map
+1. Navigate to **Mind Map** in the main menu
+2. Start with a simple process
+3. Add nodes and connections
+4. Save your work
+
+## Best Practices
+
+### Security
+- Always log out when using shared computers
+- Use strong, unique passwords
+- Enable two-factor authentication if available
+
+### Organization
+- Use consistent naming conventions
+- Tag your content appropriately
+- Keep documentation up to date
+
+### Collaboration
+- Share relevant information with team members
+- Use the messaging system for quick questions
+- Contribute to the knowledge base
+
+## Support
+
+If you need help or have questions:
+
+1. **Check the Knowledge Base** - Most questions are answered here
+2. **Contact Support** - Use the support page for technical issues
+3. **Ask Your Team** - Use the messaging system for quick questions
+
+## Next Steps
+
+Once you're comfortable with the basics:
+
+1. **Explore Advanced Features** - Dive deeper into analytics and reporting
+2. **Customize Your Workspace** - Set up dashboards and preferences
+3. **Invite Team Members** - Collaborate with your colleagues
+4. **Create Custom Processes** - Map your specific workflows
+
+---
+
+*Need help? Contact support at support@qially.me*
+`;
+        const html = DOMPurify.sanitize(marked.parse(content));
+        document.getElementById('content').innerHTML = html;
+    </script>
+</body>
+</html>

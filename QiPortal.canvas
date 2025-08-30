@@ -1,0 +1,37 @@
+{
+	"nodes":[
+		{"id":"40ad737f2b40146b","type":"file","file":"2.0 Modules/2.0 Module Development Documents.md","x":-1400,"y":680,"width":400,"height":400,"color":"6"},
+		{"id":"41b993dfe165df64","type":"file","file":"1.0 Master Doc(s)/1.0 Scaffolding (Master Plan).md","x":-1400,"y":80,"width":400,"height":400,"color":"4"},
+		{"id":"43db1129141bbe28","type":"file","file":"README—Developer Onramp.md","x":-680,"y":-240,"width":400,"height":400,"color":"3"},
+		{"id":"8f8756a686efdd97","type":"file","file":"1.0 Master Doc(s)/_QiPortal Master Doc(s).md","x":-680,"y":-880,"width":400,"height":400,"color":"5"},
+		{"id":"0fa4aa580c4b2c41","type":"file","file":"3.0 Canvas and RAG Notes/3.0 Canvas & RAG Notes.md","x":40,"y":80,"width":400,"height":400,"color":"2"},
+		{"id":"530efc228fcb8eaa","type":"file","file":"Change Log.md","x":-680,"y":480,"width":400,"height":400,"color":"1"},
+		{"id":"3c15dc034a65a047","type":"file","file":"2.0 Modules/2.3 Secure Messaging Module.md","x":-1000,"y":1560,"width":400,"height":400,"color":"3"},
+		{"id":"4a2be0ca8a15fe79","type":"file","file":"2.0 Modules/2.6 Billing & Subscriptions Module.md","x":-480,"y":1560,"width":400,"height":400,"color":"1"},
+		{"id":"57d3c11e6592110a","type":"file","file":"2.0 Modules/2.7 Dashboard & Reporting Module.md","x":120,"y":1560,"width":400,"height":400,"color":"6"},
+		{"id":"2767cb03aa475a20","type":"file","file":"2.0 Modules/2.2 Document Management Module.md","x":-1560,"y":1560,"width":400,"height":400,"color":"4"},
+		{"id":"988d835d1edcbe3a","type":"file","file":"2.0 Modules/2.1 Knowledge Base Module.md","x":-2120,"y":1560,"width":400,"height":400,"color":"5"},
+		{"id":"5f42cd4c131bb04c","type":"file","file":"2.0 Modules/2.5 AI Assistant Module.md","x":760,"y":1560,"width":400,"height":400,"color":"2"}
+	],
+	"edges":[
+		{"id":"d93e9eea4fb3c092","fromNode":"8f8756a686efdd97","fromSide":"bottom","toNode":"41b993dfe165df64","toSide":"top","color":"5"},
+		{"id":"a9d3225b56d51d18","fromNode":"41b993dfe165df64","fromSide":"bottom","toNode":"40ad737f2b40146b","toSide":"top","color":"4"},
+		{"id":"f9c9bf8c82646ea5","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"988d835d1edcbe3a","toSide":"top","color":"6"},
+		{"id":"ad08208e7ce3708b","fromNode":"8f8756a686efdd97","fromSide":"bottom","toNode":"43db1129141bbe28","toSide":"top","color":"5"},
+		{"id":"193f824291b5cd0c","fromNode":"43db1129141bbe28","fromSide":"bottom","toNode":"530efc228fcb8eaa","toSide":"top","color":"3"},
+		{"id":"63df37bbe266644e","fromNode":"41b993dfe165df64","fromSide":"right","toNode":"530efc228fcb8eaa","toSide":"top","color":"4"},
+		{"id":"dd12a5f8461eebbf","fromNode":"8f8756a686efdd97","fromSide":"bottom","toNode":"0fa4aa580c4b2c41","toSide":"top","color":"5"},
+		{"id":"3a593fc567d2c484","fromNode":"0fa4aa580c4b2c41","fromSide":"left","toNode":"530efc228fcb8eaa","toSide":"top","color":"2"},
+		{"id":"be3b86e89c0653e7","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"2767cb03aa475a20","toSide":"top","color":"5"},
+		{"id":"caa4a6a564f01759","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"4a2be0ca8a15fe79","toSide":"top","color":"1"},
+		{"id":"83f43c7b9a66a654","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"3c15dc034a65a047","toSide":"top","color":"4"},
+		{"id":"d7c09a4fdf5ac9d7","fromNode":"988d835d1edcbe3a","fromSide":"right","toNode":"5f42cd4c131bb04c","toSide":"left","color":"5"},
+		{"id":"6625fbfda5c5e6a6","fromNode":"2767cb03aa475a20","fromSide":"right","toNode":"5f42cd4c131bb04c","toSide":"left","color":"4"},
+		{"id":"b4d56ce95553e294","fromNode":"4a2be0ca8a15fe79","fromSide":"right","toNode":"5f42cd4c131bb04c","toSide":"left","color":"1"},
+		{"id":"c71bd9404851ead5","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"57d3c11e6592110a","toSide":"top","color":"6"},
+		{"id":"8c728d02e5e7fe8e","fromNode":"57d3c11e6592110a","fromSide":"right","toNode":"5f42cd4c131bb04c","toSide":"left"},
+		{"id":"86a48e1d72f387ec","fromNode":"3c15dc034a65a047","fromSide":"right","toNode":"5f42cd4c131bb04c","toSide":"left","color":"3"},
+		{"id":"2d3b5d3b3a370995","fromNode":"40ad737f2b40146b","fromSide":"right","toNode":"530efc228fcb8eaa","toSide":"left","color":"6"},
+		{"id":"aa7d4894aa510ea8","fromNode":"40ad737f2b40146b","fromSide":"bottom","toNode":"5f42cd4c131bb04c","toSide":"top","color":"2"}
+	]
+}

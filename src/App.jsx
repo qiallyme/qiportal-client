@@ -9,6 +9,7 @@ import Messages from './pages/Messages.jsx';
 import Settings from './pages/Settings.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import KB from './pages/KB.jsx';
+import KBAdmin from './components/KBAdmin.jsx';
 import Calls from './pages/Calls.jsx';
 import Billing from './pages/Billing.jsx';
 import Support from './pages/Support.jsx';
@@ -16,6 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './components/Header.jsx';
 import { useUser } from './context/UserContext';
 import MindMap from './pages/MindMap.jsx';
+import { forceClearAuth } from './utils/auth';
 
 export default function App() {
   const { email, role } = useUser();
@@ -31,6 +33,43 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          {/* Debug route - remove in production */}
+          {process.env.NODE_ENV === 'development' && (
+            <Route path="/debug" element={
+              <div className="min-h-screen bg-gray-900 text-white p-8">
+                <h1 className="text-2xl mb-4">Auth Debug</h1>
+                <div className="space-y-4">
+                  <div>
+                    <strong>Email:</strong> {email || 'Not logged in'}
+                  </div>
+                  <div>
+                    <strong>Role:</strong> {role}
+                  </div>
+                  <div>
+                    <strong>Local Storage:</strong>
+                    <pre className="bg-gray-800 p-2 rounded text-xs overflow-auto">
+                      {JSON.stringify(Object.keys(localStorage).filter(key => key.includes('supabase') || key.includes('auth')), null, 2)}
+                    </pre>
+                  </div>
+                  <div>
+                    <strong>Session Storage:</strong>
+                    <pre className="bg-gray-800 p-2 rounded text-xs overflow-auto">
+                      {JSON.stringify(Object.keys(sessionStorage).filter(key => key.includes('supabase') || key.includes('auth')), null, 2)}
+                    </pre>
+                  </div>
+                  <button
+                    onClick={() => {
+                      forceClearAuth();
+                      window.location.reload();
+                    }}
+                    className="bg-red-600 px-4 py-2 rounded"
+                  >
+                    Force Clear Auth & Reload
+                  </button>
+                </div>
+              </div>
+            } />
+          )}
           <Route 
             path="/mindmap" 
             element={
@@ -117,6 +156,15 @@ export default function App() {
             element={
               <ProtectedRoute roleRequired="admin">
                 <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/kb"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <KBAdmin />
               </ProtectedRoute>
             }
           />

@@ -1,6 +1,7 @@
 // src/context/UserContext.jsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { forceClearAuth } from '../utils/auth'
 
 const UserContext = createContext(null)
 
@@ -31,7 +32,13 @@ export const UserProvider = ({ children }) => {
     }
 
     // 1) initial session
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data, error }) => {
+      if (error) {
+        console.error('Error getting session:', error)
+        // Clear any stale auth data
+        forceClearAuth()
+      }
+      
       const e = data.session?.user?.email ?? null
       if (!mounted) return
       setEmail(e)
@@ -39,13 +46,26 @@ export const UserProvider = ({ children }) => {
       if (e) {
         // Fetch user role from profiles table
         try {
-          const { data: profileData } = await supabase
+          const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role')
             .eq('email', e)
             .single()
           
-          setRole(profileData?.role || 'guest')
+          if (profileError) {
+            console.error('Error fetching user role:', profileError)
+            // If we can't fetch the profile, the session might be invalid
+            if (profileError.code === 'PGRST116' || profileError.message.includes('JWT')) {
+              console.log('Invalid session detected, clearing auth data')
+              forceClearAuth()
+              setEmail(null)
+              setRole('guest')
+            } else {
+              setRole('guest')
+            }
+          } else {
+            setRole(profileData?.role || 'guest')
+          }
         } catch (error) {
           console.error('Error fetching user role:', error)
           setRole('guest')
@@ -65,13 +85,26 @@ export const UserProvider = ({ children }) => {
       if (e) {
         // Fetch user role from profiles table
         try {
-          const { data: profileData } = await supabase
+          const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role')
             .eq('email', e)
             .single()
           
-          setRole(profileData?.role || 'guest')
+          if (profileError) {
+            console.error('Error fetching user role:', profileError)
+            // If we can't fetch the profile, the session might be invalid
+            if (profileError.code === 'PGRST116' || profileError.message.includes('JWT')) {
+              console.log('Invalid session detected, clearing auth data')
+              forceClearAuth()
+              setEmail(null)
+              setRole('guest')
+            } else {
+              setRole('guest')
+            }
+          } else {
+            setRole(profileData?.role || 'guest')
+          }
         } catch (error) {
           console.error('Error fetching user role:', error)
           setRole('guest')
@@ -131,14 +164,26 @@ export const UserProvider = ({ children }) => {
       return { error: null }
     }
 
-    // Real Supabase sign out
-    const { error } = await supabase.auth.signOut()
-    
-    // Always update local state regardless of Supabase response
-    setEmail(null)
-    setRole('guest')
-    
-    return { error }
+    try {
+      // Real Supabase sign out
+      const { error } = await supabase.auth.signOut()
+      
+      // Always update local state regardless of Supabase response
+      setEmail(null)
+      setRole('guest')
+      
+      // Clear any stored session data
+      forceClearAuth()
+      
+      console.log('User signed out successfully')
+      return { error }
+    } catch (error) {
+      console.error('Error during sign out:', error)
+      // Still clear local state even if Supabase fails
+      setEmail(null)
+      setRole('guest')
+      return { error }
+    }
   }
 
   const resetPassword = async (email) => {

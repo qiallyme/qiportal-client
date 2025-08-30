@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node -e \"require('fs').copyFileSync('dist/index.html','dist/404.html')\"",
+    "build:kb": "node scripts/build-kb.js",
+    "build:all": "npm run build:kb && npm run build",
+    "deploy:kb": "node scripts/deploy-kb.js",
+    "deploy:kb-full": "node scripts/deploy-kb.js --build-app",
     "lint": "eslint .",
     "preview": "vite preview"
   },

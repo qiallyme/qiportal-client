@@ -1,0 +1,25 @@
+[
+  {
+    "path": "getting-started",
+    "title": "Getting Started",
+    "description": "Learn how to get started with QiAlly platform",
+    "tags": [
+      "guide",
+      "onboarding",
+      "setup"
+    ],
+    "content": "\r\n# Getting Started with QiAlly\r\n\r\nWelcome to QiAlly! This guide will help you get started with our platform and understand the key features available to you.\r\n\r\n## What is QiAlly?\r\n\r\nQiAlly is a comprehensive business intelligence and process optimization platform designed to help organizations:\r\n\r\n- **Analyze** their business processes\r\n- **Optimize** workflows and efficiency\r\n- **Monitor** key performance indicators\r\n- **Collaborate** with team members\r\n- **Access** knowledge and resources\r\n\r"
+  },
+  {
+    "path": "process-optimization",
+    "title": "Process Optimization Guide",
+    "description": "Learn how to optimize your business processes for maximum efficiency",
+    "tags": [
+      "process",
+      "optimization",
+      "workflow",
+      "efficiency"
+    ],
+    "content": "\r\n# Process Optimization Guide\r\n\r\nThis comprehensive guide will help you understand and implement process optimization strategies to improve your organization's efficiency and productivity.\r\n\r\n## What is Process Optimization?\r\n\r\nProcess optimization is the systematic approach to improving business processes by:\r\n\r\n- **Identifying** inefficiencies and bottlenecks\r\n- **Analyzing** current workflows\r\n- **Implementing** improvements\r\n- **Monitoring** results\r\n- **Iterating** for continuous improveme"
+  }
+]

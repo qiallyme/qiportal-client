@@ -1,56 +1,94 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useUser } from '../context/UserContext';
+import { 
+  getConversations, 
+  getMessages, 
+  sendMessage, 
+  createConversation,
+  subscribeToMessages,
+  subscribeToConversations,
+  markConversationAsRead
+} from '../lib/messagesApi';
 
 export default function Messages() {
   const { email, role } = useUser();
+  const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+  const [showNewConversation, setShowNewConversation] = useState(false);
+  const [newConversationTitle, setNewConversationTitle] = useState('');
+  const messagesEndRef = useRef(null);
 
-  const conversations = [
-    {
-      id: 1,
-      title: 'Process Optimization Updates',
-      participants: ['Cody', 'Sarah'],
-      lastMessage: 'The timeline has been updated based on your feedback.',
-      lastMessageTime: '2 hours ago',
-      unread: true,
-      status: 'active',
-      messages: [
-        { id: 1, sender: 'Cody', message: 'Hi! I wanted to update you on the process optimization project.', time: '2 hours ago', type: 'received' },
-        { id: 2, sender: 'You', message: 'Thanks Cody, what\'s the latest?', time: '1 hour ago', type: 'sent' },
-        { id: 3, sender: 'Cody', message: 'The timeline has been updated based on your feedback.', time: '2 hours ago', type: 'received' }
-      ]
-    },
-    {
-      id: 2,
-      title: 'System Integration Planning',
-      participants: ['Mike', 'John'],
-      lastMessage: 'Please review the technical specifications.',
-      lastMessageTime: '1 day ago',
-      unread: false,
-      status: 'active',
-      messages: [
-        { id: 1, sender: 'Mike', message: 'I\'ve prepared the technical specifications for the system integration.', time: '1 day ago', type: 'received' },
-        { id: 2, sender: 'You', message: 'Great, I\'ll review them this week.', time: '1 day ago', type: 'sent' },
-        { id: 3, sender: 'Mike', message: 'Please review the technical specifications.', time: '1 day ago', type: 'received' }
-      ]
-    },
-    {
-      id: 3,
-      title: 'General Support',
-      participants: ['Support Team'],
-      lastMessage: 'Your issue has been resolved.',
-      lastMessageTime: '3 days ago',
-      unread: false,
-      status: 'resolved',
-      messages: [
-        { id: 1, sender: 'Support Team', message: 'We\'ve identified the issue with your login.', time: '3 days ago', type: 'received' },
-        { id: 2, sender: 'You', message: 'Thank you for the quick response.', time: '3 days ago', type: 'sent' },
-        { id: 3, sender: 'Support Team', message: 'Your issue has been resolved.', time: '3 days ago', type: 'received' }
-      ]
+  // Load conversations on component mount
+  useEffect(() => {
+    loadConversations();
+  }, []);
+
+  // Subscribe to real-time updates
+  useEffect(() => {
+    const conversationsSubscription = subscribeToConversations((payload) => {
+      if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+        loadConversations();
+      }
+    });
+
+    return () => {
+      conversationsSubscription?.unsubscribe();
+    };
+  }, []);
+
+  // Subscribe to messages for selected conversation
+  useEffect(() => {
+    if (!selectedConversation) return;
+
+    const messagesSubscription = subscribeToMessages(selectedConversation.id, (payload) => {
+      if (payload.eventType === 'INSERT') {
+        loadMessages(selectedConversation.id);
+      }
+    });
+
+    return () => {
+      messagesSubscription?.unsubscribe();
+    };
+  }, [selectedConversation]);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const loadConversations = async () => {
+    try {
+      setLoading(true);
+      const data = await getConversations();
+      setConversations(data);
+    } catch (error) {
+      console.error('Error loading conversations:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const loadMessages = async (conversationId) => {
+    try {
+      const data = await getMessages(conversationId);
+      setMessages(data);
+      
+      // Mark conversation as read
+      await markConversationAsRead(conversationId);
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    }
+  };
+
+  const handleConversationSelect = async (conversation) => {
+    setSelectedConversation(conversation);
+    await loadMessages(conversation.id);
+  };
 
   const teamMembers = [
     { id: 1, name: 'Cody', role: 'Project Manager', avatar: 'CD', online: true },
@@ -62,18 +100,53 @@ export default function Messages() {
 
   const filteredConversations = conversations.filter(conv => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'unread') return conv.unread;
-    if (activeTab === 'active') return conv.status === 'active';
-    if (activeTab === 'resolved') return conv.status === 'resolved';
+    // For now, we'll show all conversations since we don't have unread/status fields yet
     return true;
   });
 
-  const handleSendMessage = () => {
+  const formatTime = (timestamp) => {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInHours = (now - date) / (1000 * 60 * 60);
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${Math.floor(diffInHours)}h ago`;
+    if (diffInHours < 168) return `${Math.floor(diffInHours / 24)}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
     
-    // In a real app, this would send the message to the backend
-    console.log('Sending message:', newMessage);
-    setNewMessage('');
+    try {
+      setSending(true);
+      await sendMessage(selectedConversation.id, newMessage.trim());
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleCreateConversation = async () => {
+    if (!newConversationTitle.trim()) return;
+    
+    try {
+      setSending(true);
+      const conversation = await createConversation(newConversationTitle.trim());
+      setNewConversationTitle('');
+      setShowNewConversation(false);
+      await loadConversations();
+      handleConversationSelect(conversation);
+    } catch (error) {
+      console.error('Error creating conversation:', error);
+      alert('Failed to create conversation. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -88,7 +161,12 @@ export default function Messages() {
             </div>
             <div className="flex items-center space-x-4">
               <button className="btn btn-ghost">Help</button>
-              <button className="btn btn-primary">New Conversation</button>
+              <button 
+                onClick={() => setShowNewConversation(true)}
+                className="btn btn-primary"
+              >
+                New Conversation
+              </button>
             </div>
           </div>
         </div>
@@ -126,30 +204,52 @@ export default function Messages() {
               </div>
             </div>
 
-            {/* Team Members */}
+            {/* Conversations List */}
             <div className="bg-white rounded-xl shadow-sm border p-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Team Members</h3>
-              <div className="space-y-3">
-                {teamMembers.map((member) => (
-                  <div key={member.id} className="flex items-center space-x-3">
-                    <div className="relative">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-blue-600">{member.avatar}</span>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Conversations</h3>
+              {loading ? (
+                <div className="text-center py-4">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                </div>
+              ) : conversations.length === 0 ? (
+                <div className="text-center py-4 text-gray-500">
+                  <p>No conversations yet</p>
+                  <button 
+                    onClick={() => setShowNewConversation(true)}
+                    className="text-blue-600 hover:text-blue-800 text-sm mt-2"
+                  >
+                    Start a conversation
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {filteredConversations.map((conversation) => (
+                    <div
+                      key={conversation.id}
+                      onClick={() => handleConversationSelect(conversation)}
+                      className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                        selectedConversation?.id === conversation.id
+                          ? 'bg-blue-100 border border-blue-200'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-gray-900 truncate">
+                            {conversation.title}
+                          </h4>
+                          <p className="text-xs text-gray-500 truncate">
+                            {conversation.participants?.length || 0} participants
+                          </p>
+                        </div>
+                        <span className="text-xs text-gray-400">
+                          {formatTime(conversation.updated_at)}
+                        </span>
                       </div>
-                      {member.online && (
-                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
-                      )}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{member.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{member.role}</p>
-                    </div>
-                    <button className="text-blue-600 hover:text-blue-800 text-sm">
-                      Message
-                    </button>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -193,27 +293,31 @@ export default function Messages() {
 
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                  {selectedConversation.messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.type === 'sent' ? 'justify-end' : 'justify-start'}`}
-                    >
+                  {messages.map((message) => {
+                    const isOwnMessage = message.sender_id === selectedConversation?.created_by;
+                    return (
                       <div
-                        className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          message.type === 'sent'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 text-gray-900'
-                        }`}
+                        key={message.id}
+                        className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                       >
-                        <p className="text-sm">{message.message}</p>
-                        <p className={`text-xs mt-1 ${
-                          message.type === 'sent' ? 'text-blue-100' : 'text-gray-500'
-                        }`}>
-                          {message.time}
-                        </p>
+                        <div
+                          className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            isOwnMessage
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-900'
+                          }`}
+                        >
+                          <p className="text-sm">{message.content}</p>
+                          <p className={`text-xs mt-1 ${
+                            isOwnMessage ? 'text-blue-100' : 'text-gray-500'
+                          }`}>
+                            {formatTime(message.created_at)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
+                  <div ref={messagesEndRef} />
                 </div>
 
                 {/* Message Input */}

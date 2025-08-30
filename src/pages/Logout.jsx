@@ -8,11 +8,17 @@ export default function Logout() {
 
   useEffect(() => {
     const performLogout = async () => {
+      console.log('Performing logout...');
       try {
-        await signOut();
+        const result = await signOut();
+        if (result.error) {
+          console.error('Supabase logout error:', result.error);
+        }
+        console.log('Logout completed, navigating to home');
         navigate('/');
       } catch (error) {
         console.error('Logout error:', error);
+        // Force navigation even if there's an error
         navigate('/');
       }
     };

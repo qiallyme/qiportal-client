@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import NotificationCenter from "./NotificationCenter";
+import { forceClearAuth } from "../utils/auth";
 
 /**
  * Header component with navigation and user authentication status
@@ -11,13 +12,26 @@ export default function Header() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    console.log('Logout button clicked');
     try {
-      await signOut();
+      const result = await signOut();
+      if (result.error) {
+        console.error('Supabase logout error:', result.error);
+      }
+      console.log('Logout completed, navigating to home');
       navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
+      // Force navigation even if there's an error
       navigate('/');
     }
+  };
+
+  const handleForceLogout = () => {
+    console.log('Force logout clicked');
+    forceClearAuth();
+    // Force page reload to clear all state
+    window.location.href = '/';
   };
 
   return (
@@ -103,9 +117,33 @@ export default function Header() {
               <button
                 onClick={handleLogout}
                 className="glass-button-primary glow-red"
+                type="button"
               >
                 Logout
               </button>
+              {/* Debug section - remove in production */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="flex flex-col gap-1">
+                  <button
+                    onClick={handleForceLogout}
+                    className="text-xs px-2 py-1 bg-red-600 text-white rounded"
+                    type="button"
+                    title="Force logout (clears all auth data)"
+                  >
+                    Force Logout
+                  </button>
+                  <Link
+                    to="/debug"
+                    className="text-xs px-2 py-1 bg-blue-600 text-white rounded text-center"
+                    title="Debug auth state"
+                  >
+                    Debug
+                  </Link>
+                  <div className="text-xs text-white/50">
+                    Auth: {email ? 'Logged in' : 'Not logged in'}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <Link
