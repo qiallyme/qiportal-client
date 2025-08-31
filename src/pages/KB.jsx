@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Search, BookOpen, Home, ChevronRight, Lock } from "lucide-react";
+import { useUser } from "../context/UserContext";
 
 /**
  * QiPortals – Client Knowledge Base (Top‑Down MVP)
@@ -86,12 +87,12 @@ function mdToHtml(md) {
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.*?)\*/g, "<em>$1</em>")
     // blockquote
-    .replace(/^> (.*$)/gim, '<blockquote class="border-l pl-4 italic opacity-80">$1</blockquote>')
+    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600">$1</blockquote>')
     // lists
     .replace(/^\s*[-*] (.*)$/gim, '<li>$1</li>')
     .replace(/(<li>.*<\/li>)(?!\n<li>)/gims, '<ul class="list-disc pl-5 my-2">$1</ul>')
     // code fence (very simple)
-    .replace(/```([\s\S]*?)```/g, '<pre class="bg-black/40 rounded-xl p-4 overflow-auto">$1</pre>')
+    .replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 rounded-xl p-4 overflow-auto border">$1</pre>')
     // paragraphs
     .replace(/^(?!<h\d|<ul|<li|<pre|<blockquote)(.+)$/gim, '<p class="my-2 leading-relaxed">$1</p>');
   return html;
@@ -128,14 +129,14 @@ function useSearch(query) {
 function AccessGate({ user, onDummyLogin }) {
   if (user) return null;
   return (
-    <div className="fixed inset-0 backdrop-blur-xl bg-gradient-to-b from-white/20 to-black/40 grid place-items-center p-6">
-      <div className="max-w-md w-full rounded-2xl shadow-2xl bg-white/10 border border-white/20 p-6">
+    <div className="fixed inset-0 backdrop-blur-xl bg-white/95 grid place-items-center p-6 z-50">
+      <div className="max-w-md w-full rounded-2xl shadow-2xl bg-white border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-2">
-          <Lock className="w-5 h-5" />
-          <h2 className="text-xl font-semibold">Client Access Required</h2>
+          <Lock className="w-5 h-5 text-gray-600" />
+          <h2 className="text-xl font-semibold text-gray-900">Client Access Required</h2>
         </div>
-        <p className="opacity-80 mb-4">This Knowledge Base is available to signed‑in clients. For the MVP, use the Dummy Login to preview.</p>
-        <button onClick={onDummyLogin} className="w-full rounded-xl px-4 py-2 bg-white/20 hover:bg-white/30 transition border border-white/30">Dummy Login</button>
+        <p className="text-gray-600 mb-4">This Knowledge Base is available to signed‑in clients. For the MVP, use the Dummy Login to preview.</p>
+        <button onClick={onDummyLogin} className="w-full rounded-xl px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white transition border border-gray-700">Dummy Login</button>
       </div>
     </div>
   );
@@ -149,13 +150,13 @@ function CategoryCard({ cat, onOpen }) {
     <motion.button
       onClick={onOpen}
       whileHover={{ y: -2 }}
-      className="text-left rounded-2xl p-5 bg-white/10 border border-white/20 shadow hover:shadow-lg transition w-full">
+      className="text-left rounded-2xl p-5 bg-white border border-gray-200 shadow-sm hover:shadow-lg transition w-full hover:border-gray-300">
       <div className="flex items-center gap-3 mb-2">
-        <BookOpen className="w-5 h-5" />
-        <h3 className="text-lg font-semibold">{cat.title}</h3>
+        <BookOpen className="w-5 h-5 text-gray-600" />
+        <h3 className="text-lg font-semibold text-gray-900">{cat.title}</h3>
       </div>
-      <p className="opacity-80">{cat.blurb}</p>
-      <div className="text-sm opacity-70 mt-3">{cat.articles.length} article{cat.articles.length>1?"s":""}</div>
+      <p className="text-gray-600">{cat.blurb}</p>
+      <div className="text-sm text-gray-500 mt-3">{cat.articles.length} article{cat.articles.length>1?"s":""}</div>
     </motion.button>
   );
 }
@@ -166,9 +167,9 @@ function ArticleList({ catId, onOpenSlug, onLoadMd }) {
   return (
     <div className="space-y-2">
       {cat.articles.map(a => (
-        <button key={a.slug} onClick={() => { onOpenSlug(a.slug); onLoadMd(a.slug); }} className="w-full flex items-center justify-between rounded-xl p-3 bg-white/5 hover:bg-white/10 border border-white/15">
-          <span>{a.title}</span>
-          <ChevronRight className="w-4 h-4 opacity-70" />
+        <button key={a.slug} onClick={() => { onOpenSlug(a.slug); onLoadMd(a.slug); }} className="w-full flex items-center justify-between rounded-xl p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 transition">
+          <span className="text-gray-900">{a.title}</span>
+          <ChevronRight className="w-4 h-4 text-gray-500" />
         </button>
       ))}
     </div>
@@ -178,13 +179,13 @@ function ArticleList({ catId, onOpenSlug, onLoadMd }) {
 function ArticleView({ slug, onBack, articleMd }) {
   const html = useMemo(() => mdToHtml(articleMd), [articleMd]);
   return (
-    <div className="rounded-2xl p-6 bg-white/10 border border-white/20">
+    <div className="rounded-2xl p-6 bg-white border border-gray-200 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
-        <button onClick={onBack} className="inline-flex items-center gap-2 text-sm rounded-xl px-3 py-1 bg-white/10 border border-white/20 hover:bg-white/20">
+        <button onClick={onBack} className="inline-flex items-center gap-2 text-sm rounded-xl px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 transition">
           <Home className="w-4 h-4" /> Back to KB
         </button>
       </div>
-      <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }
@@ -192,15 +193,24 @@ function ArticleView({ slug, onBack, articleMd }) {
 /** ----------------------------------------
  * 6) SHELL
  * -----------------------------------------*/
-export default function KnowledgeBaseShell({ user: externalUser }) {
-  const [user, setUser] = useState(externalUser || null);
+export default function KnowledgeBaseShell() {
+  const { email, role } = useUser();
   const [query, setQuery] = useState("");
   const [openCategory, setOpenCategory] = useState(null);
   const [openSlug, setOpenSlug] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [activeArticle, setActiveArticle] = useState(null);
   const [articleMd, setArticleMd] = useState("\n# Select an article\n\nYour content will appear here.");
   const results = useSearch(query);
+
+  // Use actual user from context instead of dummy user
+  const user = email ? { id: email, role } : null;
+
+  // Add kb-page class to body when component mounts
+  useEffect(() => {
+    document.body.classList.add('kb-page');
+    return () => {
+      document.body.classList.remove('kb-page');
+    };
+  }, []);
 
   async function loadMd(slug){
     try{
@@ -209,37 +219,41 @@ export default function KnowledgeBaseShell({ user: externalUser }) {
       const text = await res.text();
       setArticleMd(text);
     } catch(e){
-      setArticleMd(`# Not found
+      // Fallback to static content
+      const staticContent = CONTENT_REGISTRY[slug];
+      if (staticContent) {
+        setArticleMd(staticContent);
+      } else {
+        setArticleMd(`# Not found
 
 Could not load **${slug}.md** from /kb/articles/.`);
+      }
     }
   }
 
-  useEffect(() => { if (externalUser && !user) setUser(externalUser); }, [externalUser]);
-
   return (
-    <div className="min-h-[100dvh] bg-gradient-to-br from-indigo-900 via-violet-900 to-fuchsia-900 text-white">
-      <AccessGate user={user} onDummyLogin={() => setUser({ id: "dummy", role: "client" })} />
+    <div className="min-h-[100dvh] bg-white text-gray-900">
+      <AccessGate user={user} onDummyLogin={() => {}} />
 
-      <header className="px-6 pt-8 pb-4">
+      <header className="px-6 pt-8 pb-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">QiSuite™ Knowledge Base</h1>
-            <p className="opacity-80">Ship the portal first. Swap storage later. Site‑down, not up‑to‑site.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">QiSuite™ Knowledge Base</h1>
+            <p className="text-gray-600">Ship the portal first. Swap storage later. Site‑down, not up‑to‑site.</p>
           </div>
           <div className="relative w-full md:w-96">
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Search articles…"
-              className="w-full rounded-2xl pl-10 pr-4 py-2 bg-white/10 border border-white/20 outline-none focus:bg-white/15"
+              className="w-full rounded-2xl pl-10 pr-4 py-2 bg-white border border-gray-300 outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
             />
-            <Search className="w-4 h-4 absolute left-3 top-2.5 opacity-80" />
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
           </div>
         </div>
       </header>
 
-      <main className="px-6 pb-12">
+      <main className="px-6 pb-12 bg-white">
         <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
           {/* Left: Categories */}
           <div className="md:col-span-1 space-y-3">
@@ -251,13 +265,13 @@ Could not load **${slug}.md** from /kb/articles/.`);
           {/* Right: Content/Search */}
           <div className="md:col-span-2 space-y-4">
             {query && results.length > 0 && (
-              <div className="rounded-2xl p-4 bg-white/10 border border-white/20">
-                <div className="text-sm opacity-80 mb-2">Search results</div>
+              <div className="rounded-2xl p-4 bg-white border border-gray-200 shadow-sm">
+                <div className="text-sm text-gray-600 mb-2">Search results</div>
                 <div className="space-y-2">
                   {results.map(r => (
-                    <button key={r.slug} onClick={() => { setOpenSlug(r.slug); loadMd(r.slug); }} className="block w-full text-left rounded-xl p-3 bg-white/5 hover:bg-white/10 border border-white/15">
-                      <div className="font-medium">{r.title}</div>
-                      <div className="text-sm opacity-70 line-clamp-2">{r.snippet}</div>
+                    <button key={r.slug} onClick={() => { setOpenSlug(r.slug); loadMd(r.slug); }} className="block w-full text-left rounded-xl p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 transition">
+                      <div className="font-medium text-gray-900">{r.title}</div>
+                      <div className="text-sm text-gray-600 line-clamp-2">{r.snippet}</div>
                     </button>
                   ))}
                 </div>
@@ -265,8 +279,8 @@ Could not load **${slug}.md** from /kb/articles/.`);
             )}
 
             {!query && !openSlug && openCategory && (
-              <div className="rounded-2xl p-4 bg-white/10 border border-white/20">
-                <div className="text-sm opacity-80 mb-2">Articles in category</div>
+              <div className="rounded-2xl p-4 bg-white border border-gray-200 shadow-sm">
+                <div className="text-sm text-gray-600 mb-2">Articles in category</div>
                 <ArticleList catId={openCategory} onOpenSlug={setOpenSlug} onLoadMd={loadMd} />
               </div>
             )}
@@ -276,13 +290,13 @@ Could not load **${slug}.md** from /kb/articles/.`);
             )}
 
             {!query && !openSlug && !openCategory && (
-              <div className="rounded-2xl p-6 bg-white/10 border border-white/20">
-                <div className="text-lg font-semibold mb-2">Start here</div>
-                <p className="opacity-80">Pick a category on the left, or open an article below.</p>
+              <div className="rounded-2xl p-6 bg-white border border-gray-200 shadow-sm">
+                <div className="text-lg font-semibold mb-2 text-gray-900">Start here</div>
+                <p className="text-gray-600">Pick a category on the left, or open an article below.</p>
                 <div className="grid sm:grid-cols-2 gap-3 mt-4">
                   {INDEX[0].articles.map(a => (
-                    <button key={a.slug} onClick={() => { setOpenSlug(a.slug); loadMd(a.slug); }} className="text-left rounded-xl p-4 bg-white/5 hover:bg-white/10 border border-white/15">
-                      {a.title}
+                    <button key={a.slug} onClick={() => { setOpenSlug(a.slug); loadMd(a.slug); }} className="text-left rounded-xl p-4 bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 transition">
+                      <span className="text-gray-900">{a.title}</span>
                     </button>
                   ))}
                 </div>
@@ -292,8 +306,8 @@ Could not load **${slug}.md** from /kb/articles/.`);
         </div>
       </main>
 
-      <footer className="px-6 pb-8">
-        <div className="max-w-5xl mx-auto text-xs opacity-70">© {new Date().getFullYear()} QiAlly™ / QiSuite™</div>
+      <footer className="px-6 pb-8 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto text-xs text-gray-500">© {new Date().getFullYear()} QiAlly™ / QiSuite™</div>
       </footer>
     </div>
   );
