@@ -15,6 +15,88 @@ QiAlly Portal is a modern client portal and business operations platform that he
 ### 🎯 Mission
 **"Systems That Breathe"** — We believe business systems should be living, adaptive, and effortless to use. The QiAlly Portal embodies this philosophy by providing intuitive interfaces that grow with your business.
 
+## 🔧 Environment Setup
+
+### Supabase Configuration
+
+This project uses Supabase for authentication and data storage. You need to configure environment variables for both frontend (browser) and backend (server) operations.
+
+#### 1. Get Your Supabase Keys
+
+1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
+2. Select your project
+3. Navigate to **Settings → API**
+4. Copy these values:
+   - **Project URL** (e.g., `https://vwqkhjnkummwtvfxgqml.supabase.co`)
+   - **anon public** key (starts with `eyJ...`)
+   - **service_role** key (starts with `eyJ...`)
+
+#### 2. Frontend Environment (.env)
+
+Create a `.env` file in the project root for Vite (frontend):
+
+```env
+# Frontend - Browser only (Vite)
+VITE_SUPABASE_URL=https://vwqkhjnkummwtvfxgqml.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
+```
+
+⚠️ **Security**: Only use the **anon key** in frontend code. Never expose the service role key to the browser.
+
+#### 3. Backend/Server Environment
+
+For Node.js scripts (exporter, CI/CD):
+
+**PowerShell (Windows):**
+```powershell
+$env:SUPABASE_URL="https://vwqkhjnkummwtvfxgqml.supabase.co"
+$env:SUPABASE_SERVICE_KEY="your_service_role_key_here"
+$env:CLIENT_SLUG="builtbyrays"
+node packages/exporter/export.mjs
+```
+
+**Bash/Zsh (Mac/Linux):**
+```bash
+export SUPABASE_URL="https://vwqkhjnkummwtvfxgqml.supabase.co"
+export SUPABASE_SERVICE_KEY="your_service_role_key_here"
+export CLIENT_SLUG="builtbyrays"
+node packages/exporter/export.mjs
+```
+
+**GitHub Actions/Cloudflare Pages:**
+```yaml
+SUPABASE_URL: https://vwqkhjnkummwtvfxgqml.supabase.co
+SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+CLIENT_SLUG: builtbyrays
+```
+
+#### 4. Quick Verification
+
+**Frontend (browser console):**
+```javascript
+import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ OK' : '❌ Missing'
+```
+
+**Backend (terminal):**
+```bash
+node -e "console.log(process.env.SUPABASE_URL, !!process.env.SUPABASE_SERVICE_KEY)"
+```
+
+### Knowledge Base Exporter
+
+The knowledge base exporter pulls content from Supabase and generates static files:
+
+```bash
+# Export knowledge base for a specific client
+$env:CLIENT_SLUG="builtbyrays"
+node packages/exporter/export.mjs
+```
+
+**Troubleshooting:**
+- **0 files exported**: Check if you have `kb_spaces` and `kb_articles` in your database
+- **Invalid API key**: Ensure you're using the correct service role key (not anon key)
+- **Wrong URL**: Use the API URL, not the dashboard URL
+
 ## 🎯 Project Goals
 
 ### **Primary Objectives**
@@ -332,76 +414,3 @@ This application is optimized for deployment on **Cloudflare Pages** for fronten
 2. Get your project URL and anon key from the project settings
 3. Create a `.env` file with:
    ```
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-### Cloudflare Pages Deployment
-1. Connect your GitHub repository to Cloudflare Pages
-2. Set build command: `npm run build:all`
-3. Set output directory: `dist`
-4. Add environment variables in Cloudflare Pages settings
-
-**Note**: Cloudflare Pages is used exclusively for frontend hosting. All authentication, authorization, and user management are handled through Supabase Auth.
-
-## 🎨 Design System
-
-### **Color Palette**
-- **Primary**: Blue to Purple gradient (`from-blue-500 to-purple-500`)
-- **Secondary**: Cyan accents (`cyan-500`)
-- **Neutral**: Gray scale with proper contrast ratios
-- **Glass Effects**: Subtle transparency with backdrop blur
-
-### **Typography**
-- **Headings**: Bold, gradient text effects
-- **Body**: Clean, readable sans-serif
-- **Interactive**: Hover states and transitions
-
-### **Components**
-- **Buttons**: Multiple variants (primary, ghost, outlined)
-- **Cards**: Glass morphism with subtle shadows
-- **Forms**: Consistent styling with validation states
-
-## 📊 Business Impact
-
-### **Proven Results**
-- **500+** Clients & Partners served
-- **20+** Years of combined experience
-- **80+** Solutions & Processes implemented
-- **40%** Average process time reduction
-- **60%** Onboarding efficiency improvement
-- **$250K+** Annual savings uncovered through optimization
-
-### **Services Offered**
-- **Management & Operations** - Streamline daily operations
-- **Process Improvement** - Optimize workflows and eliminate waste
-- **HR & Workforce Optimization** - Enhance team productivity
-- **Financial Acumen** - Improve financial processes and reporting
-- **Technology & Systems Integration** - Connect and automate systems
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our contributing guidelines for details on how to submit pull requests, report issues, and suggest improvements.
-
-### **Development Guidelines**
-- Follow the existing code style and patterns
-- Add tests for new features
-- Update documentation for any changes
-- Use conventional commit messages
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact
-
-**QiAlly Team**
-- **Email**: [info@qially.me](mailto:info@qially.me)
-- **Website**: [https://portal.qially.com](https://portal.qially.com)
-
----
-
-<div align="center">
-  <strong>Built with ❤️ by the QiAlly Team</strong><br>
-  <em>Creating systems that breathe, one client at a time.</em>
-</div>
