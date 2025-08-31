@@ -53,7 +53,7 @@ const INDEX = [
   },
 ];
 
-const CONTENT_REGISTRY: Record<string, string> = {
+const CONTENT_REGISTRY = {
   "welcome": `---\ntitle: Welcome to QiSuite™ Client Portal\ntags: [intro, portal]\nrole: client\n---\n\n# Welcome\n\nYou made it. This is your **QiSuite™ Client Portal**. From here you can:\n\n- Open chat, view tickets, and track progress.\n- Browse this Knowledge Base for quick answers.\n- Upload docs and review deliverables.\n\n> MVP note: This page is served statically so we can ship **now**. We'll swap storage later without changing the UI.\n\n---\n\n## Where things live\n\n- **Dashboard:** quick links and status.\n- **Tickets:** submit requests and see updates.\n- **Knowledge Base:** you are here.\n\nIf you're stuck, open a ticket titled \"Help\"—we'll triage it.`,
 
   "using-the-kb": `---\ntitle: How the Knowledge Base Works\ntags: [kb, docs]\n---\n\n# Using the KB\n\nThis KB is built **site‑down**: the front end ships first, the data source can evolve.\n\n### Today\n- Articles are bundled with the app to keep things simple.\n- Search is client‑side and instant.\n\n### Tomorrow\nSwap the loader to use **Cloudflare KV, R2, D1, or a Git-backed store**. Same UI, richer data.`,
@@ -71,7 +71,7 @@ const CONTENT_REGISTRY: Record<string, string> = {
  * 2) MINIMAL MD → HTML (client-side)
  *    For MVP, a tiny converter. Replace with remark/rehype later if needed.
  * -----------------------------------------*/
-function mdToHtml(md: string) {
+function mdToHtml(md) {
   // strip YAML frontmatter
   const body = md.replace(/^---[\s\S]*?---\n?/, "");
   // headings
@@ -100,11 +100,11 @@ function mdToHtml(md: string) {
 /** ----------------------------------------
  * 3) FUZZY SEARCH (simple contains across titles + content)
  * -----------------------------------------*/
-function useSearch(query: string) {
+function useSearch(query) {
   const normalized = query.trim().toLowerCase();
   return useMemo(() => {
-    if (!normalized) return [] as { slug: string; title: string; snippet: string }[];
-    const results: { slug: string; title: string; snippet: string }[] = [];
+    if (!normalized) return [];
+    const results = [];
     for (const category of INDEX) {
       for (const a of category.articles) {
         const content = CONTENT_REGISTRY[a.slug] || "";
@@ -125,7 +125,7 @@ function useSearch(query: string) {
  * 4) ACCESS GATE (stub)
  *    Replace with your real auth; here we simulate a minimal gate.
  * -----------------------------------------*/
-function AccessGate({ user, onDummyLogin }: { user: any; onDummyLogin: () => void }) {
+function AccessGate({ user, onDummyLogin }) {
   if (user) return null;
   return (
     <div className="fixed inset-0 backdrop-blur-xl bg-gradient-to-b from-white/20 to-black/40 grid place-items-center p-6">
@@ -144,7 +144,7 @@ function AccessGate({ user, onDummyLogin }: { user: any; onDummyLogin: () => voi
 /** ----------------------------------------
  * 5) UI PIECES
  * -----------------------------------------*/
-function CategoryCard({ cat, onOpen }: { cat: (typeof INDEX)[number]; onOpen: () => void }) {
+function CategoryCard({ cat, onOpen }) {
   return (
     <motion.button
       onClick={onOpen}
@@ -160,7 +160,7 @@ function CategoryCard({ cat, onOpen }: { cat: (typeof INDEX)[number]; onOpen: ()
   );
 }
 
-function ArticleList({ catId, onOpenSlug, onLoadMd }: { catId: string; onOpenSlug: (slug: string) => void; onLoadMd: (slug: string) => void }) {
+function ArticleList({ catId, onOpenSlug, onLoadMd }) {
   const cat = INDEX.find(c => c.id === catId);
   if (!cat) return null;
   return (
@@ -175,7 +175,7 @@ function ArticleList({ catId, onOpenSlug, onLoadMd }: { catId: string; onOpenSlu
   );
 }
 
-function ArticleView({ slug, onBack, articleMd }: { slug: string; onBack: () => void; articleMd: string }) {
+function ArticleView({ slug, onBack, articleMd }) {
   const html = useMemo(() => mdToHtml(articleMd), [articleMd]);
   return (
     <div className="rounded-2xl p-6 bg-white/10 border border-white/20">
@@ -192,11 +192,11 @@ function ArticleView({ slug, onBack, articleMd }: { slug: string; onBack: () => 
 /** ----------------------------------------
  * 6) SHELL
  * -----------------------------------------*/
-export default function KnowledgeBaseShell({ user: externalUser }: { user?: any }) {
+export default function KnowledgeBaseShell({ user: externalUser }) {
   const [user, setUser] = useState(externalUser || null);
   const [query, setQuery] = useState("");
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState(null);
+  const [openSlug, setOpenSlug] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
   const [activeArticle, setActiveArticle] = useState(null);
   const [articleMd, setArticleMd] = useState("\n# Select an article\n\nYour content will appear here.");
