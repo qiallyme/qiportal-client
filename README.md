@@ -290,11 +290,42 @@ npm run lint          # Run ESLint
 - **Responsive** - Works on all devices
 - **Fast** - Pre-built HTML files for instant loading
 
-For detailed documentation, see [KB_README.md](KB_README.md).
+## 📚 Documentation
+
+### **Development Documentation**
+All development documentation is organized in the `.dev` folder:
+
+```
+.dev/
+├── 1.0 Master Doc(s)/
+│   ├── Development Plan.md          # Complete development roadmap
+│   └── Workflow Guide.md            # Structured development workflow
+├── 2.0 Modules/
+│   ├── 2.1 Knowledge Base Module.md # KB system documentation
+│   ├── 2.2 Document Management Module.md
+│   ├── 2.3 Secure Messaging Module.md
+│   └── ... (other modules)
+├── 5.0 Supabase/
+│   ├── Setup Guide.md               # Complete Supabase setup
+│   ├── Email Setup.md               # Email configuration
+│   └── Email Templates.md           # Email templates
+└── 6.0 Development Tools/
+    ├── Sample Prompts.md            # AI-assisted development prompts
+    └── Implementation Summary.md    # Current implementation status
+```
+
+### **Quick Links**
+- [Development Plan](.dev/1.0%20Master%20Doc(s)/Development%20Plan.md)
+- [Workflow Guide](.dev/1.0%20Master%20Doc(s)/Workflow%20Guide.md)
+- [Knowledge Base Module](.dev/2.0%20Modules/2.1%20Knowledge%20Base%20Module.md)
+- [Supabase Setup](.dev/5.0%20Supabase/Setup%20Guide.md)
+- [Sample Prompts](.dev/6.0%20Development%20Tools/Sample%20Prompts.md)
+
+For detailed documentation, see the organized files in the `.dev` folder.
 
 ## 🌐 Deployment
 
-This application is optimized for deployment on **Cloudflare Pages** with seamless integration to Supabase for authentication and data storage.
+This application is optimized for deployment on **Cloudflare Pages** for frontend hosting with seamless integration to Supabase for authentication and data storage.
 
 ### Environment Setup
 1. Create a Supabase project at [supabase.com](https://supabase.com)
@@ -310,6 +341,8 @@ This application is optimized for deployment on **Cloudflare Pages** with seamle
 2. Set build command: `npm run build:all`
 3. Set output directory: `dist`
 4. Add environment variables in Cloudflare Pages settings
+
+**Note**: Cloudflare Pages is used exclusively for frontend hosting. All authentication, authorization, and user management are handled through Supabase Auth.
 
 ## 🎨 Design System
 

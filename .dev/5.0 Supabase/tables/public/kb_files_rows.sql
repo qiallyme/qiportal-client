@@ -1,0 +1,1 @@
+INSERT INTO "public"."kb_files" ("id", "space_id", "title", "path", "mime_type", "size_bytes", "created_by", "created_at") VALUES ('02568441-564e-4f4b-8fd4-6e1051ddd130', '085cf617-085b-4c74-ade5-f94c2ebd3a38', 'Test File', '/test', 'txt', null, '11bdef38-64b5-4365-bbb2-7b4f76e4a557', '2025-08-31 01:47:26+00');

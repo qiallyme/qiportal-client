@@ -1,0 +1,1 @@
+INSERT INTO "public"."kb_spaces" ("id", "org_id", "name", "slug", "created_at") VALUES ('085cf617-085b-4c74-ade5-f94c2ebd3a38', '3c5f857f-54a2-4c3f-b41d-b0b34fec7db2', 'QiSpace', 'qially_kb', '2025-08-31 01:45:29.139485+00'), ('cf6272ac-27d7-4c12-a27f-78142712e1a2', '69a343d1-9bc2-4cc1-8474-21ee3a7afb1d', 'Zaitullah_kb', 'Zaitullah_kb', '2025-08-31 01:45:50.21609+00');

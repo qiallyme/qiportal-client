@@ -1,0 +1,4 @@
+INSERT INTO "public"."documents" ("id", "created_at", "url", "content", "embedding", "org_id", "status", "category", "title") VALUES ('3', '2025-08-31 01:42:32.923044+00', null, 'id,org_id,title,category,status,created_at
+d1111111-1111-1111-1111-111111111111,3c5f857f-54a2-4c3f-b41d-b0b34fec7db2,Engagement Contract,Contract,active,2025-08-30 23:25:00
+d2222222-2222-2222-2222-222222222222,274909a9-df10-49e1-9b0e-5a7c7f86dddf,Invoice Template,Finance,archived,2025-08-30 23:27:00
+', null, '3c5f857f-54a2-4c3f-b41d-b0b34fec7db2', 'Active', 'Finance', 'Test CSV');

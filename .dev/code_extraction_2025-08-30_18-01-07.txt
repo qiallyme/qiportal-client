@@ -1,0 +1,4828 @@
+CODE EXTRACTION REPORT
+Generated: 2025-08-30 18:01:07
+Root Directory: D:\qiportal-dev\qiportal-client\.dev
+Ignored Directories: dist, node_modules
+Ignored Files: package-lock.json
+================================================================================
+
+DIRECTORY TREE STRUCTURE:
+----------------------------------------
+├── 1.0 Master Doc(s)
+│   ├── 1.0 Scaffolding (Master Plan).md
+│   ├── _QiPortal Master Doc(s).md
+│   ├── Development Plan.md
+│   └── Workflow Guide.md
+├── 2.0 Modules
+│   ├── 2.0 Module Development Documents.md
+│   ├── 2.1 Knowledge Base Module.md
+│   ├── 2.2 Document Management Module.md
+│   ├── 2.3 Secure Messaging Module.md
+│   ├── 2.4 Dev Doc—Project Management.md
+│   ├── 2.5 AI Assistant Module.md
+│   ├── 2.6 Billing & Subscriptions Module.md
+│   └── 2.7 Dashboard & Reporting Module.md
+├── 3.0 Canvas and RAG Notes
+│   └── 3.0 Canvas & RAG Notes.md
+├── 4.0 CloudFlare
+├── 5.0 Supabase
+│   ├── Email Setup.md
+│   ├── Email Templates.md
+│   ├── Setup Guide.md
+│   └── SupaBase Project - QiAlly Access.md
+├── 6.0 Development Tools
+│   ├── Implementation Summary.md
+│   └── Sample Prompts.md
+├── Change Log.md
+├── code_extraction_2025-08-30_18-01-07.txt
+├── code_extractor.py
+├── QiPortal.canvas
+└── README—Developer Onramp.md
+
+================================================================================
+STARTING FILE CONTENT EXTRACTION
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\Change Log.md
+TYPE: .md
+================================================================================
+
+
+
+- 2025-08-30: Initial merge of Scaffolding + Dev Doc + README.
+- 2025-08-30: Expanded README with developer onboarding information.
+- 2025-08-30: Added detailed Canvas & RAG Notes section.
+- 2025-08-30: Updated Change Log to reflect today's changes.
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\Change Log.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\code_extraction_2025-08-30_18-01-07.txt
+TYPE: .txt
+================================================================================
+
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\code_extraction_2025-08-30_18-01-07.txt
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\code_extractor.py
+TYPE: .py
+================================================================================
+
+import os
+from datetime import datetime
+
+def should_ignore_directory(dir_name):
+    """Check if directory should be ignored."""
+    ignore_dirs = ['dist', 'node_modules']
+    return dir_name.lower() in [d.lower() for d in ignore_dirs]
+
+def get_file_extension(file_name):
+    """Get file extension for determining if it's a code file."""
+    return os.path.splitext(file_name)[1].lower()
+
+def is_code_file(file_name):
+    """Check if file is likely a code file based on extension."""
+    # Files to explicitly ignore
+    ignore_files = ['package-lock.json']
+    if file_name in ignore_files:
+        return False
+    
+    code_extensions = {
+        '.py', '.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.sass',
+        '.json', '.xml', '.yaml', '.yml', '.md', '.txt', '.sh', '.bat', '.ps1',
+        '.vue', '.php', '.java', '.cpp', '.c', '.h', '.hpp', '.cs', '.rb',
+        '.go', '.rs', '.swift', '.kt', '.scala', '.r', '.sql', '.pl', '.lua',
+        '.config.js'  # Include config.js files
+    }
+    
+    # Check for exact extension match
+    if get_file_extension(file_name) in code_extensions:
+        return True
+    
+    # Special check for .config.js files
+    if file_name.endswith('.config.js'):
+        return True
+    
+    return False
+
+def print_directory_tree(root_dir, output_file, current_depth=0, prefix=''):
+    """Recursively prints the directory tree structure and writes to output file."""
+    
+    try:
+        # Get the list of items in the directory
+        items = os.listdir(root_dir)
+    except PermissionError:
+        message = prefix + "└── [Permission Denied]"
+        print(message)
+        output_file.write(message + "\n")
+        return
+    except FileNotFoundError:
+        message = prefix + "└── [Directory Not Found]"
+        print(message)
+        output_file.write(message + "\n")
+        return
+
+    # Sort items: directories first, then files
+    items = sorted(items, key=lambda s: s.lower())
+    directories = [item for item in items if os.path.isdir(os.path.join(root_dir, item))]
+    files = [item for item in items if not os.path.isdir(os.path.join(root_dir, item))]
+
+    # Filter out ignored directories and hidden files/directories
+    directories = [item for item in directories if not should_ignore_directory(item) and not item.startswith('.')]
+    files = [item for item in files if not item.startswith('.')]
+
+    # Combine directories and files
+    items = directories + files
+
+    for index, item in enumerate(items):
+        path = os.path.join(root_dir, item)
+        
+        # Determine tree connector style
+        if index == len(items) - 1:
+            connector = '└── '
+            extension = '    '
+        else:
+            connector = '├── '
+            extension = '│   '
+
+        # Print and write to file
+        message = prefix + connector + item
+        print(message)
+        output_file.write(message + "\n")
+
+        # Recurse into directories (excluding ignored ones)
+        if os.path.isdir(path):
+            print_directory_tree(path, output_file, current_depth + 1, prefix + extension)
+
+def extract_file_content(file_path, output_file):
+    """Extract and write file content with header."""
+    try:
+        # Create header
+        header = f"\n{'='*80}\n"
+        header += f"FILE: {file_path}\n"
+        header += f"TYPE: {get_file_extension(file_path)}\n"
+        header += f"{'='*80}\n\n"
+        
+        print(header)
+        output_file.write(header)
+        
+        # Read and write file content
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+            print(content)
+            output_file.write(content)
+            
+        # Add footer
+        footer = f"\n\n{'='*80}\nEND OF FILE: {file_path}\n{'='*80}\n\n"
+        print(footer)
+        output_file.write(footer)
+        
+    except Exception as e:
+        error_msg = f"\nERROR READING FILE {file_path}: {str(e)}\n"
+        print(error_msg)
+        output_file.write(error_msg)
+
+def scan_and_extract_files(root_dir, output_file):
+    """Scan directory tree and extract content from all code files."""
+    print(f"\n{'='*80}")
+    print("STARTING FILE CONTENT EXTRACTION")
+    print(f"{'='*80}\n")
+    output_file.write(f"\n{'='*80}\n")
+    output_file.write("STARTING FILE CONTENT EXTRACTION\n")
+    output_file.write(f"{'='*80}\n\n")
+    
+    file_count = 0
+    
+    for root, dirs, files in os.walk(root_dir):
+        # Filter out ignored directories from traversal
+        dirs[:] = [d for d in dirs if not should_ignore_directory(d) and not d.startswith('.')]
+        
+        # Filter out hidden files and sort for consistent order
+        files = [f for f in files if not f.startswith('.')]
+        files = sorted(files, key=lambda s: s.lower())
+        
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            
+            # Only process code files
+            if is_code_file(file_name):
+                extract_file_content(file_path, output_file)
+                file_count += 1
+    
+    return file_count
+
+def main():
+    """Main function to run the code extraction."""
+    # Get the project root (current working directory)
+    root_dir = os.getcwd()
+    
+    # Create output file in root directory
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    output_filename = f"code_extraction_{timestamp}.txt"
+    output_path = os.path.join(root_dir, output_filename)
+    
+    print(f"Starting code extraction from: {root_dir}")
+    print(f"Output will be saved to: {output_path}")
+    print(f"Ignoring directories: dist, node_modules")
+    print(f"Ignoring files: package-lock.json")
+    print(f"{'='*80}\n")
+    
+    with open(output_path, 'w', encoding='utf-8') as output_file:
+        # Write header information
+        header_info = f"CODE EXTRACTION REPORT\n"
+        header_info += f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        header_info += f"Root Directory: {root_dir}\n"
+        header_info += f"Ignored Directories: dist, node_modules\n"
+        header_info += f"Ignored Files: package-lock.json\n"
+        header_info += f"{'='*80}\n\n"
+        
+        print(header_info)
+        output_file.write(header_info)
+        
+        # Print directory tree
+        print("DIRECTORY TREE STRUCTURE:")
+        print("-" * 40)
+        output_file.write("DIRECTORY TREE STRUCTURE:\n")
+        output_file.write("-" * 40 + "\n")
+        
+        print_directory_tree(root_dir, output_file)
+        
+        # Extract file contents
+        file_count = scan_and_extract_files(root_dir, output_file)
+        
+        # Write footer
+        footer = f"\n{'='*80}\n"
+        footer += f"EXTRACTION COMPLETE\n"
+        footer += f"Total files processed: {file_count}\n"
+        footer += f"Output saved to: {output_path}\n"
+        footer += f"{'='*80}\n"
+        
+        print(footer)
+        output_file.write(footer)
+    
+    print(f"\nCode extraction completed successfully!")
+    print(f"Output saved to: {output_path}")
+
+if __name__ == "__main__":
+    main()
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\code_extractor.py
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\README—Developer Onramp.md
+TYPE: .md
+================================================================================
+
+
+
+This section provides essential information for developers to quickly get up to speed with the QiPortal project.
+
+## Environment Setup
+
+- **Prerequisites**: Node.js v18+, npm v9+, PostgreSQL v14+
+- **Installation**: Clone repo and run `npm install`
+- **Environment Variables**: Copy `.env.example` to `.env` and configure settings
+- **Local Development**: Run `npm run dev` for hot-reload server
+
+## Repository Structure
+
+- **/src**: Source code for the application
+- **/src/components**: Reusable UI components
+- **/src/modules**: Feature-specific code organized by module
+- **/src/lib**: Shared utilities and helpers
+- **/src/api**: API routes and handlers
+- **/prisma**: Database schema and migrations
+- **/public**: Static assets
+- **/tests**: Test suites organized by module
+
+## Testing
+
+- **Unit Tests**: Run `npm test` for Jest test suite
+- **Integration Tests**: Run `npm run test:integration`
+- **E2E Tests**: Run `npm run test:e2e` for Playwright tests
+- **Coverage**: Generate reports with `npm run test:coverage`
+
+## Deployment
+
+- **CI/CD Pipeline**: GitHub Actions for automated testing and deployment
+- **Staging**: Automatic deployment to staging on main branch
+- **Production**: Manual promotion from staging with approval
+- **Database Migrations**: Run automatically during deployment
+
+## API Documentation
+
+- **OpenAPI Spec**: Available at `/docs` endpoint in development
+- **Authentication**: JWT-based with refresh tokens
+- **Rate Limiting**: Implemented for all public endpoints
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\README—Developer Onramp.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\1.0 Scaffolding (Master Plan).md
+TYPE: .md
+================================================================================
+
+## Client Portal App: Master Project Plan
+
+*Last Updated: August 29, 2025*
+
+This document serves as the master guide for the development of our client portal application (QiPortal). It contains a high-level overview of the project, a step-by-step development guide, and links to all supporting documentation and assets.
+
+# 1.Project Scaffolding
+
+This section outlines the foundational requirements and setup for the project, establishing the core architecture and development approach.
+
+## 1.1 Requirements
+
+- **Functional Requirements**:
+    - Profile Settings - User profile management, preferences, notification settings, and account controls
+    - Knowledge Base - Searchable repository of articles, guides, FAQs, and documentation
+    - Document Management - Secure storage, versioning, categorization, and sharing of client documents
+    - Messaging - Secure client-team communication with history and notifications
+    - Projects/Engagements
+        - Task Management - Assignment, tracking, dependencies, and status updates
+    - Chat Bot - AI-powered assistance for common questions and simple tasks
+    - Dashboards
+        - Overview - Consolidated client status and activity summary
+        - Task Status - Visual representation of open tasks and progress
+        - Summary of KPIs - Key performance indicators relevant to client objectives
+        - Recent Activity - Timeline of latest actions and updates
+        - Current Events - Calendar integration showing upcoming meetings/deadlines
+        - Announcements - Important updates and notices from the team
+        - Alerts - Time-sensitive notifications requiring client attention
+    - Road mapping
+        - Goals - Long-term objectives with measurable outcomes
+        - Milestones - Key achievements and delivery points in the client journey
+    - Billing/Subscriptions - Invoice access, payment history, and subscription management
+- **Non-Functional Requirements**: Security, performance, accessibility, scalability.
+    - Security
+        - Access Control - Role-based permissions and content restrictions
+        - Roles - Admin, team member, client manager, client user hierarchies
+        - Membership - Organization-level access management
+        - Profiles - Individual user identification and personalization
+    - Mobile Friendly - Responsive design with mobile-optimized interfaces
+    - Scalable - Architecture designed to handle growing client base and data volume
+    - Performance - Fast load times and responsive interactions (target: <2s page loads)
+    - Accessibility - WCAG 2.1 AA compliance for inclusive usage
+- **Technical Stack**: Modern web technologies chosen for performance, security, and developer experience.
+    - Cursor - AI-assisted development environment
+    - Github - Version control and CI/CD pipeline integration
+    - Cloudflare - DNS, CDN, and static frontend hosting (deployment only)
+    - Supabase - Backend as a service with authentication, database, storage, and real-time features
+    - React - Frontend library with Next.js framework
+    - Node.js - Server-side JavaScript runtime
+    - PostgreSQL - Relational database for structured data storage
+    - Tailwind CSS - Utility-first CSS framework for consistent styling
+    - TypeScript - Static typing for improved code quality
+    
+    **Authentication Architecture**: All authentication, authorization, and user management are handled exclusively through Supabase Auth. Cloudflare is used only for DNS, CDN, and static frontend hosting.
+
+### 1.2 Environment Setup
+
+- **Development Environment**
+    - IDE: VS Code with Cursor AI integration for accelerated development
+    - Node.js v18+ and npm/yarn for package management
+    - Docker for containerized local development
+    - Local PostgreSQL instance for database development
+- **Version Control**
+    - GitHub repository with branch protection rules
+    - Branch strategy: main, develop, feature/*, hotfix/*
+    - Pull request templates and code review process
+    - GitHub Actions for CI/CD automation
+- **Cloud Infrastructure**
+    - Supabase for authentication, database, storage, and real-time features
+    - Vercel for frontend hosting and serverless functions
+    - Cloudflare for DNS, CDN, and static frontend hosting
+    - GitHub Secrets for environment variable management
+    
+    **Authentication Architecture**: All authentication, authorization, and user management are handled exclusively through Supabase Auth. Cloudflare is used only for DNS, CDN, and static frontend hosting.
+
+### 2. Design and Planning
+
+- **Architecture Overview**
+    - Frontend: React with Next.js, deployed on Vercel
+    - Backend: Supabase for authentication, database, storage, and real-time features
+    - API Layer: RESTful endpoints with GraphQL for complex queries
+    - Microservices: Isolated services for messaging, notifications, and AI chatbot
+    
+    **Authentication Architecture**: All authentication, authorization, and user management are handled exclusively through Supabase Auth. Cloudflare is used only for DNS, CDN, and static frontend hosting.
+- **Data Models**
+    - Users: Authentication profiles, permissions, and preferences
+    - Organizations: Client company structure with team hierarchies
+    - Projects: Milestones, tasks, timelines, and dependencies
+    - Documents: Files, metadata, versions, and sharing permissions
+    - Messages: Threaded conversations with read receipts
+    - Knowledge Base: Articles, categories, and search indices
+- **API Specification**
+    - RESTful endpoints with consistent naming conventions
+    - JWT authentication with role-based access control
+    - Rate limiting and request throttling for security
+    - Comprehensive Swagger/OpenAPI documentation
+    - Versioned endpoints to support graceful upgrades
+- **User Personas**
+    - Client Admin: Manages team access and billing
+    - Client User: Day-to-day portal user needing task/document access
+    - QiLife Admin: Full system configuration and client setup
+    - QiLife Manager: Oversees client relationships and projects
+    - QiLife Team Member: Handles specific client deliverables
+- **Wireframes and Mockups**
+    - Dashboard layouts for different user roles
+    - Navigation flow and information architecture
+    - Mobile-responsive component designs
+    - Interactive prototypes for user testing
+    - Figma design files with component libraries
+- **Design System**
+    - Color palette aligned with QiLife branding
+    - Typography scale with accessible font choices
+    - Component library with Storybook documentation
+    - Responsive grid system for consistent layouts
+    - Animation and transition guidelines
+    - Dark/light mode theming support
+
+### 3. Core Modules
+
+- **Authentication & User Management**
+    - User registration, login, and account recovery flows
+    - Profile management with customizable preferences
+    - Role-based access control (Admin, Manager, Client)
+    - Organization and team hierarchies
+    - Security features: 2FA, session management, audit logs
+- **Document Management**
+    - Secure document storage with versioning
+    - Categorization and tagging system
+    - Permission-based sharing controls
+    - Document preview and annotation
+    - Automated document workflows (approvals, notifications)
+- **Secure Messaging**
+    - Encrypted client-team communication
+    - Thread organization and history preservation
+    - File attachment capabilities
+    - Read receipts and delivery confirmations
+    - Notification system with email fallbacks
+- **Knowledge Base (KB)**
+    - Searchable article repository with categorization
+    - Content versioning and update tracking
+    - Rich media support (images, videos, embeds)
+    - User feedback and rating system
+    - Analytics on article usage and effectiveness
+- **Project Management**
+    - Milestone and task tracking with dependencies
+    - Resource allocation and capacity planning
+    - Progress visualization (Kanban, timeline views)
+    - Client deliverable management
+    - Time and cost tracking integration
+- **Dashboard & Reporting**
+    - Customizable client overview dashboardsCustomizable client overview dashboards
+    - KPI visualization and progress trackingKPI visualization and progress tracking
+    - Activity feeds and notification centersActivity feeds and notification centers
+    - Exportable reports for client meetingsExportable reports for client meetings
+    - Data visualization tools for insightsData visualization tools for insights
+- **Billing & Subscriptions**
+    - Invoice management and payment historyInvoice management and payment history
+    - Subscription plan administrationSubscription plan administration
+    - Payment processing integrationPayment processing integration
+    - Automated billing notificationsAutomated billing notifications
+    - Financial reporting and analyticsFinancial reporting and analytics
+- **AI Assistant**
+    - Contextual chatbot for common client questionsContextual chatbot for common client questions
+    - Document and knowledge base search assistanceDocument and knowledge base search assistance
+    - Task creation and management through natural languageTask creation and management through natural language
+    - Predictive analytics for client needsPredictive analytics for client needs
+    - Integration with other modules for seamless experienceIntegration with other modules for seamless experience
+
+### 4. Development Workflow
+
+- **Development Sprints**
+    - Two-week agile sprints with defined deliverables
+    - Daily standups to track progress and resolve blockers
+    - Sprint planning sessions for backlog prioritization
+    - End-of-sprint demos and retrospectives
+- **Testing**
+    - Unit tests with Jest for component and service validation
+    - Integration tests for API and database interactions
+    - End-to-end testing with Cypress for user flows
+    - Security testing for authentication and data protection
+    - Performance testing under various load conditions
+- **Deployment**
+    - CI/CD pipeline with GitHub Actions for automated builds
+    - Staging environment for QA and client preview
+    - Production deployment with rollback capabilities
+    - Database migration scripts and versioning
+    - Monitoring and alerting system integration
+
+### 5. Visual Design and UI/UX
+
+- **Glass Morphism Design System**
+    - Frosted glass card components with subtle transparency effects
+    - Layered elements with backdrop blur for depth perception
+    - Soft shadows and rounded corners for a modern feel
+    - Light border highlights to enhance dimensionality
+- **Color Palette**
+    - Primary: Deep electric blue gradients (#0b3d91 to #1e88e5)
+    - Secondary: Plasma purple for shadows and accents (#8e24aa to #d500f9)
+    - Neutral: Soft grays for background and typography (#f8f9fa to #212121)
+    - Accent: Strategic pops of teal for interactive elements (#00bcd4)
+- **Interactive Elements**
+    - Micro-animations for buttons and card hovers
+    - Subtle gradient shifts on state changes (hover, active, focus)
+    - Animated transitions between content sections
+    - Tactile feedback through motion design
+- **Typography**
+    - Sans-serif primary font (Inter) for clear readability
+    - Consistent type scale with 1.2 ratio for hierarchy
+    - Strategic font weight variations instead of multiple font families
+    - Minimum 16px base font size for accessibility
+- **Minimalist Approach**
+    - Focused content with ample white space
+    - Strategic use of dividers and grouping
+    - Icon system with consistent stroke weight and style
+    - Reduced visual noise through progressive disclosure
+- **Component Library**
+    - Glass-style cards with hover animations
+    - Gradient buttons with subtle hover effects
+    - Custom form elements with animated validation
+    - Data visualization components with consistent styling
+    - Loading states and skeleton screens with branded animations
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\1.0 Scaffolding (Master Plan).md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\_QiPortal Master Doc(s).md
+TYPE: .md
+================================================================================
+
+# Master Overview
+
+This document merges three sources—**Scaffolding**, **Dev Doc**, and **README**—into one Obsidian-friendly file. It is organized for fast navigation and canvas mapping.
+## Quick Map
+[[1.0 Scaffolding (Master Plan)]]
+
+---
+[[2.0 Module Development Documents]]
+[[2.1 Knowledge Base Module]]
+[[2.2 Document Management Module]]
+[[2.3 Secure Messaging Module]]
+
+[[2.7 Dashboard & Reporting Module]]
+[[2.6 Billing & Subscriptions Module]]
+[[2.5 AI Assistant Module]]
+[[2.4 Dev Doc—Project Management]]
+
+---
+[[README—Developer Onramp]]
+[[3.0 Canvas & RAG Notes]]
+[[Change Log]]
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\_QiPortal Master Doc(s).md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\Development Plan.md
+TYPE: .md
+================================================================================
+
+# QiAlly Portal - Development Plan
+
+## 📋 Project Overview and Scope
+
+### 🎯 Goal
+Build a secure, all-in-one client portal to centralize documents, messages, a knowledge base, and project management for business operations and client collaboration.
+
+### 🏗 Core Architecture
+- **Frontend**: React 19.1.1 with Vite, TailwindCSS, and Framer Motion
+- **Backend**: Supabase (PostgreSQL + Auth + Real-time)
+- **Authentication**: Supabase Auth with JWT tokens (exclusive)
+- **Deployment**: Cloudflare Pages with static generation (frontend hosting only)
+- **Knowledge Base**: Static site generation with access control
+
+**Authentication Architecture**: All authentication, authorization, and user management are handled exclusively through Supabase Auth. Cloudflare is used only for DNS, CDN, and static frontend hosting.
+
+## 👥 User Roles and Permissions
+
+### **Client User**
+- Access to assigned projects and documents
+- View knowledge base articles for their organization
+- Send and receive messages
+- Track project progress and milestones
+- Update profile and preferences
+
+### **Admin User**
+- Full system access and user management
+- Create and manage client organizations
+- Access all knowledge bases and content
+- System monitoring and analytics
+- Configuration and settings management
+
+### **Team Member**
+- Access to internal tools and resources
+- Project management and task assignment
+- Client communication and support
+- Knowledge base content creation
+- Document management and sharing
+
+## 🚀 Development Phases
+
+### **Phase 1: Foundation & Authentication** 
+**Duration: 2-3 weeks**
+**Priority: Critical**
+
+#### **1.1 Project Setup & Configuration**
+- [x] Initialize React + Vite project structure
+- [x] Configure TailwindCSS and design system
+- [x] Set up ESLint and code quality tools
+- [x] Configure Supabase project and environment
+- [x] Set up Git repository and branching strategy
+
+#### **1.2 Authentication System**
+- [x] Implement Supabase Auth integration
+- [x] Create login/logout functionality
+- [x] Build user registration flow
+- [x] Implement password reset functionality
+- [x] Create protected route components
+- [x] Set up user context and state management
+
+#### **1.3 User Management**
+- [x] Design user roles and permissions system
+- [x] Create user profile management
+- [x] Implement role-based access control
+- [x] Build admin user management interface
+- [x] Set up user invitation system
+
+**Deliverables:**
+- Working authentication system
+- User management interface
+- Protected routes and access control
+- Basic user dashboard
+
+---
+
+### **Phase 2: Core Dashboard & Navigation**
+**Duration: 2-3 weeks**
+**Priority: High**
+
+#### **2.1 Dashboard Layout**
+- [x] Design and implement main dashboard layout
+- [x] Create responsive sidebar navigation
+- [x] Build header with user menu and notifications
+- [x] Implement breadcrumb navigation
+- [x] Create mobile-responsive design
+
+#### **2.2 User Dashboard**
+- [x] Build client dashboard with project overview
+- [x] Create admin dashboard with system metrics
+- [x] Implement team member dashboard
+- [x] Add activity feed and recent updates
+- [x] Create quick action buttons and shortcuts
+
+#### **2.3 Navigation & Routing**
+- [x] Set up React Router with protected routes
+- [x] Implement dynamic navigation based on user role
+- [x] Create breadcrumb navigation system
+- [x] Add route guards and access control
+- [x] Implement deep linking and URL management
+
+**Deliverables:**
+- Complete dashboard layout
+- Role-based navigation
+- Responsive design
+- User-specific dashboards
+
+---
+
+### **Phase 3: Knowledge Base System**
+**Duration: 3-4 weeks**
+**Priority: High**
+
+#### **3.1 Static Generation Engine**
+- [x] Build markdown processing system
+- [x] Create static file generation scripts
+- [x] Implement frontmatter parsing
+- [x] Set up content organization structure
+- [x] Create build and deployment scripts
+
+#### **3.2 Knowledge Base Interface**
+- [x] Design knowledge base UI components
+- [x] Implement category and article browsing
+- [x] Create search functionality with Fuse.js
+- [x] Build article viewer with markdown rendering
+- [x] Add tags and filtering system
+
+#### **3.3 Access Control & Multi-Client Support**
+- [x] Implement client-specific knowledge bases
+- [x] Create access control configuration
+- [x] Build admin interface for KB management
+- [x] Add content versioning and rollback
+- [x] Implement analytics and usage tracking
+
+#### **3.4 Content Management**
+- [ ] Create content editor interface
+- [ ] Implement markdown preview
+- [ ] Add image upload and management
+- [ ] Create content approval workflow
+- [ ] Build content import/export functionality
+
+**Deliverables:**
+- Complete knowledge base system
+- Static generation with access control
+- Multi-client support
+- Content management tools
+
+---
+
+### **Phase 4: Document Management**
+**Duration: 2-3 weeks**
+**Priority: High**
+
+#### **4.1 File Upload & Storage**
+- [ ] Integrate Supabase Storage for file uploads
+- [ ] Create drag-and-drop file upload interface
+- [ ] Implement file type validation and security
+- [ ] Add file compression and optimization
+- [ ] Create file versioning system
+
+#### **4.2 Document Organization**
+- [ ] Build folder and file organization system
+- [ ] Create document tagging and categorization
+- [ ] Implement search and filtering
+- [ ] Add document sharing and permissions
+- [ ] Create document preview functionality
+
+#### **4.3 Document Security**
+- [ ] Implement document-level access control
+- [ ] Add encryption for sensitive documents
+- [ ] Create audit trail for document access
+- [ ] Implement document expiration and cleanup
+- [ ] Add watermarking and protection features
+
+**Deliverables:**
+- Secure document management system
+- File upload and organization
+- Access control and security
+- Document preview and sharing
+
+---
+
+### **Phase 5: Messaging System**
+**Duration: 2-3 weeks**
+**Priority: Medium**
+
+#### **5.1 Real-time Messaging**
+- [ ] Integrate Supabase Real-time for messaging
+- [ ] Create chat interface and components
+- [ ] Implement message threading and organization
+- [ ] Add file sharing in messages
+- [ ] Create message search and filtering
+
+#### **5.2 Notification System**
+- [ ] Build email notification system
+- [ ] Implement in-app notifications
+- [ ] Create notification preferences
+- [ ] Add push notifications (optional)
+- [ ] Create notification history and management
+
+#### **5.3 Message Management**
+- [ ] Create message templates and automation
+- [ ] Implement message archiving and cleanup
+- [ ] Add message analytics and reporting
+- [ ] Create message export functionality
+- [ ] Build message moderation tools
+
+**Deliverables:**
+- Real-time messaging system
+- Notification system
+- Message management tools
+- Chat interface and features
+
+---
+
+### **Phase 6: Project Management**
+**Duration: 3-4 weeks**
+**Priority: Medium**
+
+#### **6.1 Project Creation & Management**
+- [ ] Build project creation and setup interface
+- [ ] Create project templates and workflows
+- [ ] Implement project status tracking
+- [ ] Add project timeline and milestones
+- [ ] Create project analytics and reporting
+
+#### **6.2 Task Management**
+- [ ] Build task creation and assignment system
+- [ ] Implement task status and progress tracking
+- [ ] Create task dependencies and relationships
+- [ ] Add task comments and collaboration
+- [ ] Implement task automation and workflows
+
+#### **6.3 Team Collaboration**
+- [ ] Create team member assignment system
+- [ ] Implement workload balancing and tracking
+- [ ] Add team communication tools
+- [ ] Create project dashboards and reports
+- [ ] Build team performance analytics
+
+**Deliverables:**
+- Complete project management system
+- Task tracking and assignment
+- Team collaboration tools
+- Project analytics and reporting
+
+---
+
+### **Phase 7: Advanced Features & Integration**
+**Duration: 2-3 weeks**
+**Priority: Low**
+
+#### **7.1 Analytics & Reporting**
+- [ ] Create comprehensive analytics dashboard
+- [ ] Implement user activity tracking
+- [ ] Build custom report generation
+- [ ] Add data visualization and charts
+- [ ] Create export and sharing functionality
+
+#### **7.2 API & Integrations**
+- [ ] Build RESTful API for external integrations
+- [ ] Create webhook system for real-time updates
+- [ ] Implement third-party service integrations
+- [ ] Add data import/export capabilities
+- [ ] Create API documentation and SDK
+
+#### **7.3 Advanced Security**
+- [ ] Implement advanced security features
+- [ ] Add two-factor authentication
+- [ ] Create security audit logging
+- [ ] Implement data backup and recovery
+- [ ] Add compliance and governance tools
+
+**Deliverables:**
+- Analytics and reporting system
+- API and integration capabilities
+- Advanced security features
+- Compliance and governance tools
+
+---
+
+### **Phase 8: Testing & Deployment**
+**Duration: 2-3 weeks**
+**Priority: Critical**
+
+#### **8.1 Testing**
+- [ ] Create comprehensive test suite
+- [ ] Implement unit and integration tests
+- [ ] Add end-to-end testing
+- [ ] Perform security testing and audits
+- [ ] Create performance testing and optimization
+
+#### **8.2 Deployment & DevOps**
+- [ ] Set up CI/CD pipeline
+- [ ] Configure production environment
+- [ ] Implement monitoring and logging
+- [ ] Create backup and disaster recovery
+- [ ] Set up performance monitoring
+
+#### **8.3 Documentation & Training**
+- [ ] Create comprehensive user documentation
+- [ ] Build admin and developer guides
+- [ ] Create video tutorials and training materials
+- [ ] Implement in-app help and support
+- [ ] Create knowledge base articles
+
+**Deliverables:**
+- Fully tested and deployed system
+- Complete documentation
+- Training materials
+- Production-ready application
+
+---
+
+## 🎨 Design and User Experience (UX)
+
+### **Design Principles**
+- **Professional and Clean**: Modern, minimalist design with clear hierarchy
+- **Accessibility First**: Follow WCAG 2.1 guidelines for accessibility
+- **Mobile Responsive**: Optimized for all device sizes
+- **Performance Focused**: Fast loading times and smooth interactions
+
+### **Layout Structure**
+- **Standard Dashboard Layout**: Sidebar navigation with main content area
+- **Consistent Navigation**: Breadcrumbs and clear navigation paths
+- **Responsive Grid**: Flexible layouts that adapt to screen size
+- **Glass Morphism**: Modern UI with subtle transparency and blur effects
+
+### **Color Scheme**
+- **Primary**: Blue to Purple gradient (`from-blue-500 to-purple-500`)
+- **Secondary**: Cyan accents (`cyan-500`)
+- **Neutral**: Gray scale with proper contrast ratios
+- **Status Colors**: Green (success), Yellow (warning), Red (error)
+
+## 💻 Coding Standards
+
+### **React Development**
+- **Functional Components**: Use functional components with hooks
+- **TypeScript**: Implement TypeScript for type safety
+- **Component Structure**: Follow single responsibility principle
+- **State Management**: Use React Context and local state appropriately
+
+### **Code Quality**
+- **ESLint Configuration**: Strict linting rules for code consistency
+- **Prettier**: Automatic code formatting
+- **Comments**: Clear, concise comments for complex logic
+- **Documentation**: JSDoc comments for functions and components
+
+### **Performance**
+- **Code Splitting**: Implement lazy loading for routes and components
+- **Optimization**: Use React.memo and useMemo for performance
+- **Bundle Size**: Monitor and optimize bundle size
+- **Caching**: Implement appropriate caching strategies
+
+## 🔒 Security Requirements
+
+### **Authentication & Authorization**
+- **JWT Tokens**: Secure token-based authentication
+- **Role-Based Access**: Granular permissions system
+- **Session Management**: Secure session handling and timeout
+- **Password Security**: Strong password requirements and hashing
+
+### **Data Protection**
+- **Encryption**: Encrypt sensitive data at rest and in transit
+- **Access Control**: Row-level security in database
+- **Audit Logging**: Comprehensive audit trails
+- **Data Backup**: Regular automated backups
+
+### **Application Security**
+- **Input Validation**: Validate all user inputs
+- **SQL Injection Prevention**: Use parameterized queries
+- **XSS Protection**: Sanitize user-generated content
+- **CSRF Protection**: Implement CSRF tokens
+
+### **Compliance**
+- **GDPR Compliance**: Data privacy and user rights
+- **SOC 2 Compliance**: Security and availability controls
+- **Regular Security Audits**: Periodic security assessments
+- **Vulnerability Management**: Regular security updates
+
+## 📊 Success Metrics
+
+### **Performance Metrics**
+- **Page Load Time**: < 2 seconds for initial load
+- **Time to Interactive**: < 3 seconds
+- **Core Web Vitals**: Meet Google's Core Web Vitals standards
+- **Uptime**: 99.9% availability
+
+### **User Experience Metrics**
+- **User Adoption**: 80% of invited users activate accounts
+- **Feature Usage**: Track usage of key features
+- **User Satisfaction**: Regular user feedback and surveys
+- **Support Tickets**: Monitor and reduce support requests
+
+### **Business Metrics**
+- **Client Retention**: Improved client satisfaction and retention
+- **Operational Efficiency**: Reduced time for common tasks
+- **Cost Savings**: Reduced operational costs
+- **Scalability**: System can handle growth in users and data
+
+## 🚀 Deployment Strategy
+
+### **Development Environment**
+- **Local Development**: Docker containers for consistent environment
+- **Staging Environment**: Mirror of production for testing
+- **Feature Branches**: Git flow for feature development
+- **Code Review**: Mandatory code review process
+
+### **Production Deployment**
+- **Cloudflare Pages**: Frontend deployment with edge caching
+- **Supabase**: Backend services and database
+- **CDN**: Global content delivery network
+- **Monitoring**: Real-time monitoring and alerting
+
+### **Maintenance**
+- **Regular Updates**: Scheduled maintenance windows
+- **Backup Strategy**: Automated daily backups
+- **Disaster Recovery**: Comprehensive recovery procedures
+- **Performance Monitoring**: Continuous performance tracking
+
+---
+
+## 📅 Timeline Summary
+
+| Phase | Duration | Priority | Key Deliverables |
+|-------|----------|----------|------------------|
+| Phase 1 | 2-3 weeks | Critical | Authentication, User Management |
+| Phase 2 | 2-3 weeks | High | Dashboard, Navigation |
+| Phase 3 | 3-4 weeks | High | Knowledge Base System |
+| Phase 4 | 2-3 weeks | High | Document Management |
+| Phase 5 | 2-3 weeks | Medium | Messaging System |
+| Phase 6 | 3-4 weeks | Medium | Project Management |
+| Phase 7 | 2-3 weeks | Low | Advanced Features |
+| Phase 8 | 2-3 weeks | Critical | Testing, Deployment |
+
+**Total Estimated Duration: 18-25 weeks**
+
+This development plan provides a structured approach to building the QiAlly Portal, with clear phases, deliverables, and success metrics. Each phase can be worked on independently while maintaining the overall project vision and goals.
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\Development Plan.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\Workflow Guide.md
+TYPE: .md
+================================================================================
+
+# QiAlly Portal - Structured Development Workflow
+
+## 🎯 Overview
+
+This document outlines a structured approach to developing the QiAlly Portal using AI assistance. The workflow breaks down the project into small, manageable tasks to minimize context drift and ensure high-quality code.
+
+## 📋 Workflow Structure
+
+### **Phase 1: Architecture & Foundation**
+1. **Technical Architecture Overview**
+2. **Database Schema Design**
+3. **API Structure Definition**
+4. **Component Architecture Planning**
+
+### **Phase 2: Module Development**
+1. **Authentication Module**
+2. **User Management Module**
+3. **Knowledge Base Module**
+4. **Document Management Module**
+5. **Messaging Module**
+6. **Project Management Module**
+
+### **Phase 3: Integration & Testing**
+1. **Module Integration**
+2. **End-to-End Testing**
+3. **Performance Optimization**
+4. **Security Auditing**
+
+## 🔧 Development Workflow Steps
+
+### **Step 1: Define Architecture and Data Models**
+
+**Prompt Template:**
+```
+[Paste Seed File Here]
+
+**Task:** Create a technical architecture overview, including the data models for the database. Use Mermaid.js or another diagramming tool for the architecture and provide SQL schemas for the database.
+
+**Requirements:**
+- System architecture diagram showing frontend, backend, and database layers
+- Database schema with all tables, relationships, and constraints
+- API endpoint structure and authentication flow
+- Component hierarchy and state management strategy
+- Security model and access control implementation
+
+**Deliverables:**
+- Mermaid.js architecture diagram
+- Complete SQL schema with RLS policies
+- API documentation structure
+- Component architecture diagram
+```
+
+### **Step 2: Develop a Single Module**
+
+**Prompt Template:**
+```
+[Paste Seed File Here]
+
+**Task:** Develop the React component and Supabase backend for the "[MODULE_NAME]" module. Include features for:
+- [List specific features]
+- [Security requirements]
+- [Performance considerations]
+
+**Requirements:**
+- React component with TypeScript
+- Supabase database functions and RLS policies
+- API integration layer
+- Error handling and loading states
+- Unit tests for component and API functions
+
+**Deliverables:**
+- Component code with proper TypeScript types
+- Database schema updates and RLS policies
+- API integration functions
+- Unit test suite
+- Documentation for the module
+```
+
+### **Step 3: Integrate and Test**
+
+**Prompt Template:**
+```
+[Paste Seed File Here]
+
+**Task:** Write integration tests to ensure the backend [MODULE_NAME] API properly interacts with the frontend component. Provide the Jest test suite code.
+
+**Requirements:**
+- End-to-end integration tests
+- API endpoint testing
+- Component integration testing
+- Error scenario testing
+- Performance testing
+
+**Deliverables:**
+- Jest integration test suite
+- API endpoint test coverage
+- Component integration test coverage
+- Performance benchmark tests
+```
+
+### **Step 4: Refactor and Optimize**
+
+**Prompt Template:**
+```
+[Paste Seed File Here]
+
+**Task:** Review the [MODULE_NAME] module for potential security vulnerabilities or performance issues. Suggest and implement optimizations.
+
+**Requirements:**
+- Security audit of the module
+- Performance analysis and optimization
+- Code quality improvements
+- Accessibility enhancements
+- Documentation updates
+
+**Deliverables:**
+- Security audit report
+- Performance optimization recommendations
+- Refactored code with improvements
+- Updated documentation
+```
+
+### **Step 5: Update the Seed File**
+
+**Prompt Template:**
+```
+[Paste Seed File Here]
+
+**Task:** Summarize the changes made in the [MODULE_NAME] module and update the "Prior Work Summary" section of the seed file. Provide the new, updated seed file.
+
+**Requirements:**
+- Comprehensive summary of completed work
+- Updated architecture diagrams if needed
+- New API endpoints and database changes
+- Component structure updates
+- Testing coverage summary
+
+**Deliverables:**
+- Updated seed file with current progress
+- Summary of completed features
+- Next steps and priorities
+- Known issues and technical debt
+```
+
+## 🛡️ Conversational Guardrails
+
+### **1. Low Temperature Setting**
+- **For coding tasks:** Use temperature 0.1-0.3 for deterministic, consistent code
+- **For brainstorming:** Use temperature 0.7-0.9 for creative solutions
+- **For review tasks:** Use temperature 0.2-0.4 for balanced analysis
+
+### **2. Reasoning Requests**
+**Before generating complex code:**
+```
+"Explain the proposed solution before writing any code. Include:
+- Architecture decisions and trade-offs
+- Security considerations
+- Performance implications
+- Testing strategy
+- Potential edge cases"
+```
+
+### **3. Alternative Solutions**
+**For major architectural decisions:**
+```
+"Provide two or three alternative solutions and explain the trade-offs of each:
+- Solution A: [Description]
+- Solution B: [Description] 
+- Solution C: [Description]
+
+Include pros/cons, complexity, performance, and maintainability for each."
+```
+
+### **4. Code Validation**
+**After generating code:**
+```
+"Review the generated code for:
+- Security vulnerabilities
+- Performance issues
+- TypeScript type safety
+- Error handling
+- Accessibility compliance
+- Code style consistency
+
+Provide specific recommendations for improvements."
+```
+
+## 📝 Seed File Template
+
+```markdown
+# QiAlly Portal - Development Seed File
+
+## 🎯 Project Overview
+**Goal:** Build a secure, all-in-one client portal for document management, messaging, knowledge base, and project management.
+
+**Tech Stack:**
+- Frontend: React 19.1.1 + Vite + TailwindCSS + Framer Motion
+- Backend: Supabase (PostgreSQL + Auth + Real-time)
+- Deployment: Cloudflare Pages (frontend hosting only)
+- Authentication: Supabase Auth (exclusive)
+- Testing: Jest + React Testing Library
+
+## 🏗️ Current Architecture
+
+### System Architecture
+```mermaid
+[Current architecture diagram]
+```
+
+### Database Schema
+```sql
+[Current database schema]
+```
+
+### API Structure
+```
+[Current API endpoints]
+```
+
+### Component Hierarchy
+```
+[Current component structure]
+```
+
+## 📋 Prior Work Summary
+
+### Completed Modules
+- [ ] Authentication System
+- [ ] User Management
+- [ ] Knowledge Base (Static Generation)
+- [ ] Document Management
+- [ ] Messaging System
+- [ ] Project Management
+
+### Current Progress
+**Phase:** [Current Phase]
+**Module:** [Current Module]
+**Status:** [In Progress/Completed/Testing]
+
+### Recent Changes
+- [Date] - [Description of changes]
+- [Date] - [Description of changes]
+
+### Known Issues
+- [Issue 1]
+- [Issue 2]
+
+### Technical Debt
+- [Debt item 1]
+- [Debt item 2]
+
+## 🎯 Next Steps
+
+### Immediate Tasks
+1. [Task 1]
+2. [Task 2]
+3. [Task 3]
+
+### Upcoming Milestones
+- [Milestone 1] - [Target Date]
+- [Milestone 2] - [Target Date]
+
+## 🔧 Development Environment
+
+### Local Setup
+```bash
+# Commands to run the project
+npm install
+npm run dev
+npm run build:kb
+npm run build:all
+```
+
+### Environment Variables
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### Testing Commands
+```bash
+npm test
+npm run test:integration
+npm run test:e2e
+```
+
+## 📚 Documentation Links
+- [README.md](./README.md)
+- [DEVELOPMENT_PLAN.md](./DEVELOPMENT_PLAN.md)
+- [API Documentation](./docs/api.md)
+- [Component Library](./docs/components.md)
+```
+
+## 🚀 Module Development Templates
+
+### **Authentication Module Template**
+```typescript
+// src/modules/auth/AuthProvider.tsx
+// src/modules/auth/LoginForm.tsx
+// src/modules/auth/ProtectedRoute.tsx
+// src/lib/auth.ts
+// tests/auth.test.ts
+```
+
+### **Document Management Template**
+```typescript
+// src/modules/documents/DocumentList.tsx
+// src/modules/documents/DocumentUpload.tsx
+// src/modules/documents/DocumentViewer.tsx
+// src/lib/documents.ts
+// tests/documents.test.ts
+```
+
+### **Knowledge Base Template**
+```typescript
+// src/modules/kb/KBPortal.tsx
+// src/modules/kb/KBViewer.tsx
+// src/modules/kb/KBSearch.tsx
+// src/lib/staticKbApi.ts
+// tests/kb.test.ts
+```
+
+## 📊 Quality Assurance Checklist
+
+### **Before Code Review**
+- [ ] TypeScript types are properly defined
+- [ ] Error handling is implemented
+- [ ] Loading states are managed
+- [ ] Accessibility features are included
+- [ ] Unit tests are written
+- [ ] Code follows project style guide
+
+### **Before Integration**
+- [ ] API endpoints are tested
+- [ ] Database queries are optimized
+- [ ] Security policies are implemented
+- [ ] Performance is acceptable
+- [ ] Documentation is updated
+
+### **Before Deployment**
+- [ ] Integration tests pass
+- [ ] End-to-end tests pass
+- [ ] Security audit is completed
+- [ ] Performance benchmarks are met
+- [ ] User acceptance testing is done
+
+## 🔄 Iteration Process
+
+### **Daily Development Cycle**
+1. **Morning:** Review current seed file and plan day's tasks
+2. **Development:** Work on assigned module using structured prompts
+3. **Afternoon:** Test and validate completed work
+4. **Evening:** Update seed file and plan next day
+
+### **Weekly Review Cycle**
+1. **Monday:** Review previous week's progress
+2. **Wednesday:** Mid-week checkpoint and adjustments
+3. **Friday:** Complete weekly goals and update documentation
+
+### **Sprint Planning**
+1. **Sprint Start:** Define sprint goals and tasks
+2. **Sprint Middle:** Review progress and adjust priorities
+3. **Sprint End:** Complete sprint goals and plan next sprint
+
+---
+
+This structured workflow ensures consistent, high-quality development while maintaining clear communication and progress tracking throughout the project lifecycle.
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\1.0 Master Doc(s)\Workflow Guide.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.0 Module Development Documents.md
+TYPE: .md
+================================================================================
+
+[1. Document Management Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/1%20Document%20Management%20Module%2025ff84a04402807797b2d0c4d93c4c9c.md)
+[2. Secure Messaging Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/2%20Secure%20Messaging%20Module%2025ff84a0440280bab5bafc51c050d14d.md)
+[3. Knowledge Base Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/3%20Knowledge%20Base%20Module%2025ff84a044028006bcb8c7a9a89b45d9.md)
+[4. Dashboard & Reporting Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/4%20Dashboard%20&%20Reporting%20Module%2025ff84a04402802bace7dd131b0d39d4.md)
+[5. Billing & Subscriptions Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/5%20Billing%20&%20Subscriptions%20Module%2025ff84a0440280e6896ac2553fbc75e1.md)
+[6. AI Assistant Module](2%20Module%20Development%20Documents%2025ff84a0440280789052f0c896045991/6%20AI%20Assistant%20Module%2025ff84a044028000b7f2c8acfe059be4.md)
+[7 Dev Doc—Project Management](2.4%20Dev%20Doc—Project%20Management.md)
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.0 Module Development Documents.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.1 Knowledge Base Module.md
+TYPE: .md
+================================================================================
+
+# Knowledge Base Module
+
+## 🎯 Overview
+
+The Knowledge Base module provides a static site generation system inspired by Quartz, with client-specific access control and multi-tenant support. It allows organizations to maintain their own knowledge bases while ensuring users only see content they're authorized to access.
+
+## 🏗️ Architecture
+
+### Static Generation System
+- **Build Process**: Markdown files are processed at build time to generate static HTML, JSON, and search indexes
+- **Access Control**: Client-specific knowledge bases with role-based permissions
+- **Content Organization**: Hierarchical structure with categories, articles, and tags
+- **Search**: Client-side search using Fuse.js with pre-built search indexes
+
+### File Structure
+```
+kb-content/
+├── zy/                    # Client-specific content
+│   ├── getting-started.md
+│   └── process-optimization.md
+├── client-a/
+│   └── ...
+└── client-b/
+    └── ...
+
+public/kb/                 # Generated static files
+├── access-control.json    # Access control configuration
+├── zy/
+│   ├── index.html        # Client KB portal
+│   ├── search-index.json # Search index
+│   └── articles/         # Generated article files
+└── ...
+```
+
+## 🔧 Implementation
+
+### Build Script (`scripts/build-kb.js`)
+```javascript
+// Core functions:
+- loadClientConfig()      // Load client configuration
+- processMarkdownFile()   // Process markdown with frontmatter
+- generateClientKB()      // Generate client-specific KB
+- generateSearchIndex()   // Create search index
+- generateAccessControl() // Create access control file
+```
+
+### Configuration (`kb-config.json`)
+```json
+{
+  "clients": {
+    "zy": {
+      "name": "QiAlly",
+      "members": ["info@qially.me", "admin@qially.me"],
+      "public": false,
+      "description": "QiAlly internal knowledge base"
+    }
+  },
+  "global": {
+    "admins": ["admin@qially.me"],
+    "defaultClient": "zy"
+  }
+}
+```
+
+### API Layer (`src/lib/staticKbApi.js`)
+```javascript
+// Key functions:
+- loadAccessControl()     // Load access control configuration
+- checkClientAccess()     // Verify user access to client KB
+- getUserClients()        // Get user's accessible clients
+- getClientKBIndex()      // Load client KB index
+- searchClientDocuments() // Search within client KB
+```
+
+## 🚀 Features
+
+### ✅ Completed Features
+- [x] Static site generation from markdown files
+- [x] Client-specific access control
+- [x] Multi-tenant knowledge base support
+- [x] Search functionality with Fuse.js
+- [x] Admin interface for KB management
+- [x] Build and deployment scripts
+- [x] Markdown processing with frontmatter
+- [x] Category and article organization
+- [x] Tag-based filtering
+- [x] Responsive design
+
+### 🔄 In Progress
+- [ ] Content editor interface
+- [ ] Markdown preview functionality
+- [ ] Image upload and management
+- [ ] Content approval workflow
+- [ ] Version control and rollback
+
+### 📋 Planned Features
+- [ ] Real-time content updates
+- [ ] Advanced search filters
+- [ ] Content analytics
+- [ ] Export functionality
+- [ ] Integration with external CMS
+
+## 🔒 Security
+
+### Access Control
+- **Client Isolation**: Each client's content is completely isolated
+- **Role-Based Access**: Admin, team_member, and client_user roles
+- **Row Level Security**: Database-level access control
+- **Static Generation**: No server-side rendering vulnerabilities
+
+### Data Protection
+- **Static Files**: All content is pre-generated and served as static files
+- **No Dynamic Queries**: Search is performed client-side
+- **Access Validation**: All access checks happen before content delivery
+
+## 📊 Performance
+
+### Optimization Strategies
+- **Static Generation**: All content pre-generated at build time
+- **Client-Side Search**: No server requests for search
+- **Lazy Loading**: Content loaded on demand
+- **Caching**: Static files cached by CDN
+
+### Benchmarks
+- **Build Time**: ~30 seconds for 100 articles
+- **Search Performance**: <100ms for 1000 documents
+- **Page Load**: <2 seconds for initial load
+- **Bundle Size**: <50KB for search functionality
+
+## 🛠️ Development
+
+### Build Commands
+```bash
+# Build knowledge base only
+npm run build:kb
+
+# Build KB and main app
+npm run build:all
+
+# Deploy KB to production
+npm run deploy:kb
+```
+
+### Content Management
+1. **Add Content**: Place markdown files in `kb-content/{client}/`
+2. **Update Configuration**: Modify `kb-config.json` for new clients
+3. **Build**: Run `npm run build:kb` to regenerate static files
+4. **Deploy**: Use `npm run deploy:kb` to deploy changes
+
+### File Format
+```markdown
+---
+title: Getting Started
+tags: [guide, onboarding]
+description: Learn how to get started with our platform
+date: 2024-01-15
+---
+
+# Getting Started
+
+Your content here...
+```
+
+## 🔧 Configuration
+
+### Client Setup
+1. Create client folder in `kb-content/`
+2. Add client configuration to `kb-config.json`
+3. Add markdown files with proper frontmatter
+4. Run build script to generate static files
+
+### Access Control
+- **Public Clients**: Accessible to all authenticated users
+- **Private Clients**: Only accessible to client members and admins
+- **Admin Access**: Admins can access all knowledge bases
+
+## 📚 Documentation
+
+### User Guide
+- [Knowledge Base User Guide](./docs/kb-user-guide.md)
+- [Content Creation Guide](./docs/kb-content-guide.md)
+- [Search and Navigation](./docs/kb-search-guide.md)
+
+### Developer Guide
+- [Build System Documentation](./docs/kb-build-system.md)
+- [API Reference](./docs/kb-api-reference.md)
+- [Customization Guide](./docs/kb-customization.md)
+
+### Admin Guide
+- [Client Management](./docs/kb-admin-guide.md)
+- [Content Management](./docs/kb-content-management.md)
+- [Access Control Setup](./docs/kb-access-control.md)
+
+## 🚀 Deployment
+
+### Production Deployment
+1. **Build**: `npm run build:kb`
+2. **Test**: Verify generated files in `public/kb/`
+3. **Deploy**: `npm run deploy:kb`
+4. **Verify**: Check access control and search functionality
+
+### Environment Variables
+```env
+# Required for build process
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+- **Build Failures**: Check markdown syntax and frontmatter
+- **Access Denied**: Verify user roles and client membership
+- **Search Not Working**: Ensure search index was generated
+- **Missing Content**: Check file paths and client configuration
+
+### Debug Commands
+```bash
+# Check build output
+npm run build:kb -- --verbose
+
+# Validate configuration
+node scripts/validate-kb-config.js
+
+# Test access control
+node scripts/test-kb-access.js
+```
+
+---
+
+**Last Updated**: 2024-01-XX
+**Status**: Production Ready
+**Next Review**: 2024-01-XX
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.1 Knowledge Base Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.2 Document Management Module.md
+TYPE: .md
+================================================================================
+
+This document defines the structure and implementation of the Document Management system within QiPortal.
+## Overview
+
+The Document Management module provides a secure, organized system for storing, sharing, and collaborating on documents between the team and clients.
+
+Goal: Create a centralized repository that replaces email attachments, maintains version history, and provides secure access controls.
+
+## Core Structure
+
+### 1. Document Repository
+
+- Hierarchical folder structure based on client and project
+- Version control with history tracking
+- Robust permission system at folder and document levels
+
+### 2. Document Database Schema
+
+| Property | Type | Purpose |
+| --- | --- | --- |
+| Document Name | Title | Descriptive filename |
+| File | File | Actual document file |
+| Version | Number | Document version number |
+| Status | Select | Draft, For Review, Approved, Archived |
+| Client | Relation | Related client |
+| Project | Relation | Related project |
+| Category | Select | Contract, Report, Invoice, etc. |
+| Uploaded By | Person | Team member who uploaded |
+| Upload Date | Date | When document was added |
+| Modified Date | Date | Last modification date |
+| Access Level | Select | Public, Client-Only, Team-Only |
+| Required Action | Select | Review, Sign, None |
+| Notes | Text | Additional context |
+| Tags | Multi-select | Classification tags |
+
+## Features
+
+- **Secure Upload/Download**: Encrypted file transfer
+- **Version Control**: Track changes with diff visualization
+- **Preview**: In-browser viewing for common formats
+- **Collaboration**: Comments and annotations on documents
+- **E-Signatures**: Legal document signing capability
+- **Workflow Automation**: Approval processes and notifications
+- **Search**: Full-text search across documents
+- **Audit Trail**: Complete history of document interactions
+
+## Integration Points
+
+- Project Management: Link documents to specific milestones/tasks
+- Messaging: Share documents in conversation threads
+- Knowledge Base: Reference documents in KB articles
+- Dashboard: Show document status and pending approvals
+
+## Security Considerations
+
+- End-to-end encryption for sensitive documents
+- Granular permission controls
+- Watermarking capability for confidential information
+- Compliance with data retention policies
+- Regular security audits and penetration testing
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.2 Document Management Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.3 Secure Messaging Module.md
+TYPE: .md
+================================================================================
+
+This document outlines the implementation of the Secure Messaging system within QiPortal.
+## Overview
+
+The Secure Messaging module provides encrypted, organized communication between clients and team members that replaces scattered email threads.
+
+Goal: Create a centralized, searchable messaging platform that maintains conversation context and enhances client engagement.
+
+## Core Structure
+
+### 1. Conversation Organization
+
+- Thread-based conversations with subject categorization
+- Support for one-on-one and group messaging
+- Persistent history with search capabilities
+
+### 2. Message Database Schema
+
+| Property | Type | Purpose |
+| --- | --- | --- |
+| Conversation ID | ID | Unique thread identifier |
+| Subject | Title | Conversation topic |
+| Message | Text | Message content (rich text) |
+| Sender | Person | Message author |
+| Recipients | Multi-person | Message recipients |
+| Timestamp | DateTime | When message was sent |
+| Read Status | Relation | Tracks who has read the message |
+| Attachments | Files | Attached documents |
+| Priority | Select | Normal, High, Urgent |
+| Category | Select | General, Technical, Billing, etc. |
+| Related Project | Relation | Associated project |
+| Related Task | Relation | Associated task |
+| Flagged | Checkbox | For follow-up |
+
+## Features
+
+- **Real-time Messaging**: Instant delivery with typing indicators
+- **End-to-End Encryption**: Security for sensitive communications
+- **Rich Text Support**: Formatting, code blocks, and inline images
+- **File Sharing**: Secure attachment handling
+- **Read Receipts**: Confirmation of message delivery and reading
+- **Thread Management**: Ability to merge, split, or archive threads
+- **Notification System**: In-app, email, and mobile alerts
+- **Message Templates**: Pre-defined responses for common queries
+- **Search & Filters**: Advanced search across conversations
+
+## Integration Points
+
+- Document Management: Share and reference documents
+- Project Management: Convert messages to tasks
+- Knowledge Base: Reference KB articles in responses
+- AI Assistant: Suggested replies and information retrieval
+
+## Security & Privacy
+
+- Zero-knowledge encryption architecture
+- Message expiration options for sensitive information
+- Compliance with communication regulations
+- Anti-phishing and message authentication
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.3 Secure Messaging Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.4 Dev Doc—Project Management.md
+TYPE: .md
+================================================================================
+
+## Overview
+
+This document defines the structure and workflow for implementing a lightweight **Project Management system** into the client-facing portal.
+
+Goal: Give the client real-time visibility into milestones, tasks, costs, and time estimates without needing Zoho Projects.
+
+## Core Structure
+
+### 1. Wiki Framework
+
+- Each **Milestone/Project** is a **Notion page**.
+- Each project page shows: Roadmap snapshot, filtered task database, supporting docs.
+
+### 2. Master Tasks Database
+
+- All tasks live in a central Tasks DB.
+- Projects filter tasks by milestone.
+
+## Database Schema
+
+|Property|Type|Purpose|
+|---|---|---|
+|Task Name|Title|Task description|
+|Milestone / Project|Relation|Links to project|
+|Status|Select|Inbox, Urgent, Needs, Wants, Done|
+|Owner|Person/Text|Who is responsible|
+|Dependency|Relation|Prerequisite tasks|
+|Cost Estimate|Number ($)|Budget estimate|
+|Time Estimate|Number (hrs)|Effort estimate|
+|Deliverable Missing|Checkbox|Flag missing client input|
+|Notes / Docs|Text/Files|References|
+|Created/Updated|Auto|Audit trail|
+|Priority|Select|Low, Medium, High, Critical|
+|Due Date|Date|Deadline for completion|
+|Client Visibility|Checkbox|Whether client can see task|
+
+## Views
+
+- **Kanban** by Status
+- **Table** with cost & time
+- **Timeline** (optional)
+- **By Project** (linked DBs)
+- **By Priority** for team focus
+- **By Due Date** for deadline management
+- **Client View** (filtered for client visibility)
+
+## Rollups at Project Level
+
+- Total Cost, Total Time, Remaining Tasks
+- Percentage Complete
+- Blocked Tasks (with dependencies)
+- Budget Utilization
+
+## Workflow
+
+1. Add Task: Create new tasks with required fields
+2. Check Dependencies: Identify and link prerequisites
+3. Client View: Review what client can see
+4. Weekly Sweep: Regular status updates
+5. Priority Assessment: Adjust based on changing needs
+6. Status Updates: Move tasks through pipeline
+7. Completion Review: Final check before marking done
+
+## Best Practices
+
+- Keep it lean (KISS)
+- Force status buckets
+- Use dependencies sparingly
+- Transparency on missing deliverables
+- Weekly audit
+- Clear task names (verb + object format)
+- Realistic time/cost estimates
+- Consistent owner assignment
+- Regular client-facing updates
+
+## Future Enhancements
+
+- Finance DB linkage
+- Automations (Notion API / [Make.com](http://make.com/))
+- Snapshots (static HTML)
+- Mobile app integration
+- Client comment system
+- Advanced reporting dashboard
+- Time tracking integration
+- AI-assisted task prioritization
+
+## Example Layout
+
+```
+Projects (DB)
+ ├── Tax Prep (Page)
+ │    ├── Tasks (filtered)
+ │    ├── Rollups: Cost, Time, Remaining
+ │    └── Subpages: Receipts
+ ├── Website Build (Page)
+ │    ├── Tasks (filtered)
+ │    └── Subpages: Design, Hosting
+ └── Onboarding (Page)
+      └── Tasks (filtered)
+
+```
+
+## Example Status Flow
+
+- Inbox → Urgent → Needs → Wants → Done
+
+### Summary
+
+This setup transforms the client-facing wiki into a **lightweight project management tool**:
+
+- Centralized tasks
+- Milestone dashboards
+- Transparent scope (cost + time)
+- Live progress visible to client
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.4 Dev Doc—Project Management.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.5 AI Assistant Module.md
+TYPE: .md
+================================================================================
+
+This document outlines the implementation of the AI Assistant system within QiPortal.
+## Overview
+
+The AI Assistant module provides intelligent, contextual support to clients and team members throughout the portal.
+
+Goal: Create an AI-powered assistant that enhances productivity, answers questions, and guides users to relevant resources.
+
+## Core Structure
+
+### 1. Conversational Interface
+
+- Natural language processing for user queries
+- Context-aware responses based on user history
+- Multi-modal input (text, voice, image)
+
+### 2. Knowledge Integration
+
+- Connection to Knowledge Base articles
+- Access to project and document metadata
+- Retrieval-augmented generation (RAG) architecture
+
+## AI Assistant Capabilities
+
+- **Information Retrieval**: Find relevant documents and knowledge
+- **Question Answering**: Respond to common client queries
+- **Task Management**: Create tasks through natural language
+- **Scheduling Assistance**: Help coordinate meetings
+- **Process Guidance**: Walk users through workflows
+- **Data Analysis**: Generate insights from project metrics
+- **Document Summarization**: Create concise overviews
+- **Notification Management**: Smart filtering of updates
+
+## Technical Architecture
+
+- **Language Models**: Fine-tuned for industry-specific context
+- **Vector Database**: Semantic search across all content
+- **Conversational Memory**: Session and long-term context
+- **Function Calling**: Integration with portal actions
+- **Feedback Loop**: Continuous improvement from interactions
+
+## Integration Points
+
+- Knowledge Base: Content retrieval and recommendations
+- Messaging: In-line assistance in conversations
+- Project Management: Task creation and updates
+- Document Management: Finding and summarizing documents
+
+## Privacy & Ethics
+
+- Clear disclosure of AI assistance
+- Transparency in information sources
+- User control over AI features
+- Strict data usage policies
+- Regular bias auditing and mitigation
+
+## Future Capabilities
+
+- Predictive analytics for client needs
+- Automated report generation
+- Sentiment analysis in client communications
+- Proactive workflow suggestions
+- Multi-language support
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.5 AI Assistant Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.6 Billing & Subscriptions Module.md
+TYPE: .md
+================================================================================
+
+This document defines the structure and implementation of the Billing & Subscriptions system within QiPortal.
+
+## Overview
+
+The Billing & Subscriptions module provides transparent financial management for client engagements.
+
+Goal: Create a seamless system for managing invoices, payments, and subscription plans with complete transparency.
+
+## Core Structure
+
+### 1. Financial Tracking
+
+- Invoice generation and management
+- Payment processing and recording
+- Subscription plan administration
+
+### 2. Billing Database Schema
+
+| Property | Type | Purpose |
+| --- | --- | --- |
+| Invoice Number | Title | Unique identifier |
+| Client | Relation | Billing recipient |
+| Amount | Number | Total invoice amount |
+| Status | Select | Draft, Sent, Paid, Overdue |
+| Issue Date | Date | When invoice was created |
+| Due Date | Date | Payment deadline |
+| Payment Date | Date | When payment was received |
+| Payment Method | Select | Credit Card, ACH, Check, etc. |
+| Line Items | Relation | Services or products billed |
+| Notes | Text | Additional information |
+| Related Project | Relation | Associated project |
+| PDF | File | Invoice document |
+
+### 3. Subscription Database Schema
+
+| Property | Type | Purpose |
+| --- | --- | --- |
+| Plan Name | Title | Subscription identifier |
+| Client | Relation | Subscribing client |
+| Status | Select | Active, Pending, Canceled |
+| Billing Cycle | Select | Monthly, Quarterly, Annual |
+| Amount | Number | Recurring charge |
+| Start Date | Date | Subscription beginning |
+| Next Billing | Date | Upcoming charge date |
+| End Date | Date | Subscription termination |
+| Auto-Renew | Checkbox | Automatic renewal setting |
+| Payment Method | Relation | Linked payment source |
+| Features | Multi-select | Included capabilities |
+
+## Features
+
+- **Automated Invoicing**: Scheduled invoice generation
+- **Payment Processing**: Secure online payment options
+- **Subscription Management**: Plan creation and modification
+- **Financial Dashboard**: Payment history and upcoming charges
+- **Payment Reminders**: Automated notifications
+- **Custom Billing Rules**: Client-specific pricing
+- **Tax Calculation**: Automated tax assessment
+- **Financial Reporting**: Revenue and receivables analysis
+
+## Integration Points
+
+- Project Management: Link billable hours to invoices
+- Document Management: Store financial documents
+- Dashboard: Financial status visualization
+- External Accounting: QuickBooks/Xero integration
+
+## Security Considerations
+
+- PCI DSS compliance for payment processing
+- Encrypted financial data storage
+- Audit trails for all financial transactions
+- Role-based access to financial information
+- Regular security assessments
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.6 Billing & Subscriptions Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.7 Dashboard & Reporting Module.md
+TYPE: .md
+================================================================================
+
+This document outlines the implementation of the Dashboard & Reporting system within QiPortal.
+## Overview
+
+The Dashboard & Reporting module provides clients with visual insights into project status, performance metrics, and activity summaries.
+
+Goal: Create intuitive, customizable dashboards that give clients immediate visibility into their engagement status.
+
+## Core Structure
+
+### 1. Dashboard Framework
+
+- Modular, widget-based interface
+- Client-specific customization options
+- Role-based dashboard variants
+
+### 2. Dashboard Components Database Schema
+
+| Property | Type | Purpose |
+| --- | --- | --- |
+| Widget Name | Title | Component identifier |
+| Widget Type | Select | Chart, Table, Metric, Timeline, etc. |
+| Data Source | Select | Projects, Tasks, Documents, etc. |
+| Refresh Rate | Select | Real-time, Hourly, Daily, etc. |
+| Visibility | Select | All Clients, Specific Clients, Internal |
+| Size | Select | Small, Medium, Large |
+| Position | Number | Display order |
+| Configuration | JSON | Widget-specific settings |
+| Client Access | Multi-relation | Clients with access |
+| Created By | Person | Widget author |
+
+## Widget Types
+
+- **Project Timeline**: Gantt chart of milestones and deadlines
+- **Task Status**: Distribution of tasks by status
+- **Budget Tracker**: Financial metrics and burn rate
+- **Activity Feed**: Recent updates across all modules
+- **Document Status**: Files requiring attention
+- **KPI Metrics**: Key performance indicators with trends
+- **Resource Allocation**: Team effort distribution
+- **Upcoming Deadlines**: Calendar of critical dates
+
+## Reporting Capabilities
+
+- **Custom Reports**: Build reports with selected metrics
+- **Scheduled Delivery**: Automated report generation
+- **Export Options**: PDF, Excel, CSV formats
+- **Historical Comparison**: Period-over-period analysis
+- **Interactive Filters**: Drill-down capabilities
+
+## Integration Points
+
+- Project Management: Task and milestone data
+- Document Management: Document status metrics
+- Billing: Financial performance data
+- Knowledge Base: Usage analytics
+
+## Data Visualization Best Practices
+
+- Consistent color coding across all visualizations
+- Clear labeling and legends
+- Responsive design for all device sizes
+- Interactive tooltips for detailed information
+- Accessibility compliance for all charts
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\2.0 Modules\2.7 Dashboard & Reporting Module.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\3.0 Canvas and RAG Notes\3.0 Canvas & RAG Notes.md
+TYPE: .md
+================================================================================
+
+
+This section provides guidance on knowledge management and visualization for the QiPortal project.
+
+## Document Management
+- Keep this merged file version-controlled in GitHub with the main codebase.
+- Update documentation alongside code changes to maintain synchronization.
+- Use markdown format for maximum compatibility across tools.
+
+## Knowledge Base Integration
+- Vectorize in KB for Retrieval-Augmented Generation.
+- Create embeddings of all documentation sections for semantic search.
+- Tag sections with relevant metadata for improved retrieval.
+- Update vector database when documentation changes.
+
+## Visualization
+- Map each heading into Obsidian Canvas nodes for visual navigation.
+- Color-code nodes by module for easier identification.
+- Connect related concepts with directional arrows.
+- Include decision trees for complex workflows.
+
+## AI Assistant Training
+- Use this documentation as ground truth for AI model fine-tuning.
+- Create synthetic Q&A pairs based on documentation content.
+- Develop prompt templates for common developer and user queries.
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\3.0 Canvas and RAG Notes\3.0 Canvas & RAG Notes.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Email Setup.md
+TYPE: .md
+================================================================================
+
+# Supabase Email Setup Guide
+
+## 🎯 Overview
+
+This guide covers the configuration of email services in Supabase for authentication, notifications, and transactional emails in the QiAlly Portal.
+
+## 📧 Email Configuration
+
+### 1. Default Email Provider
+
+Supabase uses **Resend** as the default email provider, which offers:
+- **Free Tier**: 3,000 emails/month
+- **High Deliverability**: 99.9% delivery rate
+- **Simple Setup**: No configuration required
+- **Analytics**: Email tracking and analytics
+
+### 2. Custom SMTP Configuration
+
+For production use or custom domains, configure SMTP:
+
+#### SMTP Settings
+Go to **Authentication > Settings > SMTP Settings**:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_SENDER_NAME=QiAlly Portal
+SMTP_SENDER_EMAIL=noreply@qially.me
+```
+
+#### Popular SMTP Providers
+
+##### Gmail SMTP
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+```
+
+##### Outlook/Hotmail SMTP
+```env
+SMTP_HOST=smtp-mail.outlook.com
+SMTP_PORT=587
+SMTP_USER=your-email@outlook.com
+SMTP_PASS=your-password
+```
+
+##### Custom Domain (Gmail)
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=admin@yourdomain.com
+SMTP_PASS=your-app-password
+```
+
+##### SendGrid SMTP
+```env
+SMTP_HOST=smtp.sendgrid.net
+SMTP_PORT=587
+SMTP_USER=apikey
+SMTP_PASS=your-sendgrid-api-key
+```
+
+## 📝 Email Templates
+
+### 1. Template Configuration
+
+Go to **Authentication > Email Templates** to customize:
+
+#### Confirm Signup Template
+```html
+<h2>Welcome to QiAlly Portal!</h2>
+<p>Hi {{ .Email }},</p>
+<p>Thank you for signing up for QiAlly Portal. Please confirm your email address by clicking the button below:</p>
+<a href="{{ .ConfirmationURL }}" style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
+  Confirm Email Address
+</a>
+<p>If you didn't create this account, you can safely ignore this email.</p>
+<p>Best regards,<br>The QiAlly Team</p>
+```
+
+#### Reset Password Template
+```html
+<h2>Reset Your Password</h2>
+<p>Hi {{ .Email }},</p>
+<p>We received a request to reset your password for QiAlly Portal. Click the button below to create a new password:</p>
+<a href="{{ .ConfirmationURL }}" style="background-color: #ef4444; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
+  Reset Password
+</a>
+<p>This link will expire in 1 hour. If you didn't request a password reset, you can safely ignore this email.</p>
+<p>Best regards,<br>The QiAlly Team</p>
+```
+
+#### Magic Link Template
+```html
+<h2>Sign In to QiAlly Portal</h2>
+<p>Hi {{ .Email }},</p>
+<p>Click the button below to sign in to your QiAlly Portal account:</p>
+<a href="{{ .ConfirmationURL }}" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
+  Sign In
+</a>
+<p>This link will expire in 1 hour. If you didn't request this sign-in link, you can safely ignore this email.</p>
+<p>Best regards,<br>The QiAlly Team</p>
+```
+
+#### Email Change Template
+```html
+<h2>Confirm Email Change</h2>
+<p>Hi {{ .Email }},</p>
+<p>We received a request to change your email address to {{ .NewEmail }}. Click the button below to confirm this change:</p>
+<a href="{{ .ConfirmationURL }}" style="background-color: #f59e0b; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
+  Confirm Email Change
+</a>
+<p>If you didn't request this change, you can safely ignore this email.</p>
+<p>Best regards,<br>The QiAlly Team</p>
+```
+
+### 2. Template Variables
+
+Available variables for customization:
+- `{{ .Email }}` - User's email address
+- `{{ .ConfirmationURL }}` - Confirmation/reset link
+- `{{ .NewEmail }}` - New email address (for email change)
+- `{{ .Token }}` - Security token
+- `{{ .TokenHash }}` - Hashed token
+
+## 🔧 Email Settings
+
+### 1. Authentication Settings
+
+Go to **Authentication > Settings > Auth Settings**:
+
+#### Email Settings
+- **Enable Email Signup**: ✅
+- **Enable Email Confirmations**: ✅
+- **Enable Secure Email Change**: ✅
+- **Enable Double Confirm Changes**: ✅ (recommended)
+
+#### Security Settings
+- **JWT Expiry**: 3600 seconds (1 hour)
+- **Refresh Token Rotation**: ✅
+- **Refresh Token Reuse Interval**: 10 seconds
+
+### 2. Rate Limiting
+
+Configure rate limits to prevent abuse:
+
+#### Email Rate Limits
+- **Signup Rate Limit**: 5 per hour per IP
+- **Password Reset Rate Limit**: 3 per hour per email
+- **Magic Link Rate Limit**: 5 per hour per email
+
+#### Implementation
+```javascript
+// Rate limiting configuration
+const rateLimitConfig = {
+  signup: { max: 5, window: '1h' },
+  passwordReset: { max: 3, window: '1h' },
+  magicLink: { max: 5, window: '1h' }
+};
+```
+
+## 📊 Email Analytics
+
+### 1. Delivery Tracking
+
+Monitor email delivery and engagement:
+
+#### Key Metrics
+- **Delivery Rate**: Percentage of emails delivered
+- **Open Rate**: Percentage of emails opened
+- **Click Rate**: Percentage of links clicked
+- **Bounce Rate**: Percentage of failed deliveries
+
+#### Analytics Dashboard
+```sql
+-- Email analytics query
+SELECT 
+    DATE(created_at) as date,
+    COUNT(*) as total_emails,
+    COUNT(CASE WHEN delivered_at IS NOT NULL THEN 1 END) as delivered,
+    COUNT(CASE WHEN opened_at IS NOT NULL THEN 1 END) as opened,
+    COUNT(CASE WHEN clicked_at IS NOT NULL THEN 1 END) as clicked
+FROM auth.email_logs
+WHERE created_at >= NOW() - INTERVAL '30 days'
+GROUP BY DATE(created_at)
+ORDER BY date DESC;
+```
+
+### 2. Email Logs
+
+Access email logs in Supabase Dashboard:
+
+#### Log Fields
+- `id` - Unique log identifier
+- `user_id` - User who triggered the email
+- `email` - Recipient email address
+- `template` - Email template used
+- `created_at` - When email was sent
+- `delivered_at` - When email was delivered
+- `opened_at` - When email was opened
+- `clicked_at` - When link was clicked
+
+## 🚀 Production Setup
+
+### 1. Domain Configuration
+
+For production, configure custom domain:
+
+#### DNS Records
+```
+Type: CNAME
+Name: mail
+Value: your-smtp-provider.com
+
+Type: TXT
+Name: @
+Value: v=spf1 include:your-smtp-provider.com ~all
+
+Type: TXT
+Name: _dmarc
+Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com
+```
+
+#### SPF Record
+```
+v=spf1 include:_spf.google.com include:_spf.sendgrid.net ~all
+```
+
+### 2. Email Verification
+
+Verify your domain with email providers:
+
+#### Gmail Verification
+1. Go to Google Workspace Admin
+2. Navigate to **Apps > Gmail > Settings**
+3. Add your domain for sending
+4. Verify domain ownership
+
+#### SendGrid Verification
+1. Go to SendGrid Dashboard
+2. Navigate to **Settings > Sender Authentication**
+3. Add your domain
+4. Add DNS records as instructed
+
+### 3. Monitoring Setup
+
+Set up email monitoring and alerts:
+
+#### Health Checks
+```javascript
+// Email health check function
+async function checkEmailHealth() {
+  const { data, error } = await supabase
+    .from('auth.email_logs')
+    .select('*')
+    .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error('Email health check failed:', error);
+    return false;
+  }
+
+  const deliveryRate = data.filter(log => log.delivered_at).length / data.length;
+  return deliveryRate > 0.95; // 95% delivery rate threshold
+}
+```
+
+## 🔍 Troubleshooting
+
+### Common Email Issues
+
+#### Emails Not Sending
+1. **Check SMTP Configuration**: Verify host, port, credentials
+2. **Check Rate Limits**: Ensure not exceeding limits
+3. **Check Spam Filters**: Monitor spam folder
+4. **Check DNS Records**: Verify SPF, DKIM, DMARC
+
+#### Emails Going to Spam
+1. **Configure SPF Record**: Add proper SPF record
+2. **Set Up DKIM**: Enable DKIM signing
+3. **Configure DMARC**: Set up DMARC policy
+4. **Warm Up IP**: Gradually increase email volume
+
+#### Template Issues
+1. **Check HTML Syntax**: Validate HTML structure
+2. **Test Variables**: Ensure variables are properly formatted
+3. **Check Links**: Verify confirmation URLs work
+4. **Test Rendering**: Check email client compatibility
+
+### Debug Commands
+
+#### Check Email Logs
+```sql
+-- Recent email logs
+SELECT * FROM auth.email_logs 
+WHERE created_at >= NOW() - INTERVAL '1 hour'
+ORDER BY created_at DESC;
+
+-- Failed emails
+SELECT * FROM auth.email_logs 
+WHERE delivered_at IS NULL 
+AND created_at >= NOW() - INTERVAL '24 hours';
+```
+
+#### Test Email Configuration
+```javascript
+// Test email sending
+async function testEmail() {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(
+    'test@example.com',
+    {
+      redirectTo: 'http://localhost:3000/reset-password'
+    }
+  );
+
+  if (error) {
+    console.error('Email test failed:', error);
+  } else {
+    console.log('Test email sent successfully');
+  }
+}
+```
+
+## 📋 Best Practices
+
+### 1. Email Security
+- **Use App Passwords**: Don't use regular passwords for SMTP
+- **Enable 2FA**: Protect email accounts with 2FA
+- **Monitor Logs**: Regularly check email logs for issues
+- **Rate Limiting**: Implement appropriate rate limits
+
+### 2. Email Deliverability
+- **Warm Up IP**: Gradually increase email volume
+- **Clean Lists**: Remove invalid email addresses
+- **Engagement**: Monitor and improve engagement rates
+- **Authentication**: Use SPF, DKIM, and DMARC
+
+### 3. User Experience
+- **Clear Subject Lines**: Use descriptive subject lines
+- **Mobile Friendly**: Ensure emails work on mobile
+- **Clear CTAs**: Make call-to-action buttons prominent
+- **Unsubscribe**: Include unsubscribe links
+
+---
+
+**Last Updated**: 2024-01-XX
+**Status**: Production Ready
+**Next Review**: 2024-01-XX
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Email Setup.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Email Templates.md
+TYPE: .md
+================================================================================
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QiAlly Email Templates</title>
+
+    <style>
+
+        /* Basic Reset */
+
+        body, h1, h2, h3, p, a { margin: 0; padding: 0; font-family: 'Inter', Arial, sans-serif; }
+
+        body { background-color: #f4f7fa; }
+
+        .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; }
+
+        .header { background-color: #ffffff; padding: 40px 20px; text-align: center; border-bottom: 1px solid #e0e0e0;}
+
+        .header img { max-width: 100px; }
+
+        .content { padding: 40px 30px; color: #333333; line-height: 1.6; }
+
+        .content h1 { color: #1e293b; font-size: 24px; margin-bottom: 15px; }
+
+        .content p { font-size: 16px; margin-bottom: 20px; color: #475569; }
+
+        .button-container { text-align: center; margin: 30px 0; }
+
+        .button { background-color: #4f46e5; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; }
+
+        .signature { padding: 20px 30px; font-size: 15px; color: #475569;}
+
+        .footer { background-color: #f8fafc; padding: 30px; text-align: center; font-size: 12px; color: #64748b; }
+
+        .footer a { color: #4f46e5; text-decoration: none; }
+
+        .footer .social-links a { margin: 0 8px; display: inline-block; }
+
+        .divider { border-bottom: 1px solid #e0e0e0; margin: 20px 0;}
+
+        .template-title { background-color: #eef2ff; color: #4338ca; padding: 15px; text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 0;}
+
+  
+
+        @media (max-width: 600px) {
+
+            .content { padding: 30px 20px; }
+
+        }
+
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 1: Welcome to the Client Portal -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title">Template 1: Welcome Email</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Welcome to Your QiAlly Client Portal!</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>Welcome aboard! We're excited to have you. Your secure client portal is now active and ready for you to access.</p>
+
+            <p>The portal is your central hub for managing our collaboration. Here, you can access project files, view updates, manage invoices, and communicate directly with our team.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com" class="button">Access Your Portal</a>
+
+            </div>
+
+            <p>Your login credentials are:</p>
+
+            <p><strong>Username:</strong> [Client Email]<br><strong>Temporary Password:</strong> [Generated Password]</p>
+
+            <p>We recommend changing your password upon your first login. If you have any questions, don't hesitate to reach out.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>Cody Rice Velasquez</strong><br>
+
+            Founder & Managing Partner<br>
+
+            QiAlly LLC</p>
+
+        </div>
+
+  
+
+        <!-- Footer -->
+
+        <div class="footer">
+
+            <p>
+
+                <a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>
+
+                Online Appointment Only
+
+            </p>
+
+            <div class="divider"></div>
+
+            <p class="social-links">
+
+                <a href="#">Leave a Review</a> |
+
+                <a href="#">Take the Survey</a> |
+
+                <a href="#">Talk to My Assistant</a>
+
+            </p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+  
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 2: Project Update -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 2: Project Update</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>An Update on Your Project: [Project Name]</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>Here’s a quick update on the progress we've made on your project, "[Project Name]".</p>
+
+            <p><strong>Recent Progress:</strong><br>
+
+            - [Detail of recent task completed 1]<br>
+
+            - [Detail of recent task completed 2]<br>
+
+            - [Detail of recent task completed 3]</p>
+
+            <p><strong>Next Steps:</strong><br>
+
+            - We will now be focusing on [Next major task or phase].</p>
+
+            <p>You can view all the latest files, detailed progress, and leave comments in your client portal.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/projects/[ProjectID]" class="button">View Project Details</a>
+
+            </div>
+
+            <p>As always, please let us know if you have any questions or feedback.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>Cody Rice Velasquez</strong><br>
+
+            Founder & Managing Partner<br>
+
+            QiAlly LLC</p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p>
+
+                <a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>
+
+                Online Appointment Only
+
+            </p>
+
+            <div class="divider"></div>
+
+            <p class="social-links">
+
+                <a href="#">Leave a Review</a> |
+
+                <a href="#">Take the Survey</a> |
+
+                <a href="#">Talk to My Assistant</a>
+
+            </p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+  
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 3: New Invoice Notification -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 3: New Invoice</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>New Invoice #[Invoice Number] is Ready</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>A new invoice has been generated for you. Here are the details:</p>
+
+            <p><strong>Invoice Number:</strong> [Invoice Number]<br>
+
+            <strong>Amount Due:</strong> $[Amount]<br>
+
+            <strong>Due Date:</strong> [Due Date]</p>
+
+            <p>You can view and pay the invoice securely through your client portal. A PDF copy is also attached to this email for your records.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/invoices/[InvoiceID]" class="button">View & Pay Invoice</a>
+
+            </div>
+
+            <p>Thank you for your business. If you have any questions about this invoice, please feel free to contact us.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>Cody Rice Velasquez</strong><br>
+
+            Founder & Managing Partner<br>
+
+            QiAlly LLC</p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p>
+
+                <a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>
+
+                Online Appointment Only
+
+            </p>
+
+            <div class="divider"></div>
+
+            <p class="social-links">
+
+                <a href="#">Leave a Review</a> |
+
+                <a href="#">Take the Survey</a> |
+
+                <a href="#">Talk to My Assistant</a>
+
+            </p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 4: Confirm Signup -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 4: Confirm Your Signup</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Just One More Step...</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>Thanks for signing up for the QiAlly Client Portal! To complete your registration, please confirm your email address by clicking the button below.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/confirm/[ConfirmationToken]" class="button">Confirm Email Address</a>
+
+            </div>
+
+            <p>This link will verify your email and activate your account. If you didn't sign up for an account, you can safely ignore this email.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+  
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 5: Invite User -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 5: You're Invited!</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>You've Been Invited to Join QiAlly</h1>
+
+            <p>Hello [New User Name],</p>
+
+            <p>[Your Name] has invited you to collaborate on the QiAlly Client Portal. To get started, click the button below to create your account and join the workspace.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/invite/[InviteToken]" class="button">Accept Invitation</a>
+
+            </div>
+
+            <p>This invitation will expire in 7 days. We look forward to working with you!</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+  
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 6: Magic Link Login -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 6: Your Magic Login Link</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Your Secure Login Link</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>Here is your one-time link to sign in to your QiAlly Client Portal account. Click the button below to log in automatically.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/magic-login/[MagicToken]" class="button">Sign In to QiAlly</a>
+
+            </div>
+
+            <p>This link is valid for 15 minutes and can only be used once. If you did not request this link, you can safely ignore this email.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 7: Change Email Address Notification -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 7: Email Address Changed</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Your Email Address Has Been Updated</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>This is a confirmation that the email address for your QiAlly Client Portal account has been successfully changed to <strong>[New Email Address]</strong>.</p>
+
+            <p>If you did not make this change, please contact our support team immediately to secure your account.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 8: Reset Password -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 8: Reset Password</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Reset Your Password</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>We received a request to reset the password for your QiAlly Client Portal account. You can reset your password by clicking the button below.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/reset-password/[ResetToken]" class="button">Reset Your Password</a>
+
+            </div>
+
+            <p>This link is valid for the next 24 hours. If you did not request a password reset, please ignore this email or contact us if you have security concerns.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+
+    <!-- TEMPLATE 9: Reauthentication Required -->
+
+    <!-- ============================================================ -->
+
+    <div class="template-title" style="margin-top: 40px;">Template 9: Reauthentication Required</div>
+
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+
+        <div class="header">
+
+            <img src="https://i.imgur.com/H40n21f.png" alt="QiAlly Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/4f46e5/ffffff?text=QiAlly';">
+
+        </div>
+
+  
+
+        <!-- Email Content -->
+
+        <div class="content">
+
+            <h1>Please Reauthenticate Your Account</h1>
+
+            <p>Hello [Client Name],</p>
+
+            <p>For your security, we need you to re-enter your password to continue. This helps us ensure that it's still you.</p>
+
+            <div class="button-container">
+
+                <a href="https://portal.qially.com/login" class="button">Continue to Login</a>
+
+            </div>
+
+            <p>This is a standard security measure to protect your account. Thank you for your understanding.</p>
+
+        </div>
+
+  
+
+        <!-- Signature -->
+
+        <div class="signature">
+
+            <p>Best regards,</p>
+
+            <p><strong>The QiAlly Team</strong></p>
+
+        </div>
+
+  
+
+        <!-- Footer (Same as above) -->
+
+        <div class="footer">
+
+            <p><a href="mailto:cody@qially.me">cody@qially.me</a> | 317-205-4383<br>Online Appointment Only</p>
+
+            <div class="divider"></div>
+
+            <p class="social-links"><a href="#">Leave a Review</a> | <a href="#">Take the Survey</a> | <a href="#">Talk to My Assistant</a></p>
+
+            <p>Voice AI powered by ElevenLabs | Ask me anything!</p>
+
+            <div class="divider"></div>
+
+            <p>The content of this email is confidential and intended for the recipient specified. It is strictly forbidden to share any part of this message without written consent. If you received this message by mistake, please notify the sender and delete it.</p>
+
+            <p>&copy; 2025 QiAlly LLC. All rights reserved.</p>
+
+            <p><strong>Disclaimer:</strong> This email and any attachments are confidential and intended solely for the use of the individual or entity to whom they are addressed. If you are not the intended recipient, please notify the sender immediately, delete this email, and do not copy, distribute, or take any action based on its contents. Emails sent from qially.me, qially.com, qivault.me, and builtbyrays.com are owned and managed by QiAlly LLC and may contain privileged business or personal information. Unauthorized review, use, disclosure, or distribution is strictly prohibited. While every effort is made to ensure messages are free from viruses or other harmful content, QiAlly LLC accepts no liability for any damage caused by this email or its attachments. By communicating with us via email, you consent to the monitoring and storage of messages for business and compliance purposes.</p>
+
+        </div>
+
+    </div>
+
+  
+
+</body>
+
+</html>
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Email Templates.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Setup Guide.md
+TYPE: .md
+================================================================================
+
+# Supabase Setup Guide
+
+## 🎯 Overview
+
+This guide covers the complete setup and configuration of Supabase for the QiAlly Portal, including database setup, authentication, storage, and real-time features.
+
+## 🚀 Initial Setup
+
+### 1. Create Supabase Project
+
+1. **Sign Up/Login**: Go to [supabase.com](https://supabase.com) and create an account
+2. **New Project**: Click "New Project" and fill in the details:
+   - **Name**: `qiportal-dev` (or your preferred name)
+   - **Database Password**: Generate a strong password
+   - **Region**: Choose closest to your users
+   - **Pricing Plan**: Start with Free tier
+
+3. **Wait for Setup**: Project creation takes 2-3 minutes
+
+### 2. Get Project Credentials
+
+Once created, go to **Settings > API** and note:
+- **Project URL**: `https://your-project-id.supabase.co`
+- **Anon Key**: Public key for client-side access
+- **Service Role Key**: Private key for server-side operations
+
+### 3. Environment Variables
+
+Create `.env.local` file:
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+```
+
+## 🗄️ Database Setup
+
+### 1. Enable Extensions
+
+Run in SQL Editor:
+```sql
+-- Enable required extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+```
+
+### 2. Create Tables
+
+#### Profiles Table
+```sql
+-- User profiles with role-based access
+CREATE TABLE profiles (
+    id UUID REFERENCES auth.users(id) PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    client_slug TEXT,
+    role TEXT DEFAULT 'client_user' CHECK (role IN ('admin', 'team_member', 'client_user')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies
+CREATE POLICY "Users can view own profile" ON profiles
+    FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON profiles
+    FOR UPDATE USING (auth.uid() = id);
+
+CREATE POLICY "Admins can view all profiles" ON profiles
+    FOR SELECT USING (
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = auth.uid() AND role = 'admin'
+        )
+    );
+```
+
+#### Knowledge Base Files Table
+```sql
+-- Knowledge base files with access control
+CREATE TABLE kb_files (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    client_slug TEXT NOT NULL,
+    path TEXT NOT NULL,
+    title TEXT NOT NULL,
+    tags TEXT[],
+    visibility TEXT DEFAULT 'private' CHECK (visibility IN ('public', 'private')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE kb_files ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies
+CREATE POLICY "Users can view their client KB files" ON kb_files
+    FOR SELECT USING (
+        client_slug = (SELECT client_slug FROM profiles WHERE id = auth.uid())
+        OR 
+        (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
+    );
+
+CREATE POLICY "Admins can manage all KB files" ON kb_files
+    FOR ALL USING ((SELECT role FROM profiles WHERE id = auth.uid()) = 'admin');
+```
+
+#### Messages Table
+```sql
+-- Secure messaging system
+CREATE TABLE messages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    sender_id UUID REFERENCES profiles(id) NOT NULL,
+    recipient_id UUID REFERENCES profiles(id) NOT NULL,
+    subject TEXT,
+    content TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies
+CREATE POLICY "Users can view their messages" ON messages
+    FOR SELECT USING (
+        sender_id = auth.uid() OR recipient_id = auth.uid()
+    );
+
+CREATE POLICY "Users can create messages" ON messages
+    FOR INSERT WITH CHECK (sender_id = auth.uid());
+
+CREATE POLICY "Users can update their messages" ON messages
+    FOR UPDATE USING (sender_id = auth.uid());
+```
+
+### 3. Create Functions
+
+#### Profile Creation Function
+```sql
+-- Function to create profile on user signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, email, full_name, client_slug, role)
+    VALUES (
+        NEW.id,
+        NEW.email,
+        NEW.raw_user_meta_data->>'full_name',
+        NEW.raw_user_meta_data->>'client_slug',
+        COALESCE(NEW.raw_user_meta_data->>'role', 'client_user')
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to call function on user signup
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+```
+
+## 🔐 Authentication Setup
+
+### 1. Configure Auth Settings
+
+Go to **Authentication > Settings**:
+
+#### General Settings
+- **Site URL**: `http://localhost:5173` (development)
+- **Redirect URLs**: Add your app URLs
+- **JWT Expiry**: 3600 seconds (1 hour)
+
+#### Email Templates
+- **Confirm Signup**: Customize welcome email
+- **Reset Password**: Customize reset email
+- **Magic Link**: Customize magic link email
+
+### 2. Enable Providers
+
+#### Email Provider
+- **Enable Email Signup**: ✅
+- **Enable Email Confirmations**: ✅
+- **Enable Secure Email Change**: ✅
+
+#### Social Providers (Optional)
+- **Google**: Configure OAuth credentials
+- **GitHub**: Configure OAuth credentials
+- **Microsoft**: Configure OAuth credentials
+
+### 3. Configure SMTP (Optional)
+
+For custom email sending:
+- **SMTP Host**: Your SMTP server
+- **SMTP Port**: 587 (TLS) or 465 (SSL)
+- **SMTP User**: Your email username
+- **SMTP Pass**: Your email password
+
+## 📁 Storage Setup
+
+### 1. Create Storage Buckets
+
+Go to **Storage > Buckets** and create:
+
+#### Documents Bucket
+- **Name**: `documents`
+- **Public**: ❌ (Private)
+- **File Size Limit**: 50MB
+- **Allowed MIME Types**: 
+  - `application/pdf`
+  - `application/msword`
+  - `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+  - `application/vnd.ms-excel`
+  - `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+  - `application/vnd.ms-powerpoint`
+  - `application/vnd.openxmlformats-officedocument.presentationml.presentation`
+  - `image/*`
+
+#### Avatars Bucket
+- **Name**: `avatars`
+- **Public**: ✅ (Public)
+- **File Size Limit**: 5MB
+- **Allowed MIME Types**: `image/*`
+
+### 2. Storage Policies
+
+#### Documents Bucket Policies
+```sql
+-- Users can upload documents to their client folder
+CREATE POLICY "Users can upload documents" ON storage.objects
+    FOR INSERT WITH CHECK (
+        bucket_id = 'documents' AND
+        (storage.foldername(name))[1] = (
+            SELECT client_slug FROM profiles WHERE id = auth.uid()
+        )
+    );
+
+-- Users can view documents from their client
+CREATE POLICY "Users can view documents" ON storage.objects
+    FOR SELECT USING (
+        bucket_id = 'documents' AND
+        (storage.foldername(name))[1] = (
+            SELECT client_slug FROM profiles WHERE id = auth.uid()
+        )
+    );
+
+-- Users can update their own documents
+CREATE POLICY "Users can update documents" ON storage.objects
+    FOR UPDATE USING (
+        bucket_id = 'documents' AND
+        (storage.foldername(name))[1] = (
+            SELECT client_slug FROM profiles WHERE id = auth.uid()
+        )
+    );
+
+-- Users can delete their own documents
+CREATE POLICY "Users can delete documents" ON storage.objects
+    FOR DELETE USING (
+        bucket_id = 'documents' AND
+        (storage.foldername(name))[1] = (
+            SELECT client_slug FROM profiles WHERE id = auth.uid()
+        )
+    );
+```
+
+#### Avatars Bucket Policies
+```sql
+-- Users can upload their own avatar
+CREATE POLICY "Users can upload avatars" ON storage.objects
+    FOR INSERT WITH CHECK (
+        bucket_id = 'avatars' AND
+        name = 'avatars/' || auth.uid()::text || '/*'
+    );
+
+-- Users can view all avatars
+CREATE POLICY "Users can view avatars" ON storage.objects
+    FOR SELECT USING (bucket_id = 'avatars');
+
+-- Users can update their own avatar
+CREATE POLICY "Users can update avatars" ON storage.objects
+    FOR UPDATE USING (
+        bucket_id = 'avatars' AND
+        name = 'avatars/' || auth.uid()::text || '/*'
+    );
+
+-- Users can delete their own avatar
+CREATE POLICY "Users can delete avatars" ON storage.objects
+    FOR DELETE USING (
+        bucket_id = 'avatars' AND
+        name = 'avatars/' || auth.uid()::text || '/*'
+    );
+```
+
+## 🔄 Real-time Setup
+
+### 1. Enable Real-time
+
+Go to **Database > Replication**:
+
+#### Enable Replication
+- **Source**: `public`
+- **Tables**: Select tables for real-time updates
+  - `messages`
+  - `profiles`
+  - `kb_files`
+
+### 2. Configure Real-time Policies
+
+```sql
+-- Enable real-time for messages
+ALTER PUBLICATION supabase_realtime ADD TABLE messages;
+
+-- Enable real-time for profiles
+ALTER PUBLICATION supabase_realtime ADD TABLE profiles;
+
+-- Enable real-time for kb_files
+ALTER PUBLICATION supabase_realtime ADD TABLE kb_files;
+```
+
+## 🚀 Migration Guide
+
+### 1. Database Migrations
+
+#### Create Migration Files
+```bash
+# Create migration directory
+mkdir -p supabase/migrations
+
+# Create initial migration
+touch supabase/migrations/001_initial_schema.sql
+```
+
+#### Migration File Structure
+```sql
+-- Migration: 001_initial_schema.sql
+-- Description: Initial database schema setup
+
+-- Enable extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+-- Create profiles table
+CREATE TABLE profiles (
+    id UUID REFERENCES auth.users(id) PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    client_slug TEXT,
+    role TEXT DEFAULT 'client_user' CHECK (role IN ('admin', 'team_member', 'client_user')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies
+CREATE POLICY "Users can view own profile" ON profiles
+    FOR SELECT USING (auth.uid() = id);
+
+-- ... additional tables and policies
+```
+
+### 2. Run Migrations
+
+#### Using Supabase CLI
+```bash
+# Install Supabase CLI
+npm install -g supabase
+
+# Login to Supabase
+supabase login
+
+# Link project
+supabase link --project-ref your-project-ref
+
+# Run migrations
+supabase db push
+```
+
+#### Using SQL Editor
+1. Go to **SQL Editor** in Supabase Dashboard
+2. Copy migration SQL
+3. Run the SQL commands
+4. Verify tables and policies are created
+
+### 3. Seed Data
+
+#### Create Seed File
+```sql
+-- Seed data for development
+INSERT INTO profiles (id, email, full_name, client_slug, role)
+VALUES 
+    ('00000000-0000-0000-0000-000000000001', 'admin@qially.me', 'Admin User', 'zy', 'admin'),
+    ('00000000-0000-0000-0000-000000000002', 'client1@example.com', 'Client User', 'client-a', 'client_user'),
+    ('00000000-0000-0000-0000-000000000003', 'team1@example.com', 'Team Member', 'zy', 'team_member');
+```
+
+## 🔧 Configuration
+
+### 1. Environment Variables
+
+#### Development (.env.local)
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+```
+
+#### Production (.env.production)
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+```
+
+### 2. Client Configuration
+
+#### Supabase Client Setup
+```javascript
+// src/lib/supabase.js
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
+```
+
+## 🔒 Security Best Practices
+
+### 1. Row Level Security (RLS)
+- Enable RLS on all tables
+- Create specific policies for each operation
+- Test policies thoroughly
+- Use `auth.uid()` for user identification
+
+### 2. API Security
+- Never expose service role key in client
+- Use anon key for client operations
+- Validate all inputs
+- Implement rate limiting
+
+### 3. Storage Security
+- Set appropriate bucket policies
+- Validate file types and sizes
+- Use signed URLs for private files
+- Implement virus scanning (optional)
+
+## 📊 Monitoring
+
+### 1. Database Monitoring
+- **Logs**: Check SQL logs for errors
+- **Performance**: Monitor query performance
+- **Storage**: Track database size and growth
+
+### 2. Auth Monitoring
+- **Signups**: Monitor user registration
+- **Logins**: Track authentication attempts
+- **Errors**: Review auth error logs
+
+### 3. Storage Monitoring
+- **Usage**: Track storage usage
+- **Bandwidth**: Monitor transfer limits
+- **Errors**: Review upload/download errors
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### Authentication Issues
+- **Invalid JWT**: Check token expiration
+- **RLS Blocked**: Verify user permissions
+- **Email Not Sent**: Check SMTP configuration
+
+#### Database Issues
+- **Connection Failed**: Verify project URL
+- **Permission Denied**: Check RLS policies
+- **Migration Failed**: Review SQL syntax
+
+#### Storage Issues
+- **Upload Failed**: Check file size and type
+- **Access Denied**: Verify bucket policies
+- **URL Expired**: Regenerate signed URL
+
+### Debug Commands
+```bash
+# Check Supabase status
+supabase status
+
+# View logs
+supabase logs
+
+# Reset database
+supabase db reset
+
+# Generate types
+supabase gen types typescript --local > types/supabase.ts
+```
+
+---
+
+**Last Updated**: 2024-01-XX
+**Status**: Production Ready
+**Next Review**: 2024-01-XX
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\Setup Guide.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\SupaBase Project - QiAlly Access.md
+TYPE: .md
+================================================================================
+
+database auth: P6jRrXYTx8RkQknK
+##### Project API
+Javascript
+Dart
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://vwqkhjnkummwtvfxgqml.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\5.0 Supabase\SupaBase Project - QiAlly Access.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\6.0 Development Tools\Implementation Summary.md
+TYPE: .md
+================================================================================
+
+# QiAlly Portal Implementation Summary
+
+## 🎯 Project Overview
+
+The QiAlly Portal is a comprehensive client portal system built with modern web technologies, designed to provide secure document management, messaging, knowledge base access, and project management capabilities for business clients.
+
+## 🏗️ Architecture Summary
+
+### Frontend Architecture
+- **Framework**: React 19.1.1 with Vite for fast development and building
+- **Styling**: TailwindCSS for utility-first styling with custom design system
+- **Animations**: Framer Motion for smooth, performant animations
+- **State Management**: React Context API and local state management
+- **Routing**: React Router with protected routes and role-based access
+
+### Backend Architecture
+- **Database**: Supabase (PostgreSQL) with Row Level Security (RLS)
+- **Authentication**: Supabase Auth with JWT tokens and role-based access
+- **Storage**: Supabase Storage for file management with access control
+- **Real-time**: Supabase Real-time for live updates and messaging
+- **API**: RESTful API endpoints with Supabase client integration
+
+### Deployment Architecture
+- **Frontend**: Cloudflare Pages for global CDN and edge caching (frontend hosting only)
+- **Backend**: Supabase cloud platform with automatic scaling
+- **Domain**: Custom domain with SSL/TLS encryption
+- **Monitoring**: Built-in Supabase monitoring and analytics
+
+**Authentication Architecture**: All authentication, authorization, and user management are handled exclusively through Supabase Auth. Cloudflare is used only for DNS, CDN, and static frontend hosting.
+
+## 📊 Current Implementation Status
+
+### ✅ Completed Modules
+
+#### 1. Authentication System
+- **Status**: ✅ Complete
+- **Features**:
+  - User registration and login
+  - Password reset functionality
+  - Email verification
+  - Role-based access control (admin, team_member, client_user)
+  - Session management with JWT tokens
+  - Protected routes and navigation guards
+
+#### 2. User Management
+- **Status**: ✅ Complete
+- **Features**:
+  - User profile management
+  - Client organization management
+  - Role assignment and permissions
+  - Admin user management interface
+  - User invitation system
+
+#### 3. Knowledge Base System
+- **Status**: ✅ Complete
+- **Features**:
+  - Static site generation from markdown files
+  - Client-specific knowledge bases with access control
+  - Search functionality using Fuse.js
+  - Category and article organization
+  - Admin interface for KB management
+  - Build and deployment automation
+
+### 🔄 In Progress Modules
+
+#### 4. Document Management
+- **Status**: 🚧 Planning Phase
+- **Planned Features**:
+  - File upload with drag-and-drop interface
+  - Document organization and categorization
+  - Access control based on user roles
+  - File preview and download functionality
+  - Search and filtering capabilities
+  - Version control and audit trail
+
+#### 5. Messaging System
+- **Status**: 📋 Design Phase
+- **Planned Features**:
+  - Real-time messaging using Supabase Real-time
+  - Message threading and organization
+  - File sharing in messages
+  - Message search and filtering
+  - Notification system
+  - Message templates and automation
+
+#### 6. Project Management
+- **Status**: 📋 Design Phase
+- **Planned Features**:
+  - Project creation and management
+  - Task assignment and tracking
+  - Team collaboration tools
+  - Project timelines and milestones
+  - Progress reporting and analytics
+  - File attachments and document linking
+
+## 🔧 Technical Implementation Details
+
+### Database Schema
+
+#### Core Tables
+```sql
+-- User profiles with role-based access
+profiles (
+  id UUID PRIMARY KEY,
+  email TEXT UNIQUE,
+  full_name TEXT,
+  client_slug TEXT,
+  role TEXT DEFAULT 'client_user',
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+)
+
+-- Knowledge base files
+kb_files (
+  id UUID PRIMARY KEY,
+  client_slug TEXT,
+  path TEXT,
+  title TEXT,
+  tags TEXT[],
+  visibility TEXT DEFAULT 'private',
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+)
+
+-- Messages (planned)
+messages (
+  id UUID PRIMARY KEY,
+  sender_id UUID,
+  recipient_id UUID,
+  subject TEXT,
+  content TEXT,
+  is_read BOOLEAN,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+)
+```
+
+#### Security Implementation
+- **Row Level Security (RLS)**: All tables have RLS policies
+- **Client Isolation**: Data is isolated by client_slug
+- **Role-Based Access**: Different permissions for admin, team_member, client_user
+- **JWT Authentication**: Secure token-based authentication
+- **Input Validation**: All inputs are validated and sanitized
+
+### Frontend Components
+
+#### Core Components
+```typescript
+// Authentication
+- AuthProvider: Context provider for authentication state
+- LoginForm: User login interface
+- ProtectedRoute: Route protection component
+- UserMenu: User account menu
+
+// Knowledge Base
+- KBPortal: Main knowledge base interface
+- KBViewer: Article viewing component
+- KBSearch: Search functionality
+- KBAdmin: Admin management interface
+
+// Layout
+- Sidebar: Navigation sidebar
+- Header: Top navigation bar
+- Loading: Loading state component
+- ErrorBoundary: Error handling component
+```
+
+#### State Management
+```typescript
+// Authentication Context
+const AuthContext = createContext({
+  user: null,
+  session: null,
+  signIn: () => {},
+  signOut: () => {},
+  loading: true
+});
+
+// User Context
+const UserContext = createContext({
+  profile: null,
+  clients: [],
+  updateProfile: () => {},
+  loading: true
+});
+```
+
+### API Integration
+
+#### Supabase Client Setup
+```typescript
+// src/lib/supabase.js
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
+```
+
+#### API Functions
+```typescript
+// Authentication
+- signIn(email, password)
+- signUp(email, password, metadata)
+- signOut()
+- resetPassword(email)
+
+// User Management
+- getProfile(userId)
+- updateProfile(userId, updates)
+- getClients()
+- inviteUser(email, role, client)
+
+// Knowledge Base
+- getClientKB(clientSlug)
+- searchKB(query, clientSlug)
+- getArticle(slug, clientSlug)
+```
+
+## 🚀 Build and Deployment
+
+### Build Process
+```bash
+# Development
+npm run dev          # Start development server
+npm run build:kb     # Build knowledge base only
+npm run build:all    # Build KB and main app
+npm run deploy:kb    # Deploy KB to production
+```
+
+### Build Scripts
+```javascript
+// scripts/build-kb.js
+- loadClientConfig()      // Load client configuration
+- processMarkdownFile()   // Process markdown with frontmatter
+- generateClientKB()      // Generate client-specific KB
+- generateSearchIndex()   // Create search index
+- generateAccessControl() // Create access control file
+```
+
+### Deployment Configuration
+```javascript
+// Cloudflare Pages Configuration
+- Build Command: npm run build:all
+- Build Output: dist/
+- Environment Variables: Supabase credentials
+- Custom Domain: qiportal.qially.me
+```
+
+## 📈 Performance Metrics
+
+### Current Performance
+- **Page Load Time**: < 2 seconds
+- **Time to Interactive**: < 3 seconds
+- **Bundle Size**: < 500KB (gzipped)
+- **Search Performance**: < 100ms for 1000 documents
+- **Build Time**: ~30 seconds for 100 articles
+
+### Optimization Strategies
+- **Code Splitting**: Lazy loading for routes and components
+- **Static Generation**: Pre-generated content for knowledge base
+- **CDN Caching**: Cloudflare edge caching for static assets
+- **Image Optimization**: WebP format with responsive images
+- **Bundle Optimization**: Tree shaking and minification
+
+## 🔒 Security Implementation
+
+### Authentication Security
+- **JWT Tokens**: Secure token-based authentication
+- **Session Management**: Automatic token refresh
+- **Password Security**: Strong password requirements
+- **Rate Limiting**: API rate limiting for auth endpoints
+- **Audit Logging**: Authentication event logging
+
+### Data Security
+- **Row Level Security**: Database-level access control
+- **Client Isolation**: Complete data separation by client
+- **Input Validation**: All inputs validated and sanitized
+- **SQL Injection Prevention**: Parameterized queries
+- **XSS Protection**: Content sanitization
+
+### File Security
+- **Access Control**: File-level permissions
+- **Virus Scanning**: File upload validation
+- **Encryption**: Files encrypted at rest
+- **Signed URLs**: Secure file access URLs
+- **Audit Trail**: File access logging
+
+## 📊 Monitoring and Analytics
+
+### Application Monitoring
+- **Error Tracking**: Automatic error reporting
+- **Performance Monitoring**: Core Web Vitals tracking
+- **User Analytics**: Usage patterns and behavior
+- **Security Monitoring**: Authentication and access logs
+- **Uptime Monitoring**: Service availability tracking
+
+### Database Monitoring
+- **Query Performance**: Slow query identification
+- **Connection Pooling**: Database connection management
+- **Storage Usage**: Database size and growth tracking
+- **Backup Monitoring**: Automated backup verification
+- **Security Alerts**: Unusual access pattern detection
+
+## 🔄 Development Workflow
+
+### Development Process
+1. **Feature Planning**: Requirements gathering and design
+2. **Development**: Implementation using structured workflow
+3. **Testing**: Unit, integration, and end-to-end testing
+4. **Code Review**: Security and quality review
+5. **Deployment**: Staging and production deployment
+6. **Monitoring**: Post-deployment monitoring and feedback
+
+### Quality Assurance
+- **Code Standards**: ESLint and Prettier configuration
+- **Type Safety**: TypeScript for type checking
+- **Testing**: Jest and React Testing Library
+- **Security**: Automated security scanning
+- **Performance**: Lighthouse CI for performance monitoring
+
+## 📋 Known Issues and Technical Debt
+
+### Current Issues
+- **TypeScript Types**: Some JSX files need TypeScript conversion
+- **Error Boundaries**: Need comprehensive error handling
+- **Test Coverage**: Limited test coverage for some components
+- **Performance**: Large markdown files need optimization
+- **Accessibility**: ARIA labels and keyboard navigation improvements needed
+
+### Technical Debt
+- **State Management**: Consider Redux for complex state
+- **Component Library**: Build reusable component library
+- **API Documentation**: Generate API documentation
+- **Monitoring**: Implement comprehensive monitoring
+- **CI/CD**: Set up automated deployment pipeline
+
+## 🎯 Next Steps and Roadmap
+
+### Immediate Priorities (Next 2-4 weeks)
+1. **Document Management Module**: Implement file upload and management
+2. **TypeScript Migration**: Convert remaining JSX files to TypeScript
+3. **Testing Framework**: Set up comprehensive testing suite
+4. **Performance Optimization**: Optimize large file handling
+5. **Error Handling**: Implement proper error boundaries
+
+### Short-term Goals (Next 1-2 months)
+1. **Messaging System**: Real-time messaging implementation
+2. **Project Management**: Task and project tracking
+3. **Advanced Search**: Enhanced search capabilities
+4. **Mobile Optimization**: Improve mobile experience
+5. **Analytics Dashboard**: User analytics and reporting
+
+### Long-term Vision (Next 3-6 months)
+1. **AI Integration**: AI-powered features and automation
+2. **Advanced Security**: Two-factor authentication and advanced security
+3. **API Platform**: Public API for integrations
+4. **Multi-language Support**: Internationalization
+5. **Advanced Analytics**: Business intelligence and reporting
+
+## 📚 Documentation Status
+
+### Completed Documentation
+- ✅ Project README with setup instructions
+- ✅ Development plan with phases and timelines
+- ✅ Workflow guide for structured development
+- ✅ Knowledge base module documentation
+- ✅ Supabase setup and configuration guides
+- ✅ Sample prompts for AI-assisted development
+
+### Documentation Needs
+- 📋 API documentation and reference
+- 📋 Component library documentation
+- 📋 User guides and tutorials
+- 📋 Deployment and operations guides
+- 📋 Security and compliance documentation
+
+---
+
+**Last Updated**: 2024-01-XX
+**Status**: Development in Progress
+**Next Review**: 2024-01-XX
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\6.0 Development Tools\Implementation Summary.md
+================================================================================
+
+
+================================================================================
+FILE: D:\qiportal-dev\qiportal-client\.dev\6.0 Development Tools\Sample Prompts.md
+TYPE: .md
+================================================================================
+
+# Sample Prompts for Structured Development
+
+## 🎯 How to Use These Prompts
+
+These sample prompts demonstrate the structured workflow approach for developing the QiAlly Portal. Copy the appropriate prompt, paste your current seed file, and use it with AI assistance.
+
+## 📋 Sample Prompt 1: Document Management Module Development
+
+```
+[Paste SEED_FILE.md content here]
+
+**Task:** Develop the React component and Supabase backend for the "Document Management" module. Include features for:
+- File upload with drag-and-drop interface
+- File organization and categorization
+- Access control based on user roles and client membership
+- File preview and download functionality
+- Search and filtering capabilities
+- Version control and audit trail
+
+**Requirements:**
+- React component with TypeScript
+- Supabase database functions and RLS policies
+- API integration layer
+- Error handling and loading states
+- Unit tests for component and API functions
+- Security: Client-specific access control, file type validation, size limits
+
+**Deliverables:**
+- Component code with proper TypeScript types
+- Database schema updates and RLS policies
+- API integration functions
+- Unit test suite
+- Documentation for the module
+
+**Technical Specifications:**
+- Storage: Supabase Storage with RLS policies
+- File Types: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, Images
+- Max File Size: 50MB per file
+- Security: Client-specific access control
+- Performance: Lazy loading and pagination
+
+**Architecture Decisions:**
+- Use Supabase Storage for file storage with client-specific buckets
+- Implement RLS policies for document access control
+- Create reusable upload component with drag-and-drop
+- Use React Query for API state management
+- Implement file preview using browser capabilities
+```
+
+## 📋 Sample Prompt 2: Integration Testing
+
+```
+[Paste updated SEED_FILE.md content here]
+
+**Task:** Write integration tests to ensure the backend Document Management API properly interacts with the frontend component. Provide the Jest test suite code.
+
+**Requirements:**
+- End-to-end integration tests for file upload flow
+- API endpoint testing for all CRUD operations
+- Component integration testing with mock data
+- Error scenario testing (file too large, invalid type, etc.)
+- Performance testing for large file uploads
+- Security testing for access control
+
+**Test Scenarios:**
+1. User uploads a valid file and can view it in the list
+2. User tries to upload file larger than 50MB (should fail)
+3. User tries to upload invalid file type (should fail)
+4. User from different client tries to access documents (should be denied)
+5. Admin user can access all documents
+6. File deletion and version control
+
+**Deliverables:**
+- Jest integration test suite
+- API endpoint test coverage
+- Component integration test coverage
+- Performance benchmark tests
+- Security test cases
+```
+
+## 📋 Sample Prompt 3: Security Audit and Optimization
+
+```
+[Paste updated SEED_FILE.md content here]
+
+**Task:** Review the Document Management module for potential security vulnerabilities or performance issues. Suggest and implement optimizations.
+
+**Requirements:**
+- Security audit of the module (file upload, access control, data exposure)
+- Performance analysis and optimization (large files, multiple uploads)
+- Code quality improvements (TypeScript types, error handling)
+- Accessibility enhancements (ARIA labels, keyboard navigation)
+- Documentation updates
+
+**Security Focus Areas:**
+- File upload validation and sanitization
+- Access control implementation
+- Data encryption and storage security
+- API endpoint security
+- Client-side security measures
+
+**Performance Focus Areas:**
+- File upload optimization
+- Lazy loading implementation
+- Caching strategies
+- Bundle size optimization
+- Memory usage optimization
+
+**Deliverables:**
+- Security audit report with findings
+- Performance optimization recommendations
+- Refactored code with improvements
+- Updated documentation
+- Accessibility compliance report
+```
+
+## 📋 Sample Prompt 4: Update Seed File
+
+```
+[Paste current SEED_FILE.md content here]
+
+**Task:** Summarize the changes made in the Document Management module and update the "Prior Work Summary" section of the seed file. Provide the new, updated seed file.
+
+**Requirements:**
+- Comprehensive summary of completed work
+- Updated architecture diagrams if needed
+- New API endpoints and database changes
+- Component structure updates
+- Testing coverage summary
+- Known issues and technical debt updates
+- Next steps and priorities
+
+**Summary Should Include:**
+- Database schema changes (documents table, RLS policies)
+- New API endpoints (/api/documents/*)
+- Component files created/modified
+- Testing coverage achieved
+- Security measures implemented
+- Performance optimizations made
+- Remaining technical debt
+
+**Deliverables:**
+- Updated seed file with current progress
+- Summary of completed features
+- Next steps and priorities
+- Known issues and technical debt
+- Updated architecture diagrams
+```
+
+## 🔧 Temperature Settings for Different Tasks
+
+### **Low Temperature (0.1-0.3) - For Coding Tasks**
+```
+Use this setting when:
+- Writing specific code implementations
+- Creating database schemas
+- Implementing API endpoints
+- Writing test cases
+- Fixing bugs or errors
+
+Example: "Generate the TypeScript interface for the Document type with strict typing"
+```
+
+### **Medium Temperature (0.4-0.6) - For Design Decisions**
+```
+Use this setting when:
+- Choosing between implementation approaches
+- Designing component architecture
+- Planning API structure
+- Making security decisions
+- Optimizing performance
+
+Example: "Compare three different approaches for file upload with drag-and-drop"
+```
+
+### **High Temperature (0.7-0.9) - For Creative Solutions**
+```
+Use this setting when:
+- Brainstorming new features
+- Designing user experience
+- Creating innovative solutions
+- Exploring alternative architectures
+- Generating creative ideas
+
+Example: "Brainstorm innovative ways to improve the document management user experience"
+```
+
+## 🛡️ Quality Assurance Prompts
+
+### **Code Review Prompt**
+```
+Review the generated code for:
+- Security vulnerabilities (XSS, CSRF, injection attacks)
+- Performance issues (memory leaks, inefficient algorithms)
+- TypeScript type safety (proper types, no any types)
+- Error handling (try-catch blocks, user feedback)
+- Accessibility compliance (ARIA labels, keyboard navigation)
+- Code style consistency (ESLint rules, naming conventions)
+
+Provide specific recommendations for improvements with code examples.
+```
+
+### **Architecture Review Prompt**
+```
+Analyze the proposed architecture for:
+- Scalability (can it handle growth in users and data?)
+- Security (are there any security gaps?)
+- Performance (will it meet performance requirements?)
+- Maintainability (is the code structure maintainable?)
+- Testability (can it be easily tested?)
+
+Provide alternative approaches if needed.
+```
+
+### **Security Audit Prompt**
+```
+Conduct a security audit focusing on:
+- Authentication and authorization
+- Data validation and sanitization
+- File upload security
+- API endpoint security
+- Client-side security
+- Database security (RLS policies)
+
+Provide a detailed security report with risk levels and mitigation strategies.
+```
+
+## 📊 Progress Tracking Prompts
+
+### **Weekly Progress Review**
+```
+Review the past week's development progress:
+- Completed tasks and features
+- Issues encountered and resolutions
+- Technical debt accumulated
+- Performance metrics
+- Security considerations
+
+Provide recommendations for the upcoming week.
+```
+
+### **Sprint Planning**
+```
+Plan the next development sprint:
+- Prioritize tasks based on business value
+- Estimate effort for each task
+- Identify dependencies and blockers
+- Set realistic goals and milestones
+- Plan for testing and quality assurance
+
+Create a detailed sprint plan with timelines.
+```
+
+## 🚀 Module-Specific Prompts
+
+### **Authentication Module**
+```
+**Task:** Implement the authentication module with Supabase Auth integration.
+
+**Features:**
+- User registration and login
+- Password reset functionality
+- Email verification
+- Social login (Google, GitHub)
+- Session management
+- Role-based access control
+
+**Security Requirements:**
+- JWT token management
+- Secure password handling
+- Rate limiting
+- Session timeout
+- Audit logging
+```
+
+### **Messaging Module**
+```
+**Task:** Build the real-time messaging system using Supabase Real-time.
+
+**Features:**
+- Real-time chat interface
+- Message threading
+- File sharing in messages
+- Message search and filtering
+- Read receipts
+- Message notifications
+
+**Technical Requirements:**
+- Supabase Real-time subscriptions
+- Message encryption
+- File upload integration
+- Push notifications
+- Message persistence
+```
+
+### **Project Management Module**
+```
+**Task:** Create the project management system with task tracking and team collaboration.
+
+**Features:**
+- Project creation and management
+- Task assignment and tracking
+- Team member management
+- Project timelines and milestones
+- Progress reporting
+- File attachments
+
+**Database Design:**
+- Projects table with client association
+- Tasks table with dependencies
+- Team assignments table
+- Project files table
+- Activity logging table
+```
+
+## 🔄 Iteration Prompts
+
+### **Code Refactoring**
+```
+**Task:** Refactor the [MODULE_NAME] code for better maintainability and performance.
+
+**Focus Areas:**
+- Code organization and structure
+- Performance optimization
+- Error handling improvements
+- TypeScript type safety
+- Component reusability
+- Testing coverage
+
+**Deliverables:**
+- Refactored code with improvements
+- Performance benchmarks
+- Updated documentation
+- Migration guide for changes
+```
+
+### **Feature Enhancement**
+```
+**Task:** Enhance the [MODULE_NAME] with additional features and improvements.
+
+**Enhancement Areas:**
+- User experience improvements
+- Additional functionality
+- Performance optimizations
+- Security enhancements
+- Accessibility improvements
+- Mobile responsiveness
+
+**Requirements:**
+- Maintain backward compatibility
+- Follow existing code patterns
+- Update documentation
+- Add comprehensive tests
+```
+
+## 📋 Validation Prompts
+
+### **Requirements Validation**
+```
+**Task:** Validate that the [MODULE_NAME] meets all specified requirements.
+
+**Validation Checklist:**
+- Functional requirements met
+- Performance requirements satisfied
+- Security requirements implemented
+- Accessibility requirements fulfilled
+- Testing requirements completed
+- Documentation requirements satisfied
+
+**Deliverables:**
+- Validation report
+- Gap analysis
+- Recommendations for improvements
+- Compliance checklist
+```
+
+### **User Acceptance Testing**
+```
+**Task:** Create user acceptance testing scenarios for the [MODULE_NAME].
+
+**Test Scenarios:**
+- Happy path user journeys
+- Error handling scenarios
+- Edge cases and boundary conditions
+- Performance under load
+- Security vulnerability testing
+- Accessibility testing
+
+**Deliverables:**
+- UAT test cases
+- Test data sets
+- Expected results
+- Test execution plan
+```
+
+---
+
+## 🚀 Getting Started
+
+1. **Copy the SEED_FILE.md content** into your clipboard
+2. **Choose the appropriate prompt** from the samples above
+3. **Paste the seed file** in the `[Paste SEED_FILE.md content here]` section
+4. **Customize the prompt** for your specific needs
+5. **Use with AI assistance** following the conversational guardrails
+6. **Update the seed file** after completing each module
+
+This structured approach ensures consistent, high-quality development while maintaining clear communication and progress tracking throughout the project lifecycle.
+
+
+================================================================================
+END OF FILE: D:\qiportal-dev\qiportal-client\.dev\6.0 Development Tools\Sample Prompts.md
+================================================================================
+
+
+================================================================================
+EXTRACTION COMPLETE
+Total files processed: 23
+Output saved to: D:\qiportal-dev\qiportal-client\.dev\code_extraction_2025-08-30_18-01-07.txt
+================================================================================

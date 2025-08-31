@@ -1,0 +1,35 @@
+name: Deploy KB Clients
+on: { workflow_dispatch: {}, push: { branches: [main] } }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        slug: [builtbyrays, qially, zaitullahk, rosalucas, luisaltamirano]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+
+      - name: Export Markdown from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CLIENT_SLUG: ${{ matrix.slug }}
+        run: node packages/exporter/export.mjs
+
+      - name: Build Quartz app
+        env: 
+          CLIENT_SLUG: ${{ matrix.slug }}
+        run: npm run build --workspace=apps/kb-${{ matrix.slug }}
+
+      - name: Deploy to Cloudflare Pages (one project)
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken:   ${{ secrets.CF_API_TOKEN }}
+          accountId:  ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: qiportals-kb
+          directory:   apps/kb-${{ matrix.slug }}/public
+          branch:      client/${{ matrix.slug }}

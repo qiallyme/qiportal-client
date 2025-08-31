@@ -6,7 +6,8 @@
 **Tech Stack:**
 - Frontend: React 19.1.1 + Vite + TailwindCSS + Framer Motion
 - Backend: Supabase (PostgreSQL + Auth + Real-time)
-- Deployment: Cloudflare Pages
+- Deployment: Cloudflare Pages (frontend hosting only)
+- Authentication: Supabase Auth (exclusive)
 - Testing: Jest + React Testing Library
 - Knowledge Base: Static site generation with access control
 
@@ -193,6 +194,7 @@ src/
 - 2024-01-XX - Built KB admin interface
 - 2024-01-XX - Updated KB component to use static files
 - 2024-01-XX - Created comprehensive development plan
+- 2024-01-XX - Organized documentation into .dev folder structure
 
 ### Known Issues
 - TypeScript type annotations in JSX files causing linter errors
@@ -247,11 +249,44 @@ npm run test:integration
 npm run test:e2e
 ```
 
-## 📚 Documentation Links
-- [README.md](./README.md)
-- [DEVELOPMENT_PLAN.md](./DEVELOPMENT_PLAN.md)
-- [WORKFLOW_GUIDE.md](./WORKFLOW_GUIDE.md)
-- [KB_DATABASE_SETUP.sql](./KB_DATABASE_SETUP.sql)
+## 📚 Documentation Structure
+
+### Development Documentation (`.dev` folder)
+```
+.dev/
+├── 1.0 Master Doc(s)/
+│   ├── _QiPortal Master Doc(s).md
+│   ├── 1.0 Scaffolding (Master Plan).md
+│   ├── Development Plan.md (merged)
+│   └── Workflow Guide.md (merged)
+├── 2.0 Modules/
+│   ├── 2.0 Module Development Documents.md
+│   ├── 2.1 Knowledge Base Module.md (updated)
+│   ├── 2.2 Document Management Module.md
+│   ├── 2.3 Secure Messaging Module.md
+│   ├── 2.4 Dev Doc—Project Management.md
+│   ├── 2.5 AI Assistant Module.md
+│   ├── 2.6 Billing & Subscriptions Module.md
+│   └── 2.7 Dashboard & Reporting Module.md
+├── 3.0 Canvas and RAG Notes/
+├── 4.0 CloudFlare/
+├── 5.0 Supabase/
+│   ├── SupaBase Project - QiAlly Access.md
+│   ├── Email Templates.md
+│   ├── Setup Guide.md (merged)
+│   ├── Migration Guide.md (merged)
+│   └── Email Setup.md (merged)
+├── 6.0 Development Tools/
+│   ├── Sample Prompts.md (merged)
+│   └── Implementation Summary.md (merged)
+└── README—Developer Onramp.md
+```
+
+### Root Documentation
+- [README.md](./README.md) - Main project documentation
+- [SEED_FILE.md](./SEED_FILE.md) - Current development state
+- [KB_DATABASE_SETUP.sql](./KB_DATABASE_SETUP.sql) - Database setup
+- [MESSAGES_DATABASE_SETUP.sql](./MESSAGES_DATABASE_SETUP.sql) - Messages DB setup
 
 ## 🚀 Current Module: Document Management
 
