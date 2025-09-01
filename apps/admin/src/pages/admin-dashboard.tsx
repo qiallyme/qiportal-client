@@ -1,6 +1,6 @@
-import { AdminNavigation } from "@/components/admin/AdminNavigation";
+import { AdminNavigation } from "@/components/AdminNavigation";
 import { AdminSidebar } from "@/components/AdminSidebar";
-import { useRequireAdmin } from "@/utils/authGuards";
+import { useRequireAdmin } from "@shared/utils/authGuards";
 import { Building, CheckSquare, DollarSign, MessageSquare, FileText, ExternalLink, Check } from "lucide-react";
 
 export default function AdminDashboard() {

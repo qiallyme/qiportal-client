@@ -1,22 +1,33 @@
 {
-  "include": ["apps/**/*", "shared/**/*", "server/**/*", "packages/**/*"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
-    "noEmit": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "strict": true,
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "types": ["node", "vite/client"],
     "paths": {
       "@/*": ["apps/client/src/*"],
       "@admin/*": ["apps/admin/src/*"],
       "@shared/*": ["shared/*"],
       "@ui/*": ["packages/ui/src/*"]
     }
-  }
+  },
+  "include": [
+    "apps/**/*",
+    "shared/**/*", 
+    "server/**/*",
+    "packages/**/*"
+  ]
 }
