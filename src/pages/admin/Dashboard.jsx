@@ -1,4 +1,4 @@
-import { useUser } from '../context/UserContext'
+import { useUser } from '../../context/UserContext'
 
 const Dashboard = () => {
   const { email, role } = useUser()

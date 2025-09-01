@@ -1,6 +1,6 @@
 // src/pages/KbHome.tsx
-import { useTenant } from "../contexts/TenantProvider";
-import { supabase } from "../lib/supabase";
+import { useTenant } from "../../contexts/TenantProvider";
+import { supabase } from "../../lib/supabase";
 
 export default function KbHome() {
   const { org, spaces } = useTenant();
