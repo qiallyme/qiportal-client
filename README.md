@@ -1,416 +1,68 @@
-# QiAlly Portal 🌟
+# QiAlly Portal - Multi-Tenant Client Portal
 
-> **Systems That Breathe** — Transforming chaos into clarity through modular systems, client portals, and operational revival.
+A comprehensive multi-tenant client portal featuring AI-powered knowledge bases, real-time collaboration, project management, and intelligent automation tools.
 
-[![React](https://img.shields.io/badge/React-19.1.1-61dafb?logo=react&logoColor=white)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-7.1.2-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4.17-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Auth-Supabase-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/auth)
-[![Static KB](https://img.shields.io/badge/Knowledge%20Base-Static%20Generation-10b981?logo=markdown&logoColor=white)](https://quartz.jzhao.xyz/)
+## 🚀 Features
 
-## 🚀 Project Overview
+### Core Functionality
+- **Multi-Tenant Architecture** - Secure client isolation with customizable branding
+- **AI-Powered Knowledge Base** - RAG-enabled chatbots with vector search
+- **Real-Time Messaging** - WebSocket-powered communication system
+- **Project Management** - Progress tracking with visualization
+- **Payment Processing** - Stripe integration for invoicing and payments
+- **Modular Design** - Feature flags control client access to modules
 
-QiAlly Portal is a modern client portal and business operations platform that helps small teams transform their operational chaos into streamlined, breathing systems. Built with React and powered by Supabase's secure infrastructure, it provides role-based access to business intelligence, project management, and operational tools.
+### Advanced Capabilities
+- **RAG-Enabled Document Chat** - Intelligent document Q&A using OpenAI
+- **Admin Dashboard** - Complete client management and "view as client" functionality
+- **Role-Based Access Control** - Admin, team member, and client user roles
+- **Real-Time Updates** - Live notifications and message synchronization
+- **Responsive Design** - Mobile-first glassmorphism UI
 
-### 🎯 Mission
-**"Systems That Breathe"** — We believe business systems should be living, adaptive, and effortless to use. The QiAlly Portal embodies this philosophy by providing intuitive interfaces that grow with your business.
+## 🛠️ Tech Stack
 
-## 🔧 Environment Setup
+### Frontend
+- **React 19** with TypeScript
+- **Vite** for build optimization
+- **TailwindCSS** + **Framer Motion** for styling and animations
+- **React Router (wouter)** for client-side routing
+- **React Query** for state management and API caching
+- **Stripe Elements** for payment processing
+- **WebSocket** for real-time communication
 
-### Supabase Configuration
+### Backend
+- **Node.js** with Express
+- **Multi-tenant data architecture** with client isolation
+- **OpenAI API** for RAG functionality (GPT-5)
+- **Stripe API** for billing and payments
+- **WebSocket Server** for real-time messaging
+- **In-memory storage** with database-ready interface
 
-This project uses Supabase for authentication and data storage. You need to configure environment variables for both frontend (browser) and backend (server) operations.
+### Key Integrations
+- **OpenAI GPT-5** - Latest model for AI-powered responses
+- **Stripe** - Payment processing and subscription management
+- **Vector Search** - Document embedding for intelligent search
+- **WebRTC** - Future video calling capabilities
 
-#### 1. Get Your Supabase Keys
-
-1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
-2. Select your project
-3. Navigate to **Settings → API**
-4. Copy these values:
-   - **Project URL** (e.g., `https://vwqkhjnkummwtvfxgqml.supabase.co`)
-   - **anon public** key (starts with `eyJ...`)
-   - **service_role** key (starts with `eyJ...`)
-
-#### 2. Frontend Environment (.env)
-
-Create a `.env` file in the project root for Vite (frontend):
-
-```env
-# Frontend - Browser only (Vite)
-VITE_SUPABASE_URL=https://vwqkhjnkummwtvfxgqml.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key_here
-```
-
-⚠️ **Security**: Only use the **anon key** in frontend code. Never expose the service role key to the browser.
-
-#### 3. Backend/Server Environment
-
-For Node.js scripts (exporter, CI/CD):
-
-**PowerShell (Windows):**
-```powershell
-$env:SUPABASE_URL="https://vwqkhjnkummwtvfxgqml.supabase.co"
-$env:SUPABASE_SERVICE_KEY="your_service_role_key_here"
-$env:CLIENT_SLUG="builtbyrays"
-node packages/exporter/export.mjs
-```
-
-**Bash/Zsh (Mac/Linux):**
-```bash
-export SUPABASE_URL="https://vwqkhjnkummwtvfxgqml.supabase.co"
-export SUPABASE_SERVICE_KEY="your_service_role_key_here"
-export CLIENT_SLUG="builtbyrays"
-node packages/exporter/export.mjs
-```
-
-**GitHub Actions/Cloudflare Pages:**
-```yaml
-SUPABASE_URL: https://vwqkhjnkummwtvfxgqml.supabase.co
-SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-CLIENT_SLUG: builtbyrays
-```
-
-#### 4. Quick Verification
-
-**Frontend (browser console):**
-```javascript
-import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ OK' : '❌ Missing'
-```
-
-**Backend (terminal):**
-```bash
-node -e "console.log(process.env.SUPABASE_URL, !!process.env.SUPABASE_SERVICE_KEY)"
-```
-
-### Knowledge Base Exporter
-
-The knowledge base exporter pulls content from Supabase and generates static files:
-
-```bash
-# Export knowledge base for a specific client
-$env:CLIENT_SLUG="builtbyrays"
-node packages/exporter/export.mjs
-```
-
-**Troubleshooting:**
-- **0 files exported**: Check if you have `kb_spaces` and `kb_articles` in your database
-- **Invalid API key**: Ensure you're using the correct service role key (not anon key)
-- **Wrong URL**: Use the API URL, not the dashboard URL
-
-## 🎯 Project Goals
-
-### **Primary Objectives**
-1. **Client Portal Excellence** - Provide a seamless, secure portal for client collaboration
-2. **Knowledge Management** - Implement a static knowledge base system with access control
-3. **Operational Efficiency** - Streamline business processes and client communication
-4. **Scalable Architecture** - Build a foundation that grows with business needs
-5. **Security First** - Ensure data protection and role-based access control
-
-### **Technical Goals**
-- **Static Site Generation** - Fast, secure knowledge base with no server-side processing
-- **Multi-Client Support** - Separate knowledge bases for different organizations
-- **Access Control** - Users only see content they're authorized to access
-- **Performance** - Sub-second load times and excellent user experience
-- **Maintainability** - Clean, documented code that's easy to extend
-
-## ✨ Features
-
-### 🏠 **Public Landing Page**
-- **Modern Design**: Beautiful, responsive design with gradient effects and smooth animations
-- **Service Showcase**: Comprehensive overview of consulting services and expertise
-- **Case Studies**: Real-world success stories with quantified results
-- **Client Testimonials**: Social proof from satisfied clients
-- **Contact Integration**: Direct email integration for inquiries
-
-### 🔐 **Secure Authentication**
-- **Supabase Auth Integration**: Built-in authentication with email/password
-- **JWT Token Management**: Secure session handling with automatic token validation
-- **Role-Based Access**: Granular permissions for different user types
-
-### 📚 **Static Knowledge Base System**
-- **Quartz-Inspired Architecture**: Static file generation for performance and security
-- **Multi-Client Support**: Separate knowledge bases for different organizations
-- **Access Control**: Users only see knowledge bases they are members of
-- **Search Functionality**: Client-side search with Fuse.js
-- **Markdown Support**: Full markdown rendering with syntax highlighting
-- **Admin Interface**: Management tools for knowledge base administration
-
-### 👥 **Role-Based Dashboards**
-
-#### **Client Dashboard**
-- **Project Overview**: Active projects, pending tasks, and completion metrics
-- **Real-time Activity Feed**: Recent updates and milestones
-- **Performance Metrics**: Visual KPIs and progress tracking
-- **Secure Document Access**: Protected file sharing and collaboration
-
-#### **Admin Panel**
-- **System Monitoring**: User activity, session management, and system health
-- **User Management**: Role assignments and access control
-- **Analytics Dashboard**: Business intelligence and reporting tools
-- **Knowledge Base Management**: Content and access control administration
-- **Quick Actions**: Streamlined administrative tasks
-
-### 🎨 **User Experience**
-- **Dark/Light Theme Toggle**: Personalized viewing preferences
-- **Responsive Design**: Seamless experience across all devices
-- **Glass Morphism UI**: Modern, clean interface with depth and clarity
-- **Smooth Animations**: Engaging micro-interactions and transitions
-
-## 🛠 Tech Stack
-
-### **Frontend**
-- **React 19.1.1** - Latest React with concurrent features
-- **React Router 7.8.2** - Modern client-side routing
-- **Vite 7.1.2** - Lightning-fast build tool and dev server
-- **TailwindCSS 3.4.17** - Utility-first CSS framework
-- **Framer Motion** - Smooth animations and transitions
-
-### **Knowledge Base System**
-- **Static Generation** - Pre-built HTML files for fast loading
-- **Gray Matter** - Frontmatter parsing for markdown files
-- **Fast Glob** - File pattern matching for content discovery
-- **Fuse.js** - Fuzzy search functionality
-- **Marked** - Markdown to HTML conversion
-
-### **Authentication & Security**
-- **Supabase Auth** - Built-in authentication with email/password
-- **JWT Tokens** - Secure session management
-- **Protected Routes** - Role-based access control
-- **Row Level Security** - Database-level access control
-
-### **Development Tools**
-- **ESLint** - Code quality and consistency
-- **PostCSS** - CSS processing and optimization
-- **Autoprefixer** - Cross-browser compatibility
-- **TypeScript** - Type safety and better developer experience
-
-## 🏗 Architecture
-
-```
-qiportal-client/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── ProtectedRoute.jsx   # Auth guard component
-│   │   ├── ThemeProvider.jsx    # Theme management
-│   │   ├── KBAdmin.jsx          # Knowledge base admin
-│   │   └── ...
-│   ├── pages/              # Route components
-│   │   ├── Home.jsx            # Landing page
-│   │   ├── Dashboard.jsx       # Client dashboard
-│   │   ├── AdminPanel.jsx      # Admin interface
-│   │   ├── KB.jsx              # Knowledge base interface
-│   │   └── ...
-│   ├── context/            # React context providers
-│   │   └── UserContext.jsx     # User state management
-│   ├── utils/              # Utility functions
-│   │   └── auth.js             # Authentication helpers
-│   └── lib/                # API and external integrations
-│       ├── supabase.js         # Supabase client configuration
-│       ├── kbApi.js            # Legacy knowledge base API
-│       └── staticKbApi.js      # Static knowledge base API
-├── kb-content/             # Knowledge base source files
-│   ├── zy/                 # Client organization content
-│   │   ├── getting-started.md
-│   │   └── process-optimization.md
-│   └── ...
-├── public/kb/              # Generated static knowledge base
-│   ├── access-control.json # Access control configuration
-│   ├── index.html          # Main portal
-│   └── zy/                 # Client-specific KB
-├── scripts/                # Build and deployment scripts
-│   ├── build-kb.js         # Knowledge base build script
-│   └── deploy-kb.js        # Deployment script
-├── kb-config.json          # Knowledge base configuration
-└── KB_README.md            # Knowledge base documentation
-```
-
-## 📊 Current Progress
-
-### ✅ **Completed Features**
-
-#### **Core Platform**
-- [x] **Authentication System** - Supabase integration with role-based access
-- [x] **Public Landing Page** - Modern, responsive design with service showcase
-- [x] **Client Dashboard** - Project overview and activity tracking
-- [x] **Admin Panel** - User management and system monitoring
-- [x] **Protected Routes** - Secure access control for all features
-- [x] **Responsive Design** - Mobile-first approach with glass morphism UI
-
-#### **Knowledge Base System**
-- [x] **Static Generation Engine** - Build script for generating static files
-- [x] **Multi-Client Support** - Separate knowledge bases per organization
-- [x] **Access Control** - Users only see authorized content
-- [x] **Search Functionality** - Client-side fuzzy search
-- [x] **Markdown Rendering** - Full markdown support with syntax highlighting
-- [x] **Admin Interface** - Knowledge base management tools
-- [x] **Deployment Scripts** - Automated build and validation
-
-#### **Development Infrastructure**
-- [x] **Build System** - Vite configuration with optimization
-- [x] **Code Quality** - ESLint setup and code formatting
-- [x] **Documentation** - Comprehensive README and KB documentation
-- [x] **Deployment Ready** - Cloudflare Pages configuration
-
-### 🚧 **In Progress**
-
-#### **Knowledge Base Enhancements**
-- [ ] **React Markdown Integration** - Replace custom markdown parser with react-markdown
-- [ ] **Advanced Search** - Server-side search with better indexing
-- [ ] **Content Versioning** - Track changes and rollback capabilities
-- [ ] **Analytics Integration** - Usage tracking and insights
-
-#### **Platform Features**
-- [ ] **Real-time Notifications** - Live updates and alerts
-- [ ] **File Management** - Secure document upload and sharing
-- [ ] **Project Management** - Task tracking and milestone management
-- [ ] **Reporting Dashboard** - Business intelligence and analytics
-
-### 📋 **Planned Features**
-
-#### **Advanced Knowledge Base**
-- [ ] **Content Editor** - In-browser markdown editing
-- [ ] **Collaboration Tools** - Comments and feedback system
-- [ ] **Export Options** - PDF and other format exports
-- [ ] **Integration APIs** - Connect with external systems
-
-#### **Platform Extensions**
-- [ ] **Mobile App** - React Native companion app
-- [ ] **API Gateway** - RESTful API for external integrations
-- [ ] **Webhook System** - Real-time event notifications
-- [ ] **Advanced Analytics** - Machine learning insights
-
-## 🚦 Getting Started
+## 📦 Installation & Setup
 
 ### Prerequisites
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **Supabase account** (for authentication and database)
+- Node.js 18+ 
+- npm or yarn
+- OpenAI API key (optional)
+- Stripe keys (optional)
 
-### Installation
+### Environment Variables
+Create a `.env` file in the root directory:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-org/qiportal-client.git
-   cd qiportal-client
-   ```
+```env
+# Optional: OpenAI for AI chat functionality
+OPENAI_API_KEY=your_openai_api_key
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Optional: Stripe for payment processing  
+STRIPE_SECRET_KEY=sk_test_...
+VITE_STRIPE_PUBLIC_KEY=pk_test_...
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Supabase credentials
-   ```
-
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Build knowledge base (optional)**
-   ```bash
-   npm run build:kb
-   ```
-
-6. **Open your browser**
-   Navigate to `http://localhost:5173`
-
-### Available Scripts
-
-```bash
-npm run dev           # Start development server
-npm run build         # Build for production
-npm run build:kb      # Build knowledge base only
-npm run build:all     # Build KB and main app
-npm run deploy:kb     # Deploy knowledge base with validation
-npm run deploy:kb-full # Full deployment (KB + app)
-npm run preview       # Preview production build
-npm run lint          # Run ESLint
-```
-
-## 📚 Knowledge Base System
-
-### **Quick Start**
-
-1. **Configure clients** in `kb-config.json`:
-   ```json
-   {
-     "clients": {
-       "client-slug": {
-         "name": "Client Name",
-         "members": ["user@example.com"],
-         "public": false
-       }
-     }
-   }
-   ```
-
-2. **Add content** to `kb-content/{client-slug}/`:
-   ```markdown
-   ---
-   title: Document Title
-   tags: [tag1, tag2]
-   description: Document description
-   ---
-   
-   # Content here
-   ```
-
-3. **Build and deploy**:
-   ```bash
-   npm run build:kb
-   npm run deploy:kb
-   ```
-
-### **Features**
-- **Static Generation** - No server-side processing required
-- **Access Control** - Users only see authorized content
-- **Search** - Client-side fuzzy search with Fuse.js
-- **Responsive** - Works on all devices
-- **Fast** - Pre-built HTML files for instant loading
-
-## 📚 Documentation
-
-### **Development Documentation**
-All development documentation is organized in the `.dev` folder:
-
-```
-.dev/
-├── 1.0 Master Doc(s)/
-│   ├── Development Plan.md          # Complete development roadmap
-│   └── Workflow Guide.md            # Structured development workflow
-├── 2.0 Modules/
-│   ├── 2.1 Knowledge Base Module.md # KB system documentation
-│   ├── 2.2 Document Management Module.md
-│   ├── 2.3 Secure Messaging Module.md
-│   └── ... (other modules)
-├── 5.0 Supabase/
-│   ├── Setup Guide.md               # Complete Supabase setup
-│   ├── Email Setup.md               # Email configuration
-│   └── Email Templates.md           # Email templates
-└── 6.0 Development Tools/
-    ├── Sample Prompts.md            # AI-assisted development prompts
-    └── Implementation Summary.md    # Current implementation status
-```
-
-### **Quick Links**
-- [Development Plan](.dev/1.0%20Master%20Doc(s)/Development%20Plan.md)
-- [Workflow Guide](.dev/1.0%20Master%20Doc(s)/Workflow%20Guide.md)
-- [Knowledge Base Module](.dev/2.0%20Modules/2.1%20Knowledge%20Base%20Module.md)
-- [Supabase Setup](.dev/5.0%20Supabase/Setup%20Guide.md)
-- [Sample Prompts](.dev/6.0%20Development%20Tools/Sample%20Prompts.md)
-
-For detailed documentation, see the organized files in the `.dev` folder.
-
-## 🌐 Deployment
-
-This application is optimized for deployment on **Cloudflare Pages** for frontend hosting with seamless integration to Supabase for authentication and data storage.
-
-### Environment Setup
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Get your project URL and anon key from the project settings
-3. Create a `.env` file with:
-   ```
+# Development
+NODE_ENV=development
+PORT=5000

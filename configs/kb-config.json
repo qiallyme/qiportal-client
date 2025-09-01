@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "clients": {
+    "acme-corp": {
+      "name": "Acme Corp",
+      "members": [
+        "sarah@acmecorp.com"
+      ],
+      "access_rules": {
+        "default_visibility": "private",
+        "admin_override": true,
+        "categories": [
+          {
+            "name": "Getting Started",
+            "visibility": "private",
+            "files": [
+              "welcome.md",
+              "brand-style-guide.md",
+              "project-process.md"
+            ]
+          },
+          {
+            "name": "Design Resources",
+            "visibility": "private", 
+            "files": [
+              "logo-guidelines.md",
+              "color-palette.md",
+              "typography-system.md"
+            ]
+          },
+          {
+            "name": "Communication",
+            "visibility": "private",
+            "files": [
+              "feedback-process.md",
+              "meeting-scheduling.md",
+              "emergency-contacts.md"
+            ]
+          }
+        ]
+      },
+      "ai_settings": {
+        "enabled": true,
+        "model": "gpt-5",
+        "max_context_files": 5,
+        "response_style": "professional"
+      }
+    },
+    "tech-solutions": {
+      "name": "Tech Solutions Inc",
+      "members": [
+        "contact@techsolutions.com"
+      ],
+      "access_rules": {
+        "default_visibility": "private",
+        "admin_override": true,
+        "categories": [
+          {
+            "name": "Technical Documentation",
+            "visibility": "private",
+            "files": [
+              "api-documentation.md",
+              "integration-guide.md",
+              "troubleshooting.md"
+            ]
+          }
+        ]
+      },
+      "ai_settings": {
+        "enabled": true,
+        "model": "gpt-5",
+        "max_context_files": 3,
+        "response_style": "technical"
+      }
+    }
+  },
+  "global_settings": {
+    "search_index_enabled": true,
+    "auto_embed_content": true,
+    "backup_enabled": true,
+    "version_control": true
+  },
+  "build_settings": {
+    "output_directory": "./public/kb",
+    "static_generation": true,
+    "search_integration": "fuse.js",
+    "styling": "tailwindcss"
+  }
+}
