@@ -11,6 +11,7 @@ import KnowledgeBase from '@shared/pages/knowledge-base';
 import Messaging from '@shared/pages/messaging';
 import InvoiceManagement from '@shared/pages/invoice-management';
 import NotFound from '@shared/pages/not-found';
+import ClientDashboard from './pages/client-dashboard';
 
 const App: React.FC = () => {
   const { loading } = useUser();
@@ -68,6 +69,15 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <InvoiceManagement />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <ClientDashboard />
               </ProtectedRoute>
             } 
           />

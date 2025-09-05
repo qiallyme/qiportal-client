@@ -10,7 +10,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src"),
       "@shared": path.resolve(__dirname, "../../shared"),
-      "@ui": path.resolve(__dirname, "../../packages/ui/src"),
+      "@ui": path.resolve(__dirname, "../../shared/ui"),
     },
   },
   build: {

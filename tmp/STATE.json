@@ -1,4 +1,30 @@
 {
+  "locks": {
+    "DEPS": "A#"
+  },
+  "tasks": [
+    {
+      "id": "fix-server-deps",
+      "status": "completed",
+      "area": "DEPS",
+      "description": "Fix server drizzle-orm import issue"
+    },
+    {
+      "id": "cleanup-ports",
+      "status": "completed",
+      "area": "CONFIG",
+      "description": "Clean up old dev processes and restart"
+    }
+  ],
+  "notes": [
+    "Client running on port 3001",
+    "Admin running on port 3002",
+    "Server still not running - need to investigate",
+    "Fixed @ui/* imports to point to shared/ui",
+    "Added drizzle-orm to root dependencies",
+    "Cleaned up all old node processes",
+    "A0 Orchestrator: DEPS area locked by A# worker"
+  ],
   "architect": {
     "status": "completed",
     "notes": [

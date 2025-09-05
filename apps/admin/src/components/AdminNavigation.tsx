@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Brain, Bell, Eye } from "lucide-react";
 import { useUser } from "@shared/auth/context/UserContext";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@qially/ui";
-import { Button } from "@qially/ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@ui/select";
+import { Button } from "@ui/button";
 
 export function AdminNavigation() {
   const { user, logout } = useUser();

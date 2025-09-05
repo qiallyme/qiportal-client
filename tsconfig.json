@@ -20,7 +20,7 @@
       "@/*": ["apps/client/src/*"],
       "@admin/*": ["apps/admin/src/*"],
       "@shared/*": ["shared/*"],
-      "@ui/*": ["packages/ui/src/*"]
+      "@ui/*": ["shared/ui/*"]
     }
   },
   "include": [
