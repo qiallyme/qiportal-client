@@ -25,7 +25,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col dark-gradient-bg">
       {/* Header */}
       <Header />
 
@@ -87,7 +87,7 @@ const App: React.FC = () => {
         </Routes>
       </main>
 
-      <footer className="container py-10 text-subtext">
+      <footer className="container py-10 text-white/60">
         © {new Date().getFullYear()} QiAlly. No tracking. No drama.
       </footer>
     </div>

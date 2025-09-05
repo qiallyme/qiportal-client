@@ -1,4 +1,3 @@
-import React from 'react';
 import { Brain, Bell, User, Settings, LogOut } from 'lucide-react';
 import { Button } from '@ui/button';
 

@@ -24,10 +24,10 @@ export default function Header() {
   };
 
   return (
-    <header className="glass-nav w-full">
-      <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
+    <header className="glass-nav w-full sticky top-0 z-50">
+      <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
         {/* Brand */}
-        <Link to="/" className="flex items-center gap-2 group">
+        <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
           <div className="relative">
             <img src="https://vwqkhjnkummwtvfxgqml.supabase.co/storage/v1/object/public/site_assets/logo/qially/qcircleiconsquare.png" alt="QiAlly" className="h-8 w-8 transition-transform duration-300 group-hover:scale-110" />
             <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-lg group-hover:bg-blue-400/30 transition-all duration-300"></div>
@@ -36,32 +36,23 @@ export default function Header() {
         </Link>
 
         {/* Nav */}
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="nav-spacing text-sm hidden md:flex">
           <Link to="/" className="glass-nav-link">
             Home
           </Link>
           {user ? (
             <>
-              <Link to="/client" className="glass-nav-link">
+              <Link to="/dashboard" className="glass-nav-link">
                 Dashboard
               </Link>
-              <Link to="/projects" className="glass-nav-link">
-                Projects
-              </Link>
-              <Link to="/messages" className="glass-nav-link">
+              <Link to="/messaging" className="glass-nav-link">
                 Messages
               </Link>
-              <Link to="/kb" className="glass-nav-link">
+              <Link to="/knowledge-base" className="glass-nav-link">
                 Knowledge Base
               </Link>
-              <Link to="/calls" className="glass-nav-link">
-                Calls
-              </Link>
-              <Link to="/billing" className="glass-nav-link">
+              <Link to="/invoices" className="glass-nav-link">
                 Billing
-              </Link>
-              <Link to="/support" className="glass-nav-link">
-                Support
               </Link>
               <Link to="/settings" className="glass-nav-link">
                 Settings
@@ -82,7 +73,7 @@ export default function Header() {
         </nav>
 
         {/* User */}
-        <div className="flex items-center gap-3">
+        <div className="button-group flex-shrink-0">
           {user ? (
             <>
               <div className="flex items-center gap-3 glass-card px-4 py-2">
@@ -97,8 +88,8 @@ export default function Header() {
                     </svg>
                   </div>
                 </div>
-                <div className="text-xs">
-                  <p className="font-medium leading-tight text-white">{user.email}</p>
+                <div className="text-xs hidden sm:block">
+                  <p className="font-medium leading-tight text-white truncate max-w-32">{user.email}</p>
                   <p className="text-white/70 capitalize leading-tight">{user.role}</p>
                 </div>
               </div>

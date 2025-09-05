@@ -172,6 +172,36 @@ class A0Orchestrator {
       console.error('Error writing to log:', error);
     }
   }
+
+  validateBuildContract(area, workerId) {
+    const contract = {
+      'ROUTES': {
+        'entry_points': [
+          'apps/client/src/main.tsx',
+          'apps/admin/src/main.tsx', 
+          'server/index.ts'
+        ],
+        'css_imports': '@shared/index.css'
+      },
+      'CONFIG': {
+        'typescript_paths': ['@/*', '@admin/*', '@shared/*', '@ui/*'],
+        'tailwind_content': ['./apps/**/index.html', './apps/**/src/**/*.{js,jsx,ts,tsx}', './shared/**/*.{ts,tsx}', './packages/ui/src/**/*.{ts,tsx}'],
+        'pnpm_workspace': ['apps/*', 'packages/*', 'shared', 'server']
+      },
+      'SERVER': {
+        'build_outputs': ['apps/client/dist/', 'apps/admin/dist/', 'server/dist/'],
+        'production_start': 'node server/dist/index.js',
+        'development': 'pnpm run dev:server'
+      },
+      'DEPS': {
+        'package_manager': 'pnpm',
+        'lock_file': 'pnpm-lock.yaml',
+        'workspace_packages': ['apps/*', 'packages/*', 'shared', 'server']
+      }
+    };
+
+    return contract[area] || {};
+  }
 }
 
 // CLI Interface
@@ -215,12 +245,24 @@ if (isMainModule) {
       console.log(JSON.stringify(status, null, 2));
       break;
       
+    case 'contract':
+      const area = process.argv[3];
+      if (!area) {
+        console.error('Usage: node a0-orchestrator.js contract <AREA>');
+        console.log('Areas:', AREAS.join(', '));
+        process.exit(1);
+      }
+      const contract = orchestrator.validateBuildContract(area);
+      console.log(JSON.stringify(contract, null, 2));
+      break;
+      
     default:
       console.log('A0 Orchestrator Commands:');
       console.log('  check-stale                    - Check and clear stale locks');
       console.log('  request-lock <AREA> <WORKER>   - Request lock for area');
       console.log('  release-lock <AREA> <WORKER>   - Release lock for area');
       console.log('  status                         - Show current status');
+      console.log('  contract <AREA>                - Show BUILD_CONTRACT for area');
       console.log('');
       console.log('Areas:', AREAS.join(', '));
       console.log('Workers: A1 (ROUTES), A2 (CONFIG+TYPES), A3 (SERVER), A# (DEPS)');
