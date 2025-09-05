@@ -1,77 +1,47 @@
+import React from 'react';
 import { Brain, Bot, Bell } from "lucide-react";
-import { useUser } from "@/context/UserContext";
-import { Button } from "@/components/ui/button";
+import { useUser } from "@shared/auth/context/UserContext";
+import { Button } from "@shared/ui/button";
 
 export function ClientNavigation() {
-  const { user, logout } = useUser();
+  const { user, loading } = useUser();
 
-  const modules = [
-    { key: "KB", active: true },
-    { key: "Projects", active: true },
-    { key: "Messages", active: true },
-    { key: "Docs", active: false },
-  ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
-    <header className="bg-card border-b border-border">
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Brain className="text-primary-foreground h-4 w-4" />
-            </div>
-            <h1 className="text-xl font-semibold text-foreground">
-              {user?.clientSlug ? `${user.clientSlug.charAt(0).toUpperCase() + user.clientSlug.slice(1).replace('-', ' ')} Portal` : "Client Portal"}
-            </h1>
-            
-            {/* Module Toggle Indicators */}
-            <div className="hidden lg:flex items-center space-x-2 ml-8">
-              <span className="text-xs text-muted-foreground">Modules:</span>
-              <div className="flex space-x-1">
-                {modules.map((module) => (
-                  <span 
-                    key={module.key}
-                    className={`px-2 py-1 text-xs rounded-md ${
-                      module.active 
-                        ? "bg-primary/10 text-primary" 
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                    data-testid={`module-${module.key.toLowerCase()}`}
-                  >
-                    {module.key}
-                  </span>
-                ))}
-              </div>
+    <nav className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center">
+              <Brain className="h-8 w-8 text-blue-600" />
+              <span className="ml-2 text-xl font-bold text-gray-900">QiAlly</span>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
-            <button className="relative p-2 text-muted-foreground hover:text-foreground" data-testid="button-openchat">
+            <button className="relative p-2 text-muted-foreground hover:text-foreground" data-testid="button-openchat" aria-label="Open chat">
               <Bot className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"></span>
             </button>
-            <button className="relative p-2 text-muted-foreground hover:text-foreground" data-testid="button-notifications">
+            <button className="relative p-2 text-muted-foreground hover:text-foreground" data-testid="button-notifications" aria-label="Notifications">
               <Bell className="h-5 w-5" />
             </button>
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-                <span className="text-accent-foreground text-sm font-medium">
-                  {user?.name?.charAt(0) || "U"}
-                </span>
-              </div>
-              <span className="text-sm font-medium" data-testid="text-username">{user?.name}</span>
-              <Button 
-                onClick={logout} 
-                variant="ghost" 
-                size="sm"
-                data-testid="button-logout"
-              >
-                Logout
+              <span className="text-sm text-gray-700">{user?.email}</span>
+              <Button variant="outline" size="sm">
+                Profile
               </Button>
             </div>
           </div>
         </div>
       </div>
-    </header>
+    </nav>
   );
 }

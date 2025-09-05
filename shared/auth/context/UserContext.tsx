@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { authApi } from "@/lib/auth";
+import { authApi } from "../../lib/auth";
 
 interface User {
   id: string;
@@ -14,6 +14,10 @@ interface UserContextType {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  signIn: (email: string, password: string) => Promise<{ data: any; error: any }>;
+  signUp: (email: string, password: string) => Promise<{ data: any; error: any }>;
+  signOut: () => Promise<{ error: any }>;
+  testMode: boolean;
   isAdmin: boolean;
   isClient: boolean;
 }
@@ -27,6 +31,7 @@ interface UserProviderProps {
 export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [testMode] = useState(process.env.NODE_ENV === 'development');
 
   const isAdmin = user?.role === "admin";
   const isClient = user?.role === "client_user" || user?.role === "team_member";
@@ -61,8 +66,46 @@ export function UserProvider({ children }: UserProviderProps) {
     setUser(null);
   };
 
+  const signIn = async (email: string, password: string) => {
+    try {
+      await login(email, password);
+      return { data: { user }, error: null };
+    } catch (error: any) {
+      return { data: null, error };
+    }
+  };
+
+  const signUp = async (email: string, password: string) => {
+    try {
+      // For now, just return success - implement actual signup logic later
+      return { data: { user: null }, error: null };
+    } catch (error: any) {
+      return { data: null, error };
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await logout();
+      return { error: null };
+    } catch (error: any) {
+      return { error };
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, loading, login, logout, isAdmin, isClient }}>
+    <UserContext.Provider value={{ 
+      user, 
+      loading, 
+      login, 
+      logout, 
+      signIn, 
+      signUp, 
+      signOut, 
+      testMode, 
+      isAdmin, 
+      isClient 
+    }}>
       {children}
     </UserContext.Provider>
   );

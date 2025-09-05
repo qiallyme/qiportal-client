@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@shared/auth/context/UserContext";
 
 interface WebSocketMessage {
   type: string;

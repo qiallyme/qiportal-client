@@ -1,6 +1,6 @@
 // src/lib/bootstrapOrg.ts
-import { supabase } from "../../../../../src/lib/supabase";
-import { getClientSlugFromHost, normalizeSlug } from "../../../../../src/lib/tenant";
+import { supabase } from "./supabase";
+import { getClientSlugFromHost, normalizeSlug } from "./tenant";
 
 export type Org = { id: string; name: string; slug?: string };
 export type Space = { id: string; org_id: string; name: string; slug: string };

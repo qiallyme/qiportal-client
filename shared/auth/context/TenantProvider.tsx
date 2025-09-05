@@ -1,9 +1,11 @@
 // src/contexts/TenantProvider.tsx
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../../../../../src/lib/supabase";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "../../lib/supabase";
+import { useUser } from "./UserContext";
+import { useTenant } from "./TenantProvider";
 
 // Load clients configuration
-import clients from "../../../../../packages/quartz-config/clients/clients.json" assert { type: "json" };
+import clients from "@shared/exporter/quartz-config/clients/clients.json" assert { type: "json" };
 
 type TenantState = {
   loading: boolean;

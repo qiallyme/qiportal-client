@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useUser } from "@/context/UserContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@shared/auth/context/UserContext";
+import { Button } from "@ui/button";
+import { Input } from "@ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
+import { Label } from "@ui/label";
+import { useToast } from "@shared/hooks/use-toast";
 
 interface AuthProviderProps {
   mode: "login" | "register";

@@ -3,11 +3,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'wouter';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { useRequireAuth } from "@/utils/authGuards";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { apiRequest } from "@shared/lib/queryClient";
+import { useToast } from "@shared/hooks/use-toast";
+import { useRequireAuth } from "@shared/utils/authGuards";
+import { Card, CardContent, CardHeader, CardTitle } from "@ui/card";
+import { Button } from "@ui/button";
 import { ArrowLeft } from "lucide-react";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid

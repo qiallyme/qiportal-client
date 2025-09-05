@@ -1,10 +1,10 @@
-import { ClientNavigation } from "@/components/client/ClientNavigation";
-import { ClientSidebar } from "@/components/client/ClientSidebar";
-import { useRequireClient } from "@/utils/authGuards";
+import { ClientNavigation } from "@shared/components/client/ClientNavigation";
+import { ClientSidebar } from "@shared/components/client/ClientSidebar";
+import { useRequireClient } from "@shared/utils/authGuards";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest } from "@shared/lib/queryClient";
 import { Plus, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@ui/button";
 
 export default function ClientDashboard() {
   const { user, loading } = useRequireClient();

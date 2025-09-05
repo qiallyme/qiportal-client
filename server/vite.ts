@@ -1,12 +1,18 @@
-import express, { type Express } from "express";
-import fs from "fs";
-import path from "path";
-import { createServer as createViteServer, createLogger } from "vite";
-import { type Server } from "http";
-import viteConfig from "../shared/configs/vite.config";
+import { Express } from 'express';
+import { createServer as createViteServer } from 'vite';
+import { Server } from 'http';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+import express from 'express';
 import { nanoid } from "nanoid";
 
-const viteLogger = createLogger();
+// Simple logger for vite
+const viteLogger = {
+  info: (msg: string) => console.log(`[VITE] ${msg}`),
+  warn: (msg: string) => console.warn(`[VITE] ${msg}`),
+  error: (msg: string) => console.error(`[VITE] ${msg}`),
+};
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -27,17 +33,11 @@ export async function setupVite(app: Express, server: Server) {
   };
 
   const vite = await createViteServer({
-    ...viteConfig,
     configFile: false,
-    customLogger: {
-      ...viteLogger,
-      error: (msg, options) => {
-        viteLogger.error(msg, options);
-        process.exit(1);
-      },
-    },
+    customLogger: viteLogger,
     server: serverOptions,
     appType: "custom",
+    root: path.resolve(__dirname, "../apps/client"),
   });
 
   app.use(vite.middlewares);
@@ -46,10 +46,8 @@ export async function setupVite(app: Express, server: Server) {
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html",
+        __dirname,
+        "../apps/client/index.html"
       );
 
       // always reload the index.html file from disk incase it changes
@@ -68,7 +66,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(__dirname, "../apps/client/dist");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(

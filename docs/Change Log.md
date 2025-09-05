@@ -4,3 +4,23 @@
 - 2025-08-30: Expanded README with developer onboarding information.
 - 2025-08-30: Added detailed Canvas & RAG Notes section.
 - 2025-08-30: Updated Change Log to reflect today's changes.
+- 2025-01-09: [Agent 1 - Architect] Established monorepo structure and configuration:
+  - Created BUILD_CONTRACT.md with complete monorepo specifications
+  - Updated root package.json scripts to use pnpm --filter commands
+  - Converted apps/client/src/main.jsx to main.tsx
+  - Updated client app to use shared App component and CSS
+  - Verified TypeScript path aliases and Tailwind configuration
+  - All structural elements ready for Agent 2 (Refactorer)
+- 2025-01-09: [Agent 1 - Architect] Additional architectural improvements:
+  - Created centralized vite.config.ts in /configs for consistent app configuration
+  - Updated client and admin vite configs to extend base config with proper ports
+  - Fixed server/vite.ts broken imports and missing dependencies
+  - Added missing scripts for knowledge base export and database operations
+  - Installed all workspace dependencies for proper monorepo functionality
+- 2025-01-09: [Agent 1 - Architect] Import path refactoring and dependency fixes:
+  - Created automated import path fixing script (scripts/fix-imports.js)
+  - Fixed 100+ broken import paths across apps/, shared/, and packages/
+  - Updated UserContext interface to include all required methods (signIn, signUp, signOut, testMode)
+  - Added missing dependencies: @stripe/react-stripe-js, @stripe/stripe-js, wouter
+  - All import paths now use correct aliases: @ui/*, @shared/*, @admin/*
+  - TypeScript errors significantly reduced, ready for final build test

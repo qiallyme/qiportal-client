@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { useUser } from '../../../../context/UserContext';
+import React, { useEffect } from 'react';
+import { useUser } from '@shared/auth/context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function Logout() {
+export default function Logout(): React.ReactElement {
   const { signOut } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const performLogout = async () => {
+    const performLogout = async (): Promise<void> => {
       console.log('Performing logout...');
       try {
         const result = await signOut();

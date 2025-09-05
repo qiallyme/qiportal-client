@@ -1,14 +1,40 @@
-import { useState, useEffect } from 'react';
-import { useUser } from '../auth/context/UserContext';
-import { supabase } from './apps/portal/src/lib/supabase';
+import React, { useState, useEffect } from 'react';
+import { useUser } from '@shared/auth/context/UserContext';
+import { supabase } from '@shared/lib/supabase';
 
-export default function Settings() {
+interface NotificationSettings {
+  email: boolean;
+  sms: boolean;
+  projectUpdates: boolean;
+  messages: boolean;
+  systemAlerts: boolean;
+}
+
+interface ProfileData {
+  full_name: string;
+  preferred_locale: string;
+  timezone: string;
+  email_opt_in: boolean;
+  sms_opt_in: boolean;
+}
+
+interface TimezoneOption {
+  value: string;
+  label: string;
+}
+
+interface LocaleOption {
+  value: string;
+  label: string;
+}
+
+export default function Settings(): React.ReactElement {
   const { email, role } = useUser();
-  const [activeTab, setActiveTab] = useState('profile');
-  const [loading, setLoading] = useState(false);
-  const [saveStatus, setSaveStatus] = useState('');
+  const [activeTab, setActiveTab] = useState<string>('profile');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [saveStatus, setSaveStatus] = useState<string>('');
   
-  const [notifications, setNotifications] = useState({
+  const [notifications, setNotifications] = useState<NotificationSettings>({
     email: true,
     sms: false,
     projectUpdates: true,
@@ -16,7 +42,7 @@ export default function Settings() {
     systemAlerts: false
   });
 
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<ProfileData>({
     full_name: '',
     preferred_locale: 'en',
     timezone: 'America/New_York',
@@ -31,7 +57,7 @@ export default function Settings() {
     }
   }, [email]);
 
-  const loadProfile = async () => {
+  const loadProfile = async (): Promise<void> => {
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -70,7 +96,7 @@ export default function Settings() {
     }
   };
 
-  const saveProfile = async () => {
+  const saveProfile = async (): Promise<void> => {
     try {
       setLoading(true);
       setSaveStatus('');
@@ -112,7 +138,7 @@ export default function Settings() {
     }
   };
 
-  const timezones = [
+  const timezones: TimezoneOption[] = [
     { value: 'America/New_York', label: 'Eastern Time (ET)' },
     { value: 'America/Chicago', label: 'Central Time (CT)' },
     { value: 'America/Denver', label: 'Mountain Time (MT)' },
@@ -120,14 +146,14 @@ export default function Settings() {
     { value: 'UTC', label: 'UTC' }
   ];
 
-  const locales = [
+  const locales: LocaleOption[] = [
     { value: 'en', label: 'English' },
     { value: 'es', label: 'Spanish' },
     { value: 'fr', label: 'French' },
     { value: 'de', label: 'German' }
   ];
 
-  const handleNotificationChange = (key) => {
+  const handleNotificationChange = (key: keyof NotificationSettings): void => {
     if (key === 'email') {
       setProfile(prev => ({
         ...prev,
@@ -146,14 +172,14 @@ export default function Settings() {
     }
   };
 
-  const handleProfileChange = (key, value) => {
+  const handleProfileChange = (key: keyof ProfileData, value: string | boolean): void => {
     setProfile(prev => ({
       ...prev,
       [key]: value
     }));
   };
 
-  const renderProfile = () => (
+  const renderProfile = (): React.ReactElement => (
     <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile Information</h3>
@@ -273,7 +299,7 @@ export default function Settings() {
     </div>
   );
 
-  const renderNotifications = () => (
+  const renderNotifications = (): React.ReactElement => (
     <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Notification Preferences</h3>
@@ -293,7 +319,7 @@ export default function Settings() {
                 </p>
               </div>
               <button
-                onClick={() => handleNotificationChange(key)}
+                onClick={() => handleNotificationChange(key as keyof NotificationSettings)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                   value ? 'bg-blue-600' : 'bg-gray-200'
                 }`}
@@ -330,7 +356,7 @@ export default function Settings() {
     </div>
   );
 
-  const renderSecurity = () => (
+  const renderSecurity = (): React.ReactElement => (
     <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Password</h3>
@@ -390,7 +416,7 @@ export default function Settings() {
     </div>
   );
 
-  const renderBilling = () => (
+  const renderBilling = (): React.ReactElement => (
     <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-sm border">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Plan</h3>

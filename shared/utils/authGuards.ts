@@ -1,4 +1,4 @@
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@shared/auth/context/UserContext";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 

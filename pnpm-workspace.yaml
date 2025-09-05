@@ -1,5 +1,9 @@
 packages:
-  - "apps/*"
-  - "packages/*"
-  - "shared"
-  - "server"
+  - apps/*
+  - server
+  - packages/*
+
+ignoredBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - bufferutil
+  - esbuild

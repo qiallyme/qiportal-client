@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Bot, Send, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { kbApi } from "@/lib/kbApi";
-import { useUser } from "@/context/UserContext";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@ui/button";
+import { Input } from "@ui/input";
+import { kbApi } from "@shared/lib/kbApi";
+import { useUser } from "@shared/auth/context/UserContext";
+import { useToast } from "@shared/hooks/use-toast";
 
 interface ChatMessage {
   id: string;

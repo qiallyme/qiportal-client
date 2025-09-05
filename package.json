@@ -4,16 +4,31 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev:client": "pnpm -C apps/client dev",
-    "dev:admin": "pnpm -C apps/admin dev",
-    "dev:server": "pnpm -C server dev",
-    "dev": "concurrently -k -n client,admin,server \"pnpm:dev:client\" \"pnpm:dev:admin\" \"pnpm:dev:server\"",
-    "build": "pnpm -C apps/client build && pnpm -C apps/admin build && pnpm -C server build",
-    "start": "NODE_ENV=production node dist/index.js",
+    "dev": "concurrently \"pnpm run dev:client\" \"pnpm run dev:admin\" \"pnpm run dev:server\"",
+    "dev:client": "pnpm --filter client dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev:server": "pnpm --filter server dev",
+    "build": "pnpm run build:client && pnpm run build:admin && pnpm run build:server",
+    "build:client": "pnpm --filter client build",
+    "build:admin": "pnpm --filter admin build",
+    "build:server": "pnpm --filter server build",
+    "start": "node server/dist/index.js",
+    "typecheck": "pnpm run typecheck:client && pnpm run typecheck:admin && pnpm run typecheck:server",
+    "typecheck:client": "pnpm --filter client typecheck",
+    "typecheck:admin": "pnpm --filter admin typecheck",
+    "typecheck:server": "pnpm --filter server typecheck",
     "check": "tsc",
     "db:push": "drizzle-kit push"
   },
+  "dependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.0.0"
+  },
   "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
     "concurrently": "^9.1.0",
     "typescript": "5.6.3"
   }

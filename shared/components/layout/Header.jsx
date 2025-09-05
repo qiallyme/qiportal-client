@@ -1,23 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
-import NotificationCenter from "./NotificationCenter";
-import { forceClearAuth } from "../src/utils/auth";
+import { useUser } from '../../auth/context/UserContext';
 
 /**
  * Header component with navigation and user authentication status
  * @returns {JSX.Element} Header component with navigation links and user info
  */
 export default function Header() {
-  const { email, role, signOut } = useUser();
+  const { user, logout } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     console.log('Logout button clicked');
     try {
-      const result = await signOut();
-      if (result.error) {
-        console.error('Supabase logout error:', result.error);
-      }
+      await logout();
       console.log('Logout completed, navigating to home');
       navigate('/');
     } catch (error) {
@@ -25,13 +20,6 @@ export default function Header() {
       // Force navigation even if there's an error
       navigate('/');
     }
-  };
-
-  const handleForceLogout = () => {
-    console.log('Force logout clicked');
-    forceClearAuth();
-    // Force page reload to clear all state
-    window.location.href = '/';
   };
 
   return (
@@ -51,7 +39,7 @@ export default function Header() {
           <Link to="/" className="glass-nav-link">
             Home
           </Link>
-          {email ? (
+          {user ? (
             <>
               <Link to="/client" className="glass-nav-link">
                 Dashboard
@@ -77,7 +65,7 @@ export default function Header() {
               <Link to="/settings" className="glass-nav-link">
                 Settings
               </Link>
-              {role === "admin" && (
+              {user.role === "admin" && (
                 <Link to="/admin" className="glass-nav-link">
                   Admin
                 </Link>
@@ -94,9 +82,8 @@ export default function Header() {
 
         {/* User */}
         <div className="flex items-center gap-3">
-          {email ? (
+          {user ? (
             <>
-              <NotificationCenter />
               <div className="flex items-center gap-3 glass-card px-4 py-2">
                 <div className="relative">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 grid place-items-center glow-blue">
@@ -110,8 +97,8 @@ export default function Header() {
                   </div>
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium leading-tight text-white">{email}</p>
-                  <p className="text-white/70 capitalize leading-tight">{role}</p>
+                  <p className="font-medium leading-tight text-white">{user.email}</p>
+                  <p className="text-white/70 capitalize leading-tight">{user.role}</p>
                 </div>
               </div>
               <button
@@ -121,29 +108,6 @@ export default function Header() {
               >
                 Logout
               </button>
-              {/* Debug section - remove in production */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="flex flex-col gap-1">
-                  <button
-                    onClick={handleForceLogout}
-                    className="text-xs px-2 py-1 bg-red-600 text-white rounded"
-                    type="button"
-                    title="Force logout (clears all auth data)"
-                  >
-                    Force Logout
-                  </button>
-                  <Link
-                    to="/debug"
-                    className="text-xs px-2 py-1 bg-blue-600 text-white rounded text-center"
-                    title="Debug auth state"
-                  >
-                    Debug
-                  </Link>
-                  <div className="text-xs text-white/50">
-                    Auth: {email ? 'Logged in' : 'Not logged in'}
-                  </div>
-                </div>
-              )}
             </>
           ) : (
             <Link

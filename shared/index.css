@@ -1,5 +1,8 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
 
 :root {
@@ -100,6 +103,7 @@
 
 .glassmorphism {
   background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -111,8 +115,8 @@
 /* Electric blue and plasma purple text effects */
 .electric-text {
   background: linear-gradient(135deg, hsl(220 100% 25%) 0%, hsl(270 100% 35%) 100%);
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px hsl(220 100% 50% / 0.3), 0 0 20px hsl(270 100% 50% / 0.2);
 }
@@ -133,15 +137,21 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
     font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3 {
-    @apply plasma-shadow;
+    text-shadow: 
+      0 0 5px hsl(220 100% 50% / 0.4),
+      0 0 10px hsl(270 100% 50% / 0.3),
+      0 2px 4px hsl(220 100% 25% / 0.2);
   }
 }
